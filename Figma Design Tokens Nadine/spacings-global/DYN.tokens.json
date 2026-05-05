@@ -1,0 +1,816 @@
+{
+  "component": {
+    "header": {
+      "padding-bottom": {
+        "$type": "number",
+        "$value": 0,
+        "$description": "this is the component of the header. this is it's defined inner spacing to the bottom.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:155:384",
+          "com.figma.scopes": [
+            "GAP"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "component/header/padding-bottom",
+            "ANDROID": "component/header/padding-bottom",
+            "iOS": "component/header/padding-bottom"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+            "targetVariableName": "spacings/general/spacing-0",
+            "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+            "targetVariableSetName": "primitives"
+          },
+          "com.figma.isOverride": true
+        }
+      },
+      "padding-right": {
+        "$type": "number",
+        "$value": 16,
+        "$description": "this is the component of the header. this is it's defined inner spacing to the right.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:155:386",
+          "com.figma.scopes": [
+            "GAP"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:826ae0535f50e5a41973763cfbe9d86370ae6355/-1:-1",
+            "targetVariableName": "spacings/general/spacing-16",
+            "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+            "targetVariableSetName": "primitives"
+          },
+          "com.figma.isOverride": true
+        }
+      },
+      "padding-top": {
+        "$type": "number",
+        "$value": 0,
+        "$description": "this is the component of the header. this is it's defined inner spacing to the top.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:39:19",
+          "com.figma.scopes": [
+            "GAP"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "component/header/padding-inner"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+            "targetVariableName": "spacings/general/spacing-0",
+            "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+            "targetVariableSetName": "primitives"
+          },
+          "com.figma.isOverride": true
+        }
+      },
+      "padding-left": {
+        "$type": "number",
+        "$value": 16,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:155:385",
+          "com.figma.scopes": [
+            "GAP"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:826ae0535f50e5a41973763cfbe9d86370ae6355/-1:-1",
+            "targetVariableName": "spacings/general/spacing-16",
+            "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+            "targetVariableSetName": "primitives"
+          },
+          "com.figma.isOverride": true
+        }
+      },
+      "gap": {
+        "$type": "number",
+        "$value": 0,
+        "$description": "this is the component of the header. this is it's defined spacing to left & right elements.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:156:390",
+          "com.figma.scopes": [
+            "GAP"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "component/header/gap",
+            "ANDROID": "component/header/gap",
+            "iOS": "component/header/gap"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+            "targetVariableName": "spacings/general/spacing-0",
+            "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+            "targetVariableSetName": "primitives"
+          },
+          "com.figma.isOverride": true
+        }
+      },
+      "nav-item": {
+        "padding-bottom": {
+          "$type": "number",
+          "$value": 8,
+          "$description": "component item of the header when a navigation-item is in place. this is one nav-item with the set spacing to the bottom.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:40:20",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/nav-item/padding-bottom",
+              "ANDROID": "component/header/nav-item/padding-bottom",
+              "iOS": "component/header/nav-item/padding-bottom"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:459cd004738bf890d5c52f5e6401ec81c697f414/-1:-1",
+              "targetVariableName": "spacings/general/spacing-8",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "padding-right": {
+          "$type": "number",
+          "$value": 0,
+          "$description": "component item of the header when a navigation-item is in place. this is one nav-item with the set spacing to the right.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:156:388",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/nav-item/padding-right",
+              "ANDROID": "component/header/nav-item/padding-right",
+              "iOS": "component/header/nav-item/padding-right"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+              "targetVariableName": "spacings/general/spacing-0",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "padding-top": {
+          "$type": "number",
+          "$value": 0,
+          "$description": "component item of the header when a navigation-item is in place. this is one nav-item with the set spacing to the top.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:156:389",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/nav-item/padding-top",
+              "ANDROID": "component/header/nav-item/padding-top",
+              "iOS": "component/header/nav-item/padding-top"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+              "targetVariableName": "spacings/general/spacing-0",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "padding-left": {
+          "$type": "number",
+          "$value": 0,
+          "$description": "component item of the header when a navigation-item is in place. this is one nav-item with the set spacing to the left.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:156:387",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/nav-item/padding-left",
+              "ANDROID": "component/header/nav-item/padding-left",
+              "iOS": "component/header/nav-item/padding-left"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+              "targetVariableName": "spacings/general/spacing-0",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "gap": {
+          "$type": "number",
+          "$value": 16,
+          "$description": "component item of the header when a navigation-item is in place. this is one nav-item with the set spacing in between elements - so called gap.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:40:21",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/nav-item/gap",
+              "ANDROID": "component/header/nav-item/gap",
+              "iOS": "component/header/nav-item/gap"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:826ae0535f50e5a41973763cfbe9d86370ae6355/-1:-1",
+              "targetVariableName": "spacings/general/spacing-16",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        }
+      },
+      "stepper-item": {
+        "padding-bottom": {
+          "$type": "number",
+          "$value": 8,
+          "$description": "component item of the header when a stepper is in place. this is one stepper item with the set spacing to the bottom.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:156:391",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/stepper-item/padding-bottom",
+              "ANDROID": "component/header/stepper-item/padding-bottom",
+              "iOS": "component/header/stepper-item/padding-bottom"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:459cd004738bf890d5c52f5e6401ec81c697f414/-1:-1",
+              "targetVariableName": "spacings/general/spacing-8",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "padding-right": {
+          "$type": "number",
+          "$value": 0,
+          "$description": "component item of the header when a stepper is in place. this is one stepper item with the set spacing to the right.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:156:392",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/stepper-item/padding-right",
+              "ANDROID": "component/header/stepper-item/padding-right",
+              "iOS": "component/header/stepper-item/padding-right"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+              "targetVariableName": "spacings/general/spacing-0",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "padding-top": {
+          "$type": "number",
+          "$value": 2,
+          "$description": "component item of the header when a stepper is in place. this is one stepper item with the set spacing to the top.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:156:393",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/stepper-item/padding-top",
+              "ANDROID": "component/header/stepper-item/padding-top",
+              "iOS": "component/header/stepper-item/padding-top"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:3eb0ebf9d8df88e5fd80143ed689fc52a8d4f5ca/-1:-1",
+              "targetVariableName": "spacings/general/spacing-2",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "padding-left": {
+          "$type": "number",
+          "$value": 0,
+          "$description": "component item of the header when a stepper is in place. this is one stepper item with the set spacing to the left.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:156:394",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/stepper-item/padding-left",
+              "ANDROID": "component/header/stepper-item/padding-left",
+              "iOS": "component/header/stepper-item/padding-left"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+              "targetVariableName": "spacings/general/spacing-0",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "gap": {
+          "$type": "number",
+          "$value": 0,
+          "$description": "component item of the header when a stepper is in place. this is one stepper item with the set spacing in between the stepper-item elements.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:156:395",
+            "com.figma.scopes": [
+              "GAP"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "component/header/stepper-item/gap",
+              "ANDROID": "component/header/stepper-item/gap",
+              "iOS": "component/header/stepper-item/gap"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+              "targetVariableName": "spacings/general/spacing-0",
+              "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+              "targetVariableSetName": "primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        }
+      }
+    },
+    "card": {
+      "padding-inner": {
+        "$type": "number",
+        "$value": 8,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:39:18",
+          "com.figma.hiddenFromPublishing": true,
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:c0751dd44b1ca1b0637edfae4f069dc4abbf7bea/-1:-1",
+            "targetVariableName": "spacing-8",
+            "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+            "targetVariableSetName": "spacing.primitives"
+          },
+          "com.figma.isOverride": true
+        }
+      },
+      "navigation": {
+        "desktop": {
+          "padding-left": {
+            "$type": "number",
+            "$value": 8,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined inner spacing to the left. this is for bigger devices like desktop.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:400",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.codeSyntax": {
+                "WEB": "component/card/navigation/desktop/padding-left",
+                "ANDROID": "component/card/navigation/desktop/padding-left",
+                "iOS": "component/card/navigation/desktop/padding-left"
+              },
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:459cd004738bf890d5c52f5e6401ec81c697f414/-1:-1",
+                "targetVariableName": "spacings/general/spacing-8",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-top": {
+            "$type": "number",
+            "$value": 4,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined inner spacing to the top. this is for bigger devices like desktop.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:399",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.codeSyntax": {
+                "WEB": "component/card/navigation/desktop/padding-top",
+                "ANDROID": "component/card/navigation/desktop/padding-top",
+                "iOS": "component/card/navigation/desktop/padding-top"
+              },
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:8f8be98808979af2c98c917a9b7802d1456069ab/-1:-1",
+                "targetVariableName": "spacings/general/spacing-4",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-right": {
+            "$type": "number",
+            "$value": 8,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined inner spacing to the right. this is for bigger devices like desktop.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:398",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.codeSyntax": {
+                "WEB": "component/card/navigation/desktop/padding-right",
+                "ANDROID": "component/card/navigation/desktop/padding-right",
+                "iOS": "component/card/navigation/desktop/padding-right"
+              },
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:459cd004738bf890d5c52f5e6401ec81c697f414/-1:-1",
+                "targetVariableName": "spacings/general/spacing-8",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-bottom": {
+            "$type": "number",
+            "$value": 4,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined inner spacing to the bottom. this is for bigger devices like desktop.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:397",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.codeSyntax": {
+                "WEB": "component/card/navigation/desktop/padding-bottom",
+                "ANDROID": "component/card/navigation/desktop/padding-bottom",
+                "iOS": "component/card/navigation/desktop/padding-bottom"
+              },
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:8f8be98808979af2c98c917a9b7802d1456069ab/-1:-1",
+                "targetVariableName": "spacings/general/spacing-4",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "gap": {
+            "$type": "number",
+            "$value": 16,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined gap between elements. this is for bigger devices like desktop.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:401",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.codeSyntax": {
+                "WEB": "component/card/navigation/desktop/gap",
+                "ANDROID": "component/card/navigation/desktop/gap",
+                "iOS": "component/card/navigation/desktop/gap"
+              },
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:826ae0535f50e5a41973763cfbe9d86370ae6355/-1:-1",
+                "targetVariableName": "spacings/general/spacing-16",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          }
+        },
+        "mobile": {
+          "padding-left": {
+            "$type": "number",
+            "$value": 0,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined inner spacing to the left. this is for smaller devices like mobile.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:402",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+                "targetVariableName": "spacings/general/spacing-0",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-top": {
+            "$type": "number",
+            "$value": 8,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined inner spacing to the top. this is for smaller devices like mobile.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:403",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:459cd004738bf890d5c52f5e6401ec81c697f414/-1:-1",
+                "targetVariableName": "spacings/general/spacing-8",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-right": {
+            "$type": "number",
+            "$value": 0,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined inner spacing to the right. this is for smaller devices like mobile.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:404",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:faff060e374cea2ea78e8dbeca593d2bd6d2be35/-1:-1",
+                "targetVariableName": "spacings/general/spacing-0",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-bottom": {
+            "$type": "number",
+            "$value": 8,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined inner spacing to the bottom. this is for smaller devices like mobile.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:405",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:459cd004738bf890d5c52f5e6401ec81c697f414/-1:-1",
+                "targetVariableName": "spacings/general/spacing-8",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "gap": {
+            "$type": "number",
+            "$value": 8,
+            "$description": "this is the component of the navigation in platform dcc logged in state. this is the environment for profile settings. this is it's defined gap between elements. this is for smaller devices like mobile.",
+            "$extensions": {
+              "com.figma.variableId": "VariableID:157:406",
+              "com.figma.scopes": [
+                "GAP"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:459cd004738bf890d5c52f5e6401ec81c697f414/-1:-1",
+                "targetVariableName": "spacings/general/spacing-8",
+                "targetVariableSetId": "VariableCollectionId:274fcb816aa6f88462eb0c36bd0ff0a3c61f36e3/-1:-1",
+                "targetVariableSetName": "primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          }
+        }
+      },
+      "pricing": {
+        "outter-card": {
+          "$type": "number",
+          "$value": 0,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:71:155",
+            "com.figma.hiddenFromPublishing": true,
+            "com.figma.scopes": [
+              "ALL_SCOPES"
+            ],
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:f864f8dce01bf63c4176ff1f0789d7faa8484a30/-1:-1",
+              "targetVariableName": "spacing-0",
+              "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+              "targetVariableSetName": "spacing.primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "content-wrapper": {
+          "$type": "number",
+          "$value": 0,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:71:156",
+            "com.figma.hiddenFromPublishing": true,
+            "com.figma.scopes": [
+              "ALL_SCOPES"
+            ],
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:f864f8dce01bf63c4176ff1f0789d7faa8484a30/-1:-1",
+              "targetVariableName": "spacing-0",
+              "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+              "targetVariableSetName": "spacing.primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "details-wrapper": {
+          "$type": "number",
+          "$value": 0,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:71:162",
+            "com.figma.hiddenFromPublishing": true,
+            "com.figma.scopes": [
+              "ALL_SCOPES"
+            ],
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:f864f8dce01bf63c4176ff1f0789d7faa8484a30/-1:-1",
+              "targetVariableName": "spacing-0",
+              "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+              "targetVariableSetName": "spacing.primitives"
+            },
+            "com.figma.isOverride": true
+          }
+        },
+        "header": {
+          "gap": {
+            "$type": "number",
+            "$value": 0,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:72:146",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:f864f8dce01bf63c4176ff1f0789d7faa8484a30/-1:-1",
+                "targetVariableName": "spacing-0",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-left": {
+            "$type": "number",
+            "$value": 4,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:71:159",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:77b9efe2a07b14f2d10746987edd13a4e5bd5f89/-1:-1",
+                "targetVariableName": "spacing-4",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-top": {
+            "$type": "number",
+            "$value": 4,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:71:157",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:77b9efe2a07b14f2d10746987edd13a4e5bd5f89/-1:-1",
+                "targetVariableName": "spacing-4",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-right": {
+            "$type": "number",
+            "$value": 4,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:71:160",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:77b9efe2a07b14f2d10746987edd13a4e5bd5f89/-1:-1",
+                "targetVariableName": "spacing-4",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-bottom": {
+            "$type": "number",
+            "$value": 4,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:71:158",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:77b9efe2a07b14f2d10746987edd13a4e5bd5f89/-1:-1",
+                "targetVariableName": "spacing-4",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          }
+        },
+        "abo-details": {
+          "gap": {
+            "$type": "number",
+            "$value": 12,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:71:163",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:8e5ca85f322fde99b70c43e59a956906504576ad/-1:-1",
+                "targetVariableName": "spacing-12",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-left": {
+            "$type": "number",
+            "$value": 12,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:71:167",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:8e5ca85f322fde99b70c43e59a956906504576ad/-1:-1",
+                "targetVariableName": "spacing-12",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-top": {
+            "$type": "number",
+            "$value": 12,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:71:164",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:8e5ca85f322fde99b70c43e59a956906504576ad/-1:-1",
+                "targetVariableName": "spacing-12",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-right": {
+            "$type": "number",
+            "$value": 12,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:71:165",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:8e5ca85f322fde99b70c43e59a956906504576ad/-1:-1",
+                "targetVariableName": "spacing-12",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          },
+          "padding-bottom": {
+            "$type": "number",
+            "$value": 12,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:71:166",
+              "com.figma.hiddenFromPublishing": true,
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ],
+              "com.figma.aliasData": {
+                "targetVariableId": "VariableID:8e5ca85f322fde99b70c43e59a956906504576ad/-1:-1",
+                "targetVariableName": "spacing-12",
+                "targetVariableSetId": "VariableCollectionId:44a8f1a8939cbc8eefe4b95376de827404dc8fb7/-1:-1",
+                "targetVariableSetName": "spacing.primitives"
+              },
+              "com.figma.isOverride": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "DYN"
+  }
+}

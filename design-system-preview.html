@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DYN Sports — Dark Mode Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;700&family=Titillium+Web:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ===== CSS VARIABLES ===== */
+:root {
+  --bg: #00141E;
+  --bg-surface: #002952;
+  --bg-card: #002F60;
+  --text: #EDFCFF;
+  --text-subtle: #99AABB;
+  --accent: #22D2E6;
+  --accent2: #15B0D0;
+  --border: rgba(193,209,225,0.2);
+  --sidebar-bg: #00141E;
+  --sidebar-accent: #22D2E6;
+  --nav-width: 260px;
+  --mono: 'Courier New', 'Courier', monospace;
+}
+body.light-mode {
+  --bg: #FFFFFF;
+  --bg-surface: #F5F8FA;
+  --bg-card: #E6EEF5;
+  --text: #000000;
+  --text-subtle: #666666;
+  --accent: #006299;
+  --accent2: #0B89B5;
+  --border: rgba(0,0,0,0.12);
+  --sidebar-bg: #002952;
+  --sidebar-accent: #22D2E6;
+}
+
+/* ===== BASE ===== */
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Titillium Web', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--nav-width);
+  background: var(--sidebar-bg);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 200;
+  border-right: 1px solid rgba(34,210,230,0.15);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s;
+}
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(34,210,230,0.15);
+}
+.sidebar-logo .brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: var(--sidebar-accent);
+  text-transform: uppercase;
+}
+.sidebar-logo .version {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 11px;
+  color: rgba(237,252,255,0.4);
+  margin-top: 3px;
+  letter-spacing: 1px;
+}
+.sidebar nav { padding: 12px 0; flex: 1; }
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 12px;
+  color: rgba(237,252,255,0.55);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.sidebar nav a:hover { color: #EDFCFF; background: rgba(34,210,230,0.07); }
+.sidebar nav a.active { color: var(--sidebar-accent); border-left-color: var(--sidebar-accent); background: rgba(34,210,230,0.08); }
+.nav-num { font-size: 10px; opacity: 0.4; min-width: 18px; font-family: var(--mono); }
+
+/* ===== MAIN ===== */
+.main { margin-left: var(--nav-width); flex: 1; min-width: 0; }
+
+/* ===== HERO ===== */
+.hero {
+  background: linear-gradient(135deg, #00141E 0%, #002952 50%, #002F60 80%, #00141E 100%);
+  padding: 72px 56px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(34,210,230,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 20%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(21,176,208,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative; z-index: 1;
+  display: flex; align-items: flex-start;
+  justify-content: space-between; flex-wrap: wrap; gap: 24px;
+}
+.hero-eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 5px;
+  color: var(--accent); text-transform: uppercase; margin-bottom: 8px;
+}
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px; font-weight: 700;
+  line-height: 74px; letter-spacing: 0;
+  text-transform: uppercase; color: #EDFCFF;
+}
+.hero h1 span { color: var(--accent); }
+.hero-subtitle {
+  margin-top: 16px;
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 16px; color: rgba(237,252,255,0.5);
+  letter-spacing: 2px;
+}
+.theme-toggle {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(34,210,230,0.1);
+  border: 1px solid rgba(34,210,230,0.3);
+  color: #EDFCFF; padding: 10px 20px;
+  border-radius: 24px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: 5px;
+  text-transform: uppercase; cursor: pointer;
+  transition: all 0.2s; align-self: center;
+}
+.theme-toggle:hover { background: rgba(34,210,230,0.2); border-color: rgba(34,210,230,0.6); }
+
+/* ===== CONTENT ===== */
+.content { padding: 0 56px 100px; }
+.section { padding-top: 72px; }
+.section-header {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 36px; padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; color: var(--accent);
+  background: rgba(34,210,230,0.1);
+  padding: 3px 8px; border-radius: 4px;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--text);
+}
+
+/* ===== SWATCHES ===== */
+.palette-group { margin-bottom: 36px; }
+.palette-group-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--text-subtle);
+  margin-bottom: 14px;
+}
+.swatch-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+.swatch {
+  width: 130px; border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+}
+.swatch-color { height: 80px; width: 100%; }
+.swatch-info { padding: 10px 12px; }
+.swatch-token {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--text-subtle); word-break: break-all; line-height: 1.4;
+}
+.swatch-hex {
+  font-family: var(--mono); font-size: 12px;
+  font-weight: 700; color: var(--text); margin-top: 4px;
+}
+
+/* ===== SEMANTIC ROLES ===== */
+.semantic-group { margin-bottom: 32px; }
+.semantic-group-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 12px;
+}
+.semantic-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+.semantic-row:last-child { border-bottom: none; }
+.semantic-row:hover { background: rgba(34,210,230,0.04); }
+.color-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  flex-shrink: 0; border: 1px solid rgba(255,255,255,0.15);
+}
+.semantic-token-name {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--text); flex: 1;
+}
+.semantic-hex {
+  font-family: var(--mono); font-size: 11px; color: var(--text-subtle);
+}
+
+/* ===== SPORT CARDS ===== */
+.sport-grid { display: flex; flex-wrap: wrap; gap: 20px; }
+.sport-card {
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  min-width: 200px; flex: 1;
+}
+.sport-card-header {
+  padding: 16px 20px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 3px;
+  text-transform: uppercase; color: #EDFCFF;
+}
+.sport-swatches { display: flex; }
+.sport-swatch { flex: 1; padding: 14px 16px; }
+.sport-swatch-label {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 10px; letter-spacing: 1px;
+  text-transform: uppercase; color: rgba(237,252,255,0.5);
+  margin-bottom: 6px;
+}
+.sport-swatch-color {
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15); margin-bottom: 6px;
+}
+.sport-swatch-hex {
+  font-family: var(--mono); font-size: 11px; color: #EDFCFF;
+}
+.on-air-dot {
+  display: inline-block; width: 8px; height: 8px;
+  border-radius: 50%; background: #62FF98;
+  margin-right: 5px; animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(1.3)}
+}
+
+/* ===== TYPOGRAPHY ===== */
+.type-table { width: 100%; border-collapse: collapse; }
+.type-row {
+  display: grid;
+  grid-template-columns: 180px 220px 1fr;
+  gap: 24px; align-items: center;
+  padding: 20px 0; border-bottom: 1px solid var(--border);
+}
+.type-row:last-child { border-bottom: none; }
+.type-token {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--accent); font-weight: 600;
+}
+.type-spec {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--text-subtle); margin-top: 4px; line-height: 1.6;
+}
+.type-sample { color: var(--text); }
+
+/* ===== SPACING ===== */
+.spacing-list { display: flex; flex-direction: column; gap: 4px; }
+.spacing-row {
+  display: flex; align-items: center; gap: 16px; padding: 6px 0;
+}
+.spacing-label {
+  min-width: 160px; font-family: var(--mono);
+  font-size: 12px; color: var(--text-subtle);
+}
+.spacing-bar-wrap { flex: 1; display: flex; align-items: center; gap: 10px; }
+.spacing-bar {
+  height: 20px; background: var(--accent);
+  border-radius: 3px; min-width: 2px; opacity: 0.7;
+}
+.spacing-px {
+  font-family: var(--mono); font-size: 12px;
+  font-weight: 700; color: var(--text);
+}
+
+/* ===== COMPONENT SPACING DIAGRAM ===== */
+.comp-diagram {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px;
+  margin-bottom: 24px;
+}
+.comp-diagram-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 20px;
+}
+.header-mock {
+  background: #002952;
+  border: 2px dashed rgba(34,210,230,0.4);
+  border-radius: 8px; padding: 0 16px;
+  display: flex; align-items: center;
+  gap: 0; position: relative; min-height: 56px;
+}
+.header-mock-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 3px;
+  color: #22D2E6; margin-right: auto;
+}
+.nav-item-mock {
+  padding: 0; padding-bottom: 8px; gap: 16px;
+  display: flex; align-items: center;
+  border-bottom: 2px solid rgba(34,210,230,0.3);
+  margin: 0 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 2px;
+  color: rgba(237,252,255,0.7); text-transform: uppercase;
+  position: relative;
+}
+.annotation {
+  font-family: var(--mono); font-size: 10px;
+  color: #22D2E6; background: rgba(34,210,230,0.1);
+  border: 1px solid rgba(34,210,230,0.3);
+  padding: 2px 6px; border-radius: 3px;
+  white-space: nowrap;
+}
+.spacing-table {
+  width: 100%; border-collapse: collapse;
+  font-family: var(--mono); font-size: 12px;
+}
+.spacing-table th {
+  text-align: left; padding: 8px 12px;
+  color: var(--text-subtle); font-size: 10px;
+  letter-spacing: 1px; text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+}
+.spacing-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.spacing-table tr:last-child td { border-bottom: none; }
+.spacing-table .val { color: var(--accent); font-weight: 700; }
+
+/* ===== STROKE & RADIUS ===== */
+.stroke-section { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.stroke-group-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text);
+  margin-bottom: 20px;
+}
+.border-row {
+  display: flex; align-items: center; gap: 20px;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.border-row:last-child { border-bottom: none; }
+.border-label {
+  min-width: 180px; font-family: var(--mono);
+  font-size: 12px; color: var(--text-subtle);
+}
+.border-line-wrap { flex: 1; }
+.border-line { background: var(--text); width: 100%; }
+.radius-grid { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-end; }
+.radius-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.radius-box {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, var(--accent), #006299);
+}
+.radius-token {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text-subtle); display: block; text-align: center;
+}
+.radius-val {
+  font-family: var(--mono); font-size: 13px;
+  font-weight: 700; color: var(--text);
+  display: block; text-align: center; margin-top: 2px;
+}
+
+/* ===== EFFECTS ===== */
+.effects-grid { display: flex; flex-wrap: wrap; gap: 24px; }
+.overlay-card {
+  border-radius: 12px; overflow: hidden;
+  width: 200px; height: 140px; position: relative;
+  flex-shrink: 0;
+}
+.overlay-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #006299, #22D2E6, #1BE0C3);
+}
+.overlay-layer {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 6px;
+}
+.overlay-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 2px;
+  text-transform: uppercase; color: #EDFCFF;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+.overlay-pct {
+  font-family: var(--mono); font-size: 11px;
+  color: rgba(237,252,255,0.8);
+}
+.glass-card {
+  border-radius: 12px; padding: 24px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 14px; color: var(--text);
+}
+.glass-card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 8px;
+}
+
+/* ===== ACCESSIBILITY ===== */
+.a11y-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.a11y-table th {
+  text-align: left; padding: 10px 14px;
+  font-family: var(--mono); font-size: 10px;
+  font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text-subtle);
+  border-bottom: 2px solid var(--border);
+  background: var(--bg-surface);
+}
+.a11y-table td {
+  padding: 12px 14px; border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.a11y-table tr:last-child td { border-bottom: none; }
+.a11y-table tr:hover td { background: rgba(34,210,230,0.03); }
+.color-chip {
+  display: inline-flex; align-items: center;
+  gap: 6px; font-family: var(--mono); font-size: 11px;
+}
+.chip-dot {
+  width: 14px; height: 14px; border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.15); flex-shrink: 0;
+}
+.preview-aa {
+  display: inline-flex; align-items: center;
+  justify-content: center; width: 44px; height: 28px;
+  border-radius: 5px; font-size: 14px; font-weight: 700;
+  font-family: 'Titillium Web', sans-serif;
+}
+.ratio-val {
+  font-weight: 700; font-family: var(--mono); font-size: 14px;
+}
+.badge {
+  display: inline-block; padding: 3px 10px;
+  border-radius: 20px; font-size: 10px;
+  font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; font-family: var(--mono);
+}
+.badge-pass { background: rgba(98,255,152,0.15); color: #62FF98; border: 1px solid rgba(98,255,152,0.3); }
+.badge-fail { background: rgba(240,92,92,0.15); color: #F05C5C; border: 1px solid rgba(240,92,92,0.3); }
+
+/* ===== TOKEN HIERARCHY ===== */
+.hierarchy-flow {
+  display: flex; align-items: center;
+  gap: 0; flex-wrap: wrap; margin-bottom: 48px;
+}
+.hier-level { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.hier-box {
+  padding: 12px 24px; border-radius: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: 2px;
+  text-align: center; min-width: 160px;
+}
+.hier-box.primitive {
+  background: rgba(34,210,230,0.1);
+  border: 2px solid #22D2E6; color: #22D2E6;
+}
+.hier-box.global {
+  background: rgba(21,176,208,0.1);
+  border: 2px solid #15B0D0; color: #15B0D0;
+}
+.hier-box.component {
+  background: rgba(98,255,152,0.1);
+  border: 2px solid #62FF98; color: #62FF98;
+}
+.hier-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-subtle);
+}
+.hier-arrow {
+  font-size: 24px; color: var(--text-subtle);
+  padding: 0 16px; margin-top: -20px;
+}
+.hier-example {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px 32px;
+  display: flex; align-items: center;
+  gap: 0; flex-wrap: wrap;
+}
+.hier-ex-step { display: flex; flex-direction: column; gap: 4px; }
+.hier-ex-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-subtle);
+}
+.hier-ex-value {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 13px;
+  color: var(--text); font-weight: 600;
+}
+.hier-ex-dot {
+  width: 18px; height: 18px; border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.15); flex-shrink: 0;
+}
+.hier-ex-arrow {
+  font-size: 20px; color: var(--text-subtle);
+  padding: 0 20px; margin-top: 14px;
+}
+
+/* ===== PRICING CARDS ===== */
+.pricing-grid { display: flex; flex-wrap: wrap; gap: 24px; }
+.pricing-card {
+  border-radius: 12px; overflow: hidden;
+  flex: 1; min-width: 240px; max-width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.pricing-card-header {
+  padding: 24px 24px 20px;
+}
+.pricing-card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 4px;
+}
+.pricing-card-subtitle {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 12px; opacity: 0.7;
+}
+.pricing-card-body { padding: 24px; }
+.pricing-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px; line-height: 1;
+  margin-bottom: 4px;
+}
+.pricing-period {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 12px; color: #666; margin-bottom: 20px;
+}
+.pricing-features {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 14px; line-height: 22px;
+  margin-bottom: 24px; color: #333;
+}
+.pricing-features li { list-style: none; padding: 4px 0; }
+.pricing-features li::before { content: "✓ "; font-weight: 700; }
+.pricing-btn {
+  display: block; width: 100%;
+  padding: 12px 24px; border: none;
+  border-radius: 8px; cursor: pointer;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: 5px;
+  text-transform: uppercase; color: #EDFCFF;
+  transition: opacity 0.2s;
+}
+.pricing-btn:hover { opacity: 0.85; }
+.pricing-token-note {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--text-subtle); margin-top: 8px;
+  padding: 0 24px 16px;
+}
+
+/* ===== SCROLLBAR ===== */
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(34,210,230,0.2); border-radius: 2px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 960px) {
+  :root { --nav-width: 0px; }
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .hero { padding: 40px 24px 36px; }
+  .hero h1 { font-size: 56px; line-height: 56px; }
+  .content { padding: 0 24px 60px; }
+  .type-row { grid-template-columns: 1fr; gap: 8px; }
+  .stroke-section { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">DYN Sports</div>
+    <div class="version">Design System &middot; Token Reference</div>
+  </div>
+  <nav id="sideNav">
+    <a href="#hero" class="active"><span class="nav-num">00</span> Hero</a>
+    <a href="#s01"><span class="nav-num">01</span> Color Primitives</a>
+    <a href="#s02"><span class="nav-num">02</span> Global Color Roles</a>
+    <a href="#s03"><span class="nav-num">03</span> Sport Colors</a>
+    <a href="#s04"><span class="nav-num">04</span> Typography Scale</a>
+    <a href="#s05"><span class="nav-num">05</span> Spacing Scale</a>
+    <a href="#s06"><span class="nav-num">06</span> Component Spacings</a>
+    <a href="#s07"><span class="nav-num">07</span> Stroke &amp; Radius</a>
+    <a href="#s08"><span class="nav-num">08</span> Effects &amp; Overlays</a>
+    <a href="#s09"><span class="nav-num">09</span> Accessibility</a>
+    <a href="#s10"><span class="nav-num">10</span> Token Hierarchy</a>
+    <a href="#s11"><span class="nav-num">11</span> Pricing Cards</a>
+    <a href="#s12"><span class="nav-num">12</span> Grid System</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- 00 HERO -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Token Reference</div>
+      <h1>DYN <span>Sports</span></h1>
+      <div class="hero-subtitle">Dark Mode Design System &nbsp;&middot;&nbsp; Figma Token Data</div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+      <span id="themeIcon">☀</span>
+      <span id="themeLabel">Light Mode</span>
+    </button>
+  </div>
+</section>
+
+<div class="content">
+
+<!-- SECTION 01: COLOR PRIMITIVES -->
+<section class="section" id="s01">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Color Primitives</h2>
+  </div>
+
+  <div class="palette-group">
+    <div class="palette-group-label">Cool Neutrals</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#EDFCFF;border-bottom:1px solid #C1D1E1"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-0</div><div class="swatch-hex">#EDFCFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#DFFAFF;border-bottom:1px solid #C1D1E1"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-100</div><div class="swatch-hex">#DFFAFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#C1D1E1"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-300</div><div class="swatch-hex">#C1D1E1</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#99AABB"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-500</div><div class="swatch-hex">#99AABB</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#032846"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-700</div><div class="swatch-hex">#032846</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#011326"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-900</div><div class="swatch-hex">#011326</div></div></div>
+    </div>
+  </div>
+
+  <div class="palette-group">
+    <div class="palette-group-label">Blue Shades</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#DFFAFF;border-bottom:1px solid #C1D1E1"></div><div class="swatch-info"><div class="swatch-token">blue50</div><div class="swatch-hex">#DFFAFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#8AD8EB"></div><div class="swatch-info"><div class="swatch-token">blue100</div><div class="swatch-hex">#8AD8EB</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#15B0D0"></div><div class="swatch-info"><div class="swatch-token">blue200</div><div class="swatch-hex">#15B0D0</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#56A8D3"></div><div class="swatch-info"><div class="swatch-token">blue300</div><div class="swatch-hex">#56A8D3</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#0B89B5"></div><div class="swatch-info"><div class="swatch-token">blue350</div><div class="swatch-hex">#0B89B5</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#22D2E6"></div><div class="swatch-info"><div class="swatch-token">blue400</div><div class="swatch-hex">#22D2E6</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#006299"></div><div class="swatch-info"><div class="swatch-token">blue500</div><div class="swatch-hex">#006299</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#00487C"></div><div class="swatch-info"><div class="swatch-token">blue600</div><div class="swatch-hex">#00487C</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#002F60"></div><div class="swatch-info"><div class="swatch-token">blue700</div><div class="swatch-hex">#002F60</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#002952"></div><div class="swatch-info"><div class="swatch-token">blue800</div><div class="swatch-hex">#002952</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#00141E"></div><div class="swatch-info"><div class="swatch-token">blue900</div><div class="swatch-hex">#00141E</div></div></div>
+    </div>
+  </div>
+
+  <div class="palette-group">
+    <div class="palette-group-label">Classic Neutrals</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#FFFFFF;border-bottom:1px solid #E6E6E6"></div><div class="swatch-info"><div class="swatch-token">neutral0</div><div class="swatch-hex">#FFFFFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E6E6E6"></div><div class="swatch-info"><div class="swatch-token">neutral100</div><div class="swatch-hex">#E6E6E6</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#CCCCCC"></div><div class="swatch-info"><div class="swatch-token">neutral200</div><div class="swatch-hex">#CCCCCC</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#999999"></div><div class="swatch-info"><div class="swatch-token">neutral300</div><div class="swatch-hex">#999999</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#666666"></div><div class="swatch-info"><div class="swatch-token">neutral400</div><div class="swatch-hex">#666666</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#000000"></div><div class="swatch-info"><div class="swatch-token">neutral500</div><div class="swatch-hex">#000000</div></div></div>
+    </div>
+  </div>
+
+  <div class="palette-group">
+    <div class="palette-group-label">Green Shades</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#62FF98"></div><div class="swatch-info"><div class="swatch-token">green400</div><div class="swatch-hex">#62FF98</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1BE0C3"></div><div class="swatch-info"><div class="swatch-token">green500</div><div class="swatch-hex">#1BE0C3</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#38A159"></div><div class="swatch-info"><div class="swatch-token">green700</div><div class="swatch-hex">#38A159</div></div></div>
+    </div>
+  </div>
+
+  <div class="palette-group">
+    <div class="palette-group-label">Red Shades</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#FF7E7E"></div><div class="swatch-info"><div class="swatch-token">red300</div><div class="swatch-hex">#FF7E7E</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F05C5C"></div><div class="swatch-info"><div class="swatch-token">red400</div><div class="swatch-hex">#F05C5C</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FF6262"></div><div class="swatch-info"><div class="swatch-token">red500</div><div class="swatch-hex">#FF6262</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#DF0038"></div><div class="swatch-info"><div class="swatch-token">red700</div><div class="swatch-hex">#DF0038</div></div></div>
+    </div>
+  </div>
+
+  <div class="palette-group">
+    <div class="palette-group-label">Yellow Shades</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#FFCC66"></div><div class="swatch-info"><div class="swatch-token">yellow200</div><div class="swatch-hex">#FFCC66</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E6D223"></div><div class="swatch-info"><div class="swatch-token">yellow500</div><div class="swatch-hex">#E6D223</div></div></div>
+    </div>
+  </div>
+
+  <div class="palette-group">
+    <div class="palette-group-label">Orange Shades</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#DF984B"></div><div class="swatch-info"><div class="swatch-token">orange300</div><div class="swatch-hex">#DF984B</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F15A35"></div><div class="swatch-info"><div class="swatch-token">orange600</div><div class="swatch-hex">#F15A35</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 02: GLOBAL COLOR ROLES -->
+<section class="section" id="s02">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Global Color Roles — Dark Mode</h2>
+  </div>
+
+  <div class="semantic-group">
+    <div class="semantic-group-title">Brand</div>
+    <div class="semantic-row"><div class="color-dot" style="background:#006299"></div><span class="semantic-token-name">brand/primary-colors/regular</span><span class="semantic-hex">#006299 &rarr; blue500</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#002F60"></div><span class="semantic-token-name">brand/primary-colors/strong</span><span class="semantic-hex">#002F60 &rarr; blue700</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#002952"></div><span class="semantic-token-name">brand/primary-colors/stronger</span><span class="semantic-hex">#002952 &rarr; blue800</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#DFFAFF;border-color:rgba(0,0,0,0.2)"></div><span class="semantic-token-name">brand/secondary-colors/soft</span><span class="semantic-hex">#DFFAFF &rarr; blue50</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#56A8D3"></div><span class="semantic-token-name">brand/secondary-colors/subtle</span><span class="semantic-hex">#56A8D3 &rarr; blue300</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#15B0D0"></div><span class="semantic-token-name">brand/secondary-colors/regular</span><span class="semantic-hex">#15B0D0 &rarr; blue200</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#22D2E6"></div><span class="semantic-token-name">brand/secondary-colors/strong</span><span class="semantic-hex">#22D2E6 &rarr; blue400</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#00141E"></div><span class="semantic-token-name">brand/tertiary-colors/dark</span><span class="semantic-hex">#00141E &rarr; blue900</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#011326"></div><span class="semantic-token-name">brand/tertiary-colors/dark-old</span><span class="semantic-hex">#011326 &rarr; neutral-cool-900</span></div>
+  </div>
+
+  <div class="semantic-group">
+    <div class="semantic-group-title">Surface</div>
+    <div class="semantic-row"><div class="color-dot" style="background:#FFFFFF;border-color:rgba(0,0,0,0.2)"></div><span class="semantic-token-name">surface/light</span><span class="semantic-hex">#FFFFFF</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#CCCCCC"></div><span class="semantic-token-name">surface/soft-grey</span><span class="semantic-hex">#CCCCCC &rarr; neutral200</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:rgba(255,255,255,0.6);border-color:rgba(0,0,0,0.2)"></div><span class="semantic-token-name">surface/glass/default</span><span class="semantic-hex">rgba(255,255,255,0.6)</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:rgba(255,255,255,0.4);border-color:rgba(0,0,0,0.2)"></div><span class="semantic-token-name">surface/glass/strong</span><span class="semantic-hex">rgba(255,255,255,0.4)</span></div>
+  </div>
+
+  <div class="semantic-group">
+    <div class="semantic-group-title">Text</div>
+    <div class="semantic-row"><div class="color-dot" style="background:#EDFCFF;border-color:rgba(0,0,0,0.2)"></div><span class="semantic-token-name">text/light</span><span class="semantic-hex">#EDFCFF &rarr; neutral-cool-0</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#000000"></div><span class="semantic-token-name">text/dark</span><span class="semantic-hex">#000000 &rarr; neutral500</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#F05C5C"></div><span class="semantic-token-name">text/price</span><span class="semantic-hex">#F05C5C &rarr; red400</span></div>
+  </div>
+
+  <div class="semantic-group">
+    <div class="semantic-group-title">Status</div>
+    <div class="semantic-row"><div class="color-dot" style="background:#62FF98"></div><span class="semantic-token-name">status/success/default</span><span class="semantic-hex">#62FF98 &rarr; green400</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#F05C5C"></div><span class="semantic-token-name">status/error/default</span><span class="semantic-hex">#F05C5C &rarr; red400</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#FF7E7E"></div><span class="semantic-token-name">status/error/hover</span><span class="semantic-hex">#FF7E7E &rarr; red300</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#FF6262"></div><span class="semantic-token-name">status/error/active</span><span class="semantic-hex">#FF6262 &rarr; red500</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#DF984B"></div><span class="semantic-token-name">status/warning/default</span><span class="semantic-hex">#DF984B &rarr; orange300</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#E6D223"></div><span class="semantic-token-name">status/warning/active</span><span class="semantic-hex">#E6D223 &rarr; yellow500</span></div>
+  </div>
+
+  <div class="semantic-group">
+    <div class="semantic-group-title">Divider</div>
+    <div class="semantic-row"><div class="color-dot" style="background:#C1D1E1"></div><span class="semantic-token-name">divider/subtle</span><span class="semantic-hex">#C1D1E1 &rarr; neutral-cool-300</span></div>
+    <div class="semantic-row"><div class="color-dot" style="background:#CCCCCC"></div><span class="semantic-token-name">divider/regular</span><span class="semantic-hex">#CCCCCC &rarr; neutral200</span></div>
+  </div>
+</section>
+
+<!-- SECTION 03: SPORT COLORS -->
+<section class="section" id="s03">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Sport-Specific Colors</h2>
+  </div>
+  <div class="sport-grid">
+    <div class="sport-card">
+      <div class="sport-card-header" style="background:#006299">Handball</div>
+      <div class="sport-swatches" style="background:#002952">
+        <div class="sport-swatch">
+          <div class="sport-swatch-label">Default</div>
+          <div class="sport-swatch-color" style="background:#006299"></div>
+          <div class="sport-swatch-hex">#006299</div>
+        </div>
+        <div class="sport-swatch">
+          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+          <div class="sport-swatch-color" style="background:#1BE0C3"></div>
+          <div class="sport-swatch-hex">#1BE0C3</div>
+        </div>
+      </div>
+    </div>
+    <div class="sport-card">
+      <div class="sport-card-header" style="background:#00487C">Basketball</div>
+      <div class="sport-swatches" style="background:#002952">
+        <div class="sport-swatch">
+          <div class="sport-swatch-label">Default</div>
+          <div class="sport-swatch-color" style="background:#00487C"></div>
+          <div class="sport-swatch-hex">#00487C</div>
+        </div>
+        <div class="sport-swatch">
+          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+          <div class="sport-swatch-color" style="background:#F15A35"></div>
+          <div class="sport-swatch-hex">#F15A35</div>
+        </div>
+      </div>
+    </div>
+    <div class="sport-card">
+      <div class="sport-card-header" style="background:#0B89B5">Volleyball</div>
+      <div class="sport-swatches" style="background:#002952">
+        <div class="sport-swatch">
+          <div class="sport-swatch-label">Default</div>
+          <div class="sport-swatch-color" style="background:#0B89B5"></div>
+          <div class="sport-swatch-hex">#0B89B5</div>
+        </div>
+        <div class="sport-swatch">
+          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+          <div class="sport-swatch-color" style="background:#FFCC66"></div>
+          <div class="sport-swatch-hex">#FFCC66</div>
+        </div>
+      </div>
+    </div>
+    <div class="sport-card">
+      <div class="sport-card-header" style="background:#15B0D0">Table Tennis</div>
+      <div class="sport-swatches" style="background:#002952">
+        <div class="sport-swatch">
+          <div class="sport-swatch-label">Default</div>
+          <div class="sport-swatch-color" style="background:#15B0D0"></div>
+          <div class="sport-swatch-hex">#15B0D0</div>
+        </div>
+        <div class="sport-swatch">
+          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+          <div class="sport-swatch-color" style="background:#DF0038"></div>
+          <div class="sport-swatch-hex">#DF0038</div>
+        </div>
+      </div>
+    </div>
+    <div class="sport-card">
+      <div class="sport-card-header" style="background:#002952;color:#8AD8EB">Hockey</div>
+      <div class="sport-swatches" style="background:#002952">
+        <div class="sport-swatch">
+          <div class="sport-swatch-label">Default</div>
+          <div class="sport-swatch-color" style="background:#8AD8EB"></div>
+          <div class="sport-swatch-hex">#8AD8EB</div>
+        </div>
+        <div class="sport-swatch">
+          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+          <div class="sport-swatch-color" style="background:#38A159"></div>
+          <div class="sport-swatch-hex">#38A159</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 04: TYPOGRAPHY -->
+<section class="section" id="s04">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Typography Scale</h2>
+  </div>
+
+  <div class="type-row">
+    <div><div class="type-token">heading-h1</div><div class="type-spec">Bebas Neue / 80px / 700<br>lh: 74px / ls: 0 / uppercase</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:80px;font-weight:700;line-height:74px;letter-spacing:0;text-transform:uppercase">DYN SPORTS</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">heading-h2</div><div class="type-spec">Bebas Neue / 60px / 700<br>lh: 60px / ls: 0 / uppercase</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:60px;font-weight:700;line-height:60px;letter-spacing:0;text-transform:uppercase">LIVE SCORES</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">heading-h3</div><div class="type-spec">Bebas Neue / 32px / 700<br>lh: 32px / ls: 3px / uppercase</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:32px;font-weight:700;line-height:32px;letter-spacing:3px;text-transform:uppercase">MATCH RESULTS</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">heading-h4</div><div class="type-spec">Oswald / 32px / 400<br>lh: 40px / ls: 3px / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Oswald',sans-serif;font-size:32px;font-weight:400;line-height:40px;letter-spacing:3px;text-transform:none">Season Highlights</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">heading-h5</div><div class="type-spec">Bebas Neue / 24px / 400<br>lh: 25px / ls: 3px / uppercase</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:24px;font-weight:400;line-height:25px;letter-spacing:3px;text-transform:uppercase">HANDBALL LEAGUE</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">heading-h6</div><div class="type-spec">Oswald / 24px / 400<br>lh: 28px / ls: 3px / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:400;line-height:28px;letter-spacing:3px;text-transform:none">Player Stats</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">heading-h7</div><div class="type-spec">Bebas Neue / 20px / 700<br>lh: 24px / ls: 2px / uppercase</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:20px;font-weight:700;line-height:24px;letter-spacing:2px;text-transform:uppercase">LIVE NOW</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">copy-p1</div><div class="type-spec">Titillium Web / 16px / 400<br>lh: 22px / ls: 0 / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:16px;font-weight:400;line-height:22px;letter-spacing:0;text-transform:none">Watch live handball, basketball, volleyball and more on DYN Sports.</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">copy-p2</div><div class="type-spec">Titillium Web / 14px / 400<br>lh: 20px / ls: 0 / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0;text-transform:none">Subscribe to get access to all live games and exclusive content.</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">copy-p3</div><div class="type-spec">Titillium Web / 12px / 400<br>lh: 14px / ls: 0 / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:12px;font-weight:400;line-height:14px;letter-spacing:0;text-transform:none">Terms and conditions apply. Subscription renews automatically.</div>
+  </div>
+  <div class="type-row">
+    <div><div class="type-token">interaction</div><div class="type-spec">Bebas Neue / 16px / 700<br>lh: 20px / ls: 5px / uppercase</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:16px;font-weight:700;line-height:20px;letter-spacing:5px;text-transform:uppercase;color:#22D2E6">SUBSCRIBE NOW</div>
+  </div>
+</section>
+
+<!-- SECTION 05: SPACING SCALE -->
+<section class="section" id="s05">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Spacing Scale</h2>
+  </div>
+  <div class="spacing-list">
+    <div class="spacing-row"><div class="spacing-label">spacing-0 &nbsp;&mdash; 0px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:2px"></div><span class="spacing-px">0px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-2 &nbsp;&mdash; 2px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:2px"></div><span class="spacing-px">2px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-4 &nbsp;&mdash; 4px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:4px"></div><span class="spacing-px">4px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-8 &nbsp;&mdash; 8px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8px"></div><span class="spacing-px">8px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-12 &mdash; 12px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:12px"></div><span class="spacing-px">12px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-16 &mdash; 16px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px"></div><span class="spacing-px">16px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-24 &mdash; 24px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px"></div><span class="spacing-px">24px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-32 &mdash; 32px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:32px"></div><span class="spacing-px">32px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-40 &mdash; 40px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:40px"></div><span class="spacing-px">40px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-48 &mdash; 48px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:48px"></div><span class="spacing-px">48px</span></div></div>
+    <div class="spacing-row"><div class="spacing-label">spacing-64 &mdash; 64px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:64px"></div><span class="spacing-px">64px</span></div></div>
+  </div>
+</section>
+
+<!-- SECTION 06: COMPONENT SPACINGS -->
+<section class="section" id="s06">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Component Spacings</h2>
+  </div>
+
+  <div class="comp-diagram">
+    <div class="comp-diagram-title">Header Component</div>
+    <div class="header-mock">
+      <div class="header-mock-logo">DYN</div>
+      <div class="nav-item-mock">Live <span class="annotation">gap: 16px</span></div>
+      <div class="nav-item-mock">Sports <span class="annotation">pb: 8px</span></div>
+      <div class="nav-item-mock">Schedule</div>
+    </div>
+    <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--text-subtle)">
+      Header: padding 0/16/0/16 &nbsp;&middot;&nbsp; gap: 0 &nbsp;&middot;&nbsp; Nav item: padding-bottom 8px, gap 16px &nbsp;&middot;&nbsp; Stepper item: padding-top 2px, padding-bottom 8px
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px">
+    <div class="comp-diagram">
+      <div class="comp-diagram-title">Card / Navigation / Desktop</div>
+      <table class="spacing-table">
+        <tr><th>Property</th><th>Value</th><th>Token</th></tr>
+        <tr><td>padding-top</td><td class="val">4px</td><td>spacing-4</td></tr>
+        <tr><td>padding-right</td><td class="val">8px</td><td>spacing-8</td></tr>
+        <tr><td>padding-bottom</td><td class="val">4px</td><td>spacing-4</td></tr>
+        <tr><td>padding-left</td><td class="val">8px</td><td>spacing-8</td></tr>
+        <tr><td>gap</td><td class="val">16px</td><td>spacing-16</td></tr>
+      </table>
+    </div>
+    <div class="comp-diagram">
+      <div class="comp-diagram-title">Card / Navigation / Mobile</div>
+      <table class="spacing-table">
+        <tr><th>Property</th><th>Value</th><th>Token</th></tr>
+        <tr><td>padding-top</td><td class="val">8px</td><td>spacing-8</td></tr>
+        <tr><td>padding-right</td><td class="val">0px</td><td>spacing-0</td></tr>
+        <tr><td>padding-bottom</td><td class="val">8px</td><td>spacing-8</td></tr>
+        <tr><td>padding-left</td><td class="val">0px</td><td>spacing-0</td></tr>
+        <tr><td>gap</td><td class="val">8px</td><td>spacing-8</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 07: STROKE & BORDER RADIUS -->
+<section class="section" id="s07">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 class="section-title">Stroke &amp; Border Radius</h2>
+  </div>
+  <div class="stroke-section">
+    <div>
+      <div class="stroke-group-title">Border Widths</div>
+      <div class="border-row">
+        <div class="border-label">width.hairline &mdash; 1px</div>
+        <div class="border-line-wrap"><div class="border-line" style="height:1px"></div></div>
+      </div>
+      <div class="border-row">
+        <div class="border-label">width.thin &mdash; 2px</div>
+        <div class="border-line-wrap"><div class="border-line" style="height:2px"></div></div>
+      </div>
+      <div class="border-row">
+        <div class="border-label">width.medium &mdash; 4px</div>
+        <div class="border-line-wrap"><div class="border-line" style="height:4px"></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="stroke-group-title">Corner Radius</div>
+      <div class="radius-grid">
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:4px"></div>
+          <div class="radius-label">
+            <span class="radius-token">corner-radius.sm</span>
+            <span class="radius-val">4px</span>
+          </div>
+        </div>
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:8px"></div>
+          <div class="radius-label">
+            <span class="radius-token">corner-radius.md</span>
+            <span class="radius-val">8px</span>
+          </div>
+        </div>
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:24px"></div>
+          <div class="radius-label">
+            <span class="radius-token">corner-radius.lg</span>
+            <span class="radius-val">24px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 08: EFFECTS & OVERLAYS -->
+<section class="section" id="s08">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2 class="section-title">Effects &amp; Overlays</h2>
+  </div>
+
+  <div style="margin-bottom:32px">
+    <div class="palette-group-label" style="margin-bottom:16px">Overlay Backdrops</div>
+    <div class="effects-grid">
+      <div>
+        <div class="overlay-card">
+          <div class="overlay-bg"></div>
+          <div class="overlay-layer" style="background:rgba(0,0,0,0.24)">
+            <div class="overlay-label">Subtle</div>
+            <div class="overlay-pct">rgba(0,0,0,0.24)</div>
+          </div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:8px">overlay/backdrop/subtle</div>
+      </div>
+      <div>
+        <div class="overlay-card">
+          <div class="overlay-bg"></div>
+          <div class="overlay-layer" style="background:rgba(0,0,0,0.4)">
+            <div class="overlay-label">Default</div>
+            <div class="overlay-pct">rgba(0,0,0,0.4)</div>
+          </div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:8px">overlay/backdrop/default</div>
+      </div>
+      <div>
+        <div class="overlay-card">
+          <div class="overlay-bg"></div>
+          <div class="overlay-layer" style="background:rgba(0,0,0,0.6)">
+            <div class="overlay-label">Strong</div>
+            <div class="overlay-pct">rgba(0,0,0,0.6)</div>
+          </div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:8px">overlay/backdrop/strong</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="palette-group-label" style="margin-bottom:16px">Glass Stroke</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+      <div>
+        <div class="glass-card" style="width:280px">
+          <div class="glass-card-title">Glass Card</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text)">
+            Background: rgba(255,255,255,0.08)<br>
+            Border: rgba(255,255,255,0.2) — glass/stroke
+          </div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:8px">glass/stroke &rarr; rgba(255,255,255,0.2)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 09: ACCESSIBILITY -->
+<section class="section" id="s09">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2 class="section-title">Accessibility Check Panel</h2>
+  </div>
+  <table class="a11y-table" id="a11yTable">
+    <thead>
+      <tr>
+        <th>Foreground</th>
+        <th>Background</th>
+        <th>Preview</th>
+        <th>Ratio</th>
+        <th>Required</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody id="a11yBody">
+    </tbody>
+  </table>
+</section>
+
+<!-- SECTION 10: TOKEN HIERARCHY -->
+<section class="section" id="s10">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2 class="section-title">Token Hierarchy</h2>
+  </div>
+
+  <div class="hierarchy-flow">
+    <div class="hier-level">
+      <div class="hier-box primitive">Primitive</div>
+      <div class="hier-label">Raw values</div>
+    </div>
+    <div class="hier-arrow">&rarr;</div>
+    <div class="hier-level">
+      <div class="hier-box global">Global</div>
+      <div class="hier-label">Semantic roles</div>
+    </div>
+    <div class="hier-arrow">&rarr;</div>
+    <div class="hier-level">
+      <div class="hier-box component">Component</div>
+      <div class="hier-label">Usage context</div>
+    </div>
+  </div>
+
+  <div class="hier-example">
+    <div class="hier-ex-step">
+      <div class="hier-ex-label">Primitive</div>
+      <div class="hier-ex-value">
+        <div class="hier-ex-dot" style="background:#006299"></div>
+        blue500 &mdash; #006299
+      </div>
+    </div>
+    <div class="hier-ex-arrow">&rarr;</div>
+    <div class="hier-ex-step">
+      <div class="hier-ex-label">Global (Dark Mode)</div>
+      <div class="hier-ex-value">
+        <div class="hier-ex-dot" style="background:#006299"></div>
+        brand/primary-colors/regular
+      </div>
+    </div>
+    <div class="hier-ex-arrow">&rarr;</div>
+    <div class="hier-ex-step">
+      <div class="hier-ex-label">Component</div>
+      <div class="hier-ex-value">
+        <div class="hier-ex-dot" style="background:#006299"></div>
+        card/pricing/standard/action-button
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11: PRICING CARDS -->
+<section class="section" id="s11">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2 class="section-title">Component Token Preview: Pricing Cards</h2>
+  </div>
+  <div class="pricing-grid">
+
+    <!-- STANDARD -->
+    <div class="pricing-card">
+      <div class="pricing-card-header" style="background:#002952">
+        <div class="pricing-card-title" style="color:#EDFCFF">Standard</div>
+        <div class="pricing-card-subtitle" style="color:rgba(237,252,255,0.6)">Full access plan</div>
+      </div>
+      <div class="pricing-card-body" style="background:#EDFCFF">
+        <div class="pricing-price" style="color:#F05C5C">€9.99</div>
+        <div class="pricing-period" style="color:#666">per month</div>
+        <ul class="pricing-features" style="color:#000000">
+          <li>All live sports</li>
+          <li>HD streaming</li>
+          <li>Cancel anytime</li>
+        </ul>
+        <button class="pricing-btn" style="background:#002952">SUBSCRIBE NOW</button>
+      </div>
+      <div class="pricing-token-note">title-bg: #002952 &middot; title-text: #EDFCFF &middot; price: #F05C5C &middot; bg: #EDFCFF &middot; btn: #002952</div>
+    </div>
+
+    <!-- DEAL -->
+    <div class="pricing-card">
+      <div class="pricing-card-header" style="background:#F05C5C">
+        <div class="pricing-card-title" style="color:#FFFFFF">Best Deal</div>
+        <div class="pricing-card-subtitle" style="color:rgba(255,255,255,0.7)">Annual subscription</div>
+      </div>
+      <div class="pricing-card-body" style="background:#FFFFFF">
+        <div class="pricing-price" style="color:#F05C5C">€6.99</div>
+        <div class="pricing-period" style="color:#666">per month, billed annually</div>
+        <ul class="pricing-features" style="color:#000000">
+          <li>All live sports</li>
+          <li>4K streaming</li>
+          <li>Exclusive content</li>
+        </ul>
+        <button class="pricing-btn" style="background:#F05C5C">GET THIS DEAL</button>
+      </div>
+      <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #F05C5C &middot; title-text: #FFFFFF &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #F05C5C</div>
+    </div>
+
+    <!-- VOUCHER -->
+    <div class="pricing-card">
+      <div class="pricing-card-header" style="background:#62FF98">
+        <div class="pricing-card-title" style="color:#002952">Voucher</div>
+        <div class="pricing-card-subtitle" style="color:rgba(0,41,82,0.6)">Redeem your code</div>
+      </div>
+      <div class="pricing-card-body" style="background:#FFFFFF">
+        <div class="pricing-price" style="color:#F05C5C">FREE</div>
+        <div class="pricing-period" style="color:#666">with valid voucher code</div>
+        <ul class="pricing-features" style="color:#000000">
+          <li>30-day trial</li>
+          <li>All live sports</li>
+          <li>No credit card needed</li>
+        </ul>
+        <button class="pricing-btn" style="background:#62FF98;color:#002952">REDEEM VOUCHER</button>
+      </div>
+      <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #62FF98 &middot; title-text: #002952 &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #62FF98</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 12: GRID SYSTEM & LAYOUT -->
+<section class="section" id="s12">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2 class="section-title">Grid System &amp; Layout</h2>
+  </div>
+
+  <!-- MAX WIDTH WRAPPER DEMO -->
+  <div style="margin-bottom:48px">
+    <div class="palette-group-label" style="margin-bottom:16px">Content Wrapper — Max Width 1920px</div>
+    <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:20px;line-height:22px;max-width:680px">
+      All readable content sits inside a centered wrapper capped at <strong style="color:var(--text)">1536px</strong> — Tailwind's default <code style="font-family:var(--mono);color:var(--accent)">max-w-screen-2xl</code>. No custom config needed. Beyond that width, content stops scaling. Full-bleed elements (hero backgrounds, videos) still span the full viewport.
+    </p>
+
+    <!-- Visual wrapper demo -->
+    <div style="background:rgba(34,210,230,0.04);border:1px solid var(--border);border-radius:12px;padding:24px;overflow:hidden;position:relative">
+      <!-- Full bleed indicator -->
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(34,210,230,0.04) 0px,rgba(34,210,230,0.04) 1px,transparent 1px,transparent 40px);pointer-events:none"></div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:12px">← Full viewport width (full-bleed zone) →</div>
+      <!-- Wrapper box -->
+      <div style="background:rgba(34,210,230,0.08);border:2px dashed rgba(34,210,230,0.4);border-radius:8px;padding:16px 24px;margin:0 auto;max-width:100%">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px">Content wrapper — max-width: 1536px (Tailwind 2xl default)</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div style="flex:1;min-width:80px;background:rgba(34,210,230,0.15);border-radius:4px;height:40px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--accent)">col</div>
+          <div style="flex:1;min-width:80px;background:rgba(34,210,230,0.15);border-radius:4px;height:40px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--accent)">col</div>
+          <div style="flex:1;min-width:80px;background:rgba(34,210,230,0.15);border-radius:4px;height:40px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--accent)">col</div>
+          <div style="flex:1;min-width:80px;background:rgba(34,210,230,0.15);border-radius:4px;height:40px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--accent)">col</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREAKPOINTS TABLE -->
+  <div style="margin-bottom:48px">
+    <div class="palette-group-label" style="margin-bottom:16px">Breakpoints (Tailwind-aligned)</div>
+    <table class="a11y-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Token</th>
+          <th>Min Width</th>
+          <th>Tailwind Prefix</th>
+          <th>Columns</th>
+          <th>Gutter</th>
+          <th>Wrapper Padding</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:14px">Mobile</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">bp.mobile</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">0px</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">(default)</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">4</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">16px</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">16px</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:14px">Tablet</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">bp.tablet</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">768px</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">md:</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">8</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">16px</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">24px</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:14px">Desktop</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">bp.desktop</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">1280px</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">xl:</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">12</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">24px</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">48px</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:14px">Wide</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">bp.wide</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">1536px</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">2xl:</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">12</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">24px</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px">48px (frozen at 1536px)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FULL-BLEED VS CONTAINED -->
+  <div style="margin-bottom:48px">
+    <div class="palette-group-label" style="margin-bottom:16px">Full-Bleed vs Contained</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+      <!-- Full bleed example -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+        <div style="background:linear-gradient(135deg,#006299,#00141E);padding:0;position:relative;height:120px;display:flex;align-items:center;justify-content:center">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 32px)"></div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:rgba(237,252,255,0.5);text-transform:uppercase;position:relative">← Full-bleed background →</span>
+        </div>
+        <div style="background:var(--bg-surface);padding:16px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Full-Bleed</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle);line-height:18px">Hero backgrounds, section backgrounds, full-width videos. Use <code style="font-family:var(--mono);color:var(--accent)">w-full</code> with no max-width.</div>
+        </div>
+      </div>
+
+      <!-- Contained example -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+        <div style="background:linear-gradient(135deg,#006299,#00141E);padding:0;position:relative;height:120px;display:flex;align-items:center;justify-content:center">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 32px)"></div>
+          <div style="position:relative;background:rgba(34,210,230,0.15);border:2px dashed rgba(34,210,230,0.5);border-radius:6px;padding:12px 32px">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:#22D2E6;text-transform:uppercase">Content wrapper</span>
+          </div>
+        </div>
+        <div style="background:var(--bg-surface);padding:16px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Contained</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle);line-height:18px">Text, cards, navigation content. Always inside <code style="font-family:var(--mono);color:var(--accent)">max-w-content mx-auto px-4 md:px-6 xl:px-12</code>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASPECT RATIOS -->
+  <div>
+    <div class="palette-group-label" style="margin-bottom:16px">Media Aspect Ratios</div>
+    <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:24px;line-height:22px;max-width:680px">
+      All video and image containers must declare an aspect ratio token. This prevents layout shift and ensures the correct source resolution is requested from the CDN.
+    </p>
+
+    <div style="display:flex;flex-wrap:wrap;gap:20px;margin-bottom:32px">
+
+      <!-- 16:9 Hero -->
+      <div style="flex:1;min-width:200px">
+        <div style="aspect-ratio:16/9;background:linear-gradient(135deg,#002952,#006299);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 20px),repeating-linear-gradient(0deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 20px)"></div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:rgba(237,252,255,0.6)">16 : 9</span>
+        </div>
+        <div style="margin-top:10px">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.hero</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.player</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.thumbnail</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:11px;color:var(--text-subtle);margin-top:4px">Min: 1920×1080px</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:11px;color:var(--text-subtle)">Broadcast standard — use for all video</div>
+        </div>
+      </div>
+
+      <!-- 21:9 Cinematic -->
+      <div style="flex:1;min-width:200px">
+        <div style="aspect-ratio:21/9;background:linear-gradient(135deg,#00141E,#002F60);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 20px),repeating-linear-gradient(0deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 20px)"></div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:rgba(237,252,255,0.6)">21 : 9</span>
+        </div>
+        <div style="margin-top:10px">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.hero-wide</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:11px;color:var(--text-subtle);margin-top:4px">Min: 1920×823px</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:11px;color:var(--text-subtle)">Cinematic hero on wide screens</div>
+        </div>
+      </div>
+
+      <!-- 3:2 Editorial -->
+      <div style="flex:1;min-width:160px">
+        <div style="aspect-ratio:3/2;background:linear-gradient(135deg,#002952,#0B89B5);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 20px),repeating-linear-gradient(0deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 20px)"></div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:rgba(237,252,255,0.6)">3 : 2</span>
+        </div>
+        <div style="margin-top:10px">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.editorial</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:11px;color:var(--text-subtle);margin-top:4px">Min: 1200×800px</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:11px;color:var(--text-subtle)">Article / editorial header</div>
+        </div>
+      </div>
+
+      <!-- 1:1 Square -->
+      <div style="flex:0 0 auto;width:160px">
+        <div style="aspect-ratio:1/1;background:linear-gradient(135deg,#00487C,#22D2E6);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 20px),repeating-linear-gradient(0deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 20px)"></div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:rgba(237,252,255,0.6)">1 : 1</span>
+        </div>
+        <div style="margin-top:10px">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.thumbnail-square</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.split-screen</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:11px;color:var(--text-subtle);margin-top:4px">Min: 480×480px</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:11px;color:var(--text-subtle)">Avatar, badge, split-screen video</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aspect ratio token table -->
+    <table class="a11y-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Ratio</th>
+          <th>Min Source Resolution</th>
+          <th>Tailwind Class</th>
+          <th>Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.hero</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">16:9</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px">1536 × 864px (at max-width)</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">aspect-video</span></td>
+          <td style="font-family:'Titillium Web',sans-serif;font-size:12px">Full-bleed hero video/image</td>
+        </tr>
+        <tr>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.hero-wide</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">21:9</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px">1536 × 659px (at max-width)</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">aspect-[21/9]</span></td>
+          <td style="font-family:'Titillium Web',sans-serif;font-size:12px">Cinematic hero on wide screens</td>
+        </tr>
+        <tr>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.player</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">16:9</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px">1920 × 1080px (HD)</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">aspect-video</span></td>
+          <td style="font-family:'Titillium Web',sans-serif;font-size:12px">Inline video player — always 16:9</td>
+        </tr>
+        <tr>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.thumbnail</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">16:9</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px">960 × 540px</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">aspect-video</span></td>
+          <td style="font-family:'Titillium Web',sans-serif;font-size:12px">Event/match card thumbnails</td>
+        </tr>
+        <tr>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.thumbnail-square</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">1:1</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px">480 × 480px</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">aspect-square</span></td>
+          <td style="font-family:'Titillium Web',sans-serif;font-size:12px">Sport icon, avatar, team badge</td>
+        </tr>
+        <tr>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.editorial</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">3:2</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px">1200 × 800px</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">aspect-[3/2]</span></td>
+          <td style="font-family:'Titillium Web',sans-serif;font-size:12px">Editorial / article header image</td>
+        </tr>
+        <tr>
+          <td><span style="font-family:var(--mono);font-size:11px;color:var(--accent)">media.ratio.split-screen</span></td>
+          <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">1:1 / 50svw×100svh</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px">960 × 960px</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px;color:#22D2E6">w-[50svw] h-screen</span></td>
+          <td style="font-family:'Titillium Web',sans-serif;font-size:12px">50/50 split layout (current hero pattern)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+</div><!-- /content -->
+</main>
+
+<script>
+// ===== THEME TOGGLE =====
+function toggleTheme() {
+  const body = document.body;
+  const isLight = body.classList.toggle('light-mode');
+  // Dark mode → show ☀ (click to go light)
+  // Light mode → show ☾ (click to go dark)
+  document.getElementById('themeIcon').textContent = isLight ? '☾' : '☀';
+  document.getElementById('themeLabel').textContent = isLight ? 'Dark Mode' : 'Light Mode';
+}
+
+// ===== ACTIVE NAV =====
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.sidebar nav a');
+function updateNav() {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+
+// ===== WCAG CONTRAST =====
+function hexToRgb(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const n = parseInt(hex, 16);
+  return [(n>>16)&255, (n>>8)&255, n&255];
+}
+function linearize(c) {
+  c /= 255;
+  return c <= 0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4);
+}
+function luminance(hex) {
+  const [r,g,b] = hexToRgb(hex).map(linearize);
+  return 0.2126*r + 0.7152*g + 0.0722*b;
+}
+function contrast(fg, bg) {
+  const l1 = luminance(fg), l2 = luminance(bg);
+  const lighter = Math.max(l1,l2), darker = Math.min(l1,l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+const pairs = [
+  { fg:'#EDFCFF', fgToken:'text/light', bg:'#00141E', bgToken:'brand/tertiary/dark', req:4.5 },
+  { fg:'#EDFCFF', fgToken:'text/light', bg:'#006299', bgToken:'brand/primary/regular', req:4.5 },
+  { fg:'#000000', fgToken:'text/dark', bg:'#FFFFFF', bgToken:'surface/light', req:4.5 },
+  { fg:'#22D2E6', fgToken:'brand/secondary/strong', bg:'#00141E', bgToken:'brand/tertiary/dark', req:3 },
+  { fg:'#62FF98', fgToken:'status/success', bg:'#00141E', bgToken:'brand/tertiary/dark', req:3 },
+  { fg:'#F05C5C', fgToken:'status/error', bg:'#00141E', bgToken:'brand/tertiary/dark', req:3 },
+  { fg:'#DF984B', fgToken:'status/warning', bg:'#00141E', bgToken:'brand/tertiary/dark', req:3 },
+  { fg:'#F05C5C', fgToken:'text/price', bg:'#FFFFFF', bgToken:'surface/light', req:4.5 }
+];
+
+const tbody = document.getElementById('a11yBody');
+pairs.forEach(p => {
+  const ratio = contrast(p.fg, p.bg);
+  const pass = ratio >= p.req;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><div class="color-chip"><div class="chip-dot" style="background:${p.fg}"></div>${p.fgToken}<br><span style="opacity:0.5">${p.fg}</span></div></td>
+    <td><div class="color-chip"><div class="chip-dot" style="background:${p.bg}"></div>${p.bgToken}<br><span style="opacity:0.5">${p.bg}</span></div></td>
+    <td><div class="preview-aa" style="background:${p.bg};color:${p.fg}">Aa</div></td>
+    <td><span class="ratio-val">${ratio.toFixed(2)}:1</span></td>
+    <td style="font-family:var(--mono);font-size:12px">${p.req}:1</td>
+    <td><span class="badge ${pass?'badge-pass':'badge-fail'}">${pass?'PASS':'FAIL'}</span></td>
+  `;
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>
