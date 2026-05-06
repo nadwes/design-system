@@ -48,12 +48,107 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
+/* ===== APP HEADER ===== */
+.app-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  height: 56px;
+  background: #002952;
+  border-bottom: 1px solid rgba(34,210,230,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+.app-header-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 4px;
+  color: #22D2E6;
+  text-transform: uppercase;
+}
+.app-header-theme {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.app-header-theme-label {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(237,252,255,0.4);
+}
+.app-header-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(34,210,230,0.1);
+  border: 1px solid rgba(34,210,230,0.3);
+  color: #EDFCFF;
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.app-header-theme-toggle:hover {
+  background: rgba(34,210,230,0.2);
+  border-color: rgba(34,210,230,0.6);
+}
+
+/* ===== TAB BAR ===== */
+.tab-bar {
+  position: fixed;
+  top: 56px; left: 0; right: 0;
+  z-index: 290;
+  height: 48px;
+  background: #001f30;
+  border-bottom: 1px solid rgba(34,210,230,0.12);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0 32px;
+  gap: 0;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: rgba(237,252,255,0.5);
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.tab-btn:hover { 
+  color: #EDFCFF; 
+  background: rgba(255,255,255,0.04); 
+}
+.tab-btn.active {
+  color: #22D2E6;
+  border-bottom-color: #22D2E6;
+  background: rgba(34,210,230,0.06);
+}
+
+/* ===== TAB PANELS ===== */
+.tab-panel { display: none; }
+
 /* ===== SIDEBAR ===== */
 .sidebar {
   width: var(--nav-width);
   background: var(--sidebar-bg);
   position: fixed;
-  top: 0; left: 0; bottom: 0;
+  top: 104px; left: 0; bottom: 0;
   overflow-y: auto;
   z-index: 200;
   border-right: 1px solid rgba(34,210,230,0.15);
@@ -97,7 +192,7 @@ body {
 .nav-num { font-size: 10px; opacity: 0.4; min-width: 18px; font-family: var(--mono); }
 
 /* ===== MAIN ===== */
-.main { margin-left: var(--nav-width); flex: 1; min-width: 0; }
+.main { margin-left: var(--nav-width); flex: 1; min-width: 0; padding-top: 104px; }
 
 /* ===== HERO ===== */
 .hero {
@@ -602,27 +697,86 @@ body {
 .sidebar::-webkit-scrollbar-track { background: transparent; }
 .sidebar::-webkit-scrollbar-thumb { background: rgba(34,210,230,0.2); border-radius: 2px; }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 960px) {
+/* ===== RESPONSIVE — documented breakpoints ===== */
+/*
+  Mobile  (default) : 0px+   · 4 cols  · 16px gutter · 16px padding-x
+  Tablet  (768px)   : md:    · 8 cols  · 16px gutter · 24px padding-x
+  Desktop (1280px)  : xl:    · 12 cols · 24px gutter · 48px padding-x
+  Wide    (1536px)  : 2xl:   · 12 cols · 24px gutter · 48px (frozen)
+*/
+
+/* ── Content wrapper: caps readable content at 1536px ── */
+.content-wrapper {
+  width: 100%;
+  max-width: 1536px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Mobile default: 16px horizontal padding ── */
+.hero        { padding: 40px 16px 36px; }
+.content     { padding: 0 16px 80px; }
+.tab-panel   { padding: 40px 16px 80px; }
+
+/* ── Tablet 768px: 24px horizontal padding, show sidebar ── */
+@media (min-width: 768px) {
+  .hero    { padding: 56px 24px 48px; }
+  .content { padding: 0 24px 80px; }
+  .tab-panel { padding: 48px 24px 80px; }
+}
+
+/* ── Desktop 1280px: 48px horizontal padding ── */
+@media (min-width: 1280px) {
+  .hero    { padding: 72px 48px 64px; }
+  .content { padding: 0 48px 100px; }
+  .tab-panel { padding: 48px 48px 100px; }
+  .type-row { grid-template-columns: 180px 220px 1fr; }
+  .stroke-section { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Wide 1536px: padding frozen, content capped ── */
+@media (min-width: 1536px) {
+  .hero    { padding: 72px 56px 64px; }
+  .content { padding: 0 56px 100px; }
+  .tab-panel { padding: 48px 56px 100px; }
+}
+
+/* ── Sidebar: hide below 768px ── */
+@media (max-width: 767px) {
   :root { --nav-width: 0px; }
   .sidebar { display: none; }
   .main { margin-left: 0; }
-  .hero { padding: 40px 24px 36px; }
   .hero h1 { font-size: 56px; line-height: 56px; }
-  .content { padding: 0 24px 60px; }
   .type-row { grid-template-columns: 1fr; gap: 8px; }
   .stroke-section { grid-template-columns: 1fr; }
+  .app-header-title { font-size: 16px; letter-spacing: 2px; }
+  .tab-btn { font-size: 11px; padding: 0 12px; }
 }
 </style>
 </head>
 <body>
 
+<!-- ═══ APP HEADER ════════════════════════════════════════════════════ -->
+<header class="app-header">
+  <span class="app-header-title">DYN MEDIA | DESIGN SYSTEM</span>
+  <div class="app-header-theme">
+    <button class="app-header-theme-toggle" id="headerThemeToggle" onclick="toggleTheme()">
+      <span id="headerThemeIcon">☀</span>
+      <span id="headerThemeLabel">Light Mode</span>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ TAB BAR ════════════════════════════════════════════════════════ -->
+<nav class="tab-bar" id="tabBar" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="updates">Latest Updates</button>
+  <button class="tab-btn"        role="tab" aria-selected="false" data-tab="foundations">Foundations</button>
+  <button class="tab-btn"        role="tab" aria-selected="false" data-tab="core">Core Components</button>
+  <button class="tab-btn"        role="tab" aria-selected="false" data-tab="composite">Composite Components</button>
+</nav>
+
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <div class="brand">DYN Sports</div>
-    <div class="version">Design System &middot; Token Reference</div>
-  </div>
   <nav id="sideNav">
     <a href="#hero" class="active"><span class="nav-num">00</span> Hero</a>
     <a href="#s01"><span class="nav-num">01</span> Color Primitives</a>
@@ -651,10 +805,6 @@ body {
       <h1>DYN <span>Sports</span></h1>
       <div class="hero-subtitle">Dark Mode Design System &nbsp;&middot;&nbsp; Figma Token Data</div>
     </div>
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-      <span id="themeIcon">☀</span>
-      <span id="themeLabel">Light Mode</span>
-    </button>
   </div>
 </section>
 
@@ -1520,15 +1670,259 @@ body {
 </div><!-- /content -->
 </main>
 
+<!-- ═══════════════════════════════════════════════════════════════════
+     TAB PANELS
+════════════════════════════════════════════════════════════════════ -->
+
+<!-- TAB PANEL: LATEST UPDATES -->
+<div class="tab-panel" data-panel="updates" style="display:block">
+  <div style="max-width:900px">
+    <h2 class="section-title">Latest Updates</h2>
+    <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:40px;line-height:22px">
+      Human-readable feed of all design system changes, grouped by week and category.
+    </p>
+
+    <!-- Week 19 -->
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#EDFCFF;margin:40px 0 20px;padding-bottom:10px;border-bottom:2px solid rgba(34,210,230,0.3)">
+      Week 19 &nbsp;|&nbsp; Wednesday &nbsp;|&nbsp; May 6, 2026
+    </div>
+
+    <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+        <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Theme</span>
+      </div>
+      <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+        <strong style="color:#EDFCFF">Navigation structure redesigned.</strong> Added top header with "OYN MEDIA | DESIGN SYSTEM" title and Active Theme dropdown. Added horizontal tab navigation for Latest Updates, Foundations, Core Components, and Composite Components. This improves discoverability and scales better as the system grows.
+      </p>
+    </div>
+
+    <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+        <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Layout</span>
+      </div>
+      <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+        <strong style="color:#EDFCFF">Grid system & layout section added.</strong> Breakpoints documented: Mobile (0px), Tablet (768px / <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">md:</code>), Desktop (1280px / <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">xl:</code>), Wide (1536px / <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">2xl:</code>). Content wrapper uses <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">max-w-screen-2xl</code> — Tailwind default, no custom config needed.
+      </p>
+    </div>
+
+    <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+        <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Layout</span>
+      </div>
+      <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+        <strong style="color:#EDFCFF">Media aspect ratio tokens added.</strong> Seven ratio tokens defined: 16:9 (hero, player, thumbnail), 21:9 (cinematic hero), 3:2 (editorial), 1:1 (square avatar, split-screen). Minimum source resolutions documented for each. These prevent layout shift (CLS) and ensure correct image resolution requests.
+      </p>
+    </div>
+
+    <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+        <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Theme</span>
+      </div>
+      <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+        <strong style="color:#EDFCFF">Initial design system release for DYN Sports (Dark Mode).</strong> Figma token files exported and committed: primitives, colors-global, colors-component-tokens, effects-global, spacings-global, stroke-global, typos-global. HTML preview launched with all foundation tokens, WCAG checks, token hierarchy, and pricing card component tokens.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- TAB PANEL: CORE COMPONENTS -->
+<div class="tab-panel" data-panel="core" style="display:none">
+  <div style="max-width:900px">
+
+    <div style="margin-bottom:40px">
+      <h2 class="section-title">Core Components</h2>
+      <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);line-height:22px;max-width:640px">
+        Atomic UI elements — the smallest building blocks of the design system. Each component is self-contained, token-driven, and has no dependencies on other components.
+      </p>
+    </div>
+
+    <!-- Planned components grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
+
+      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Button</div>
+        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Primary, secondary, ghost, destructive. All sizes and states.</div>
+        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+      </div>
+
+      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Input</div>
+        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Text, number, search. Default, focus, error, disabled states.</div>
+        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+      </div>
+
+      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Checkbox</div>
+        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Unchecked, checked, indeterminate, disabled.</div>
+        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+      </div>
+
+      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Radio</div>
+        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Single selection within a group. All states.</div>
+        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+      </div>
+
+      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Toggle</div>
+        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">On/off switch. With and without label.</div>
+        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+      </div>
+
+      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Badge</div>
+        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Status, label, count. All semantic color variants.</div>
+        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TAB PANEL: COMPOSITE COMPONENTS -->
+<div class="tab-panel" data-panel="composite" style="display:none">
+  <div style="max-width:1100px">
+
+    <div style="margin-bottom:48px">
+      <h2 class="section-title">Composite Components</h2>
+      <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);line-height:22px;max-width:640px">
+        Assembled UI blocks built from Core Components and Foundations tokens. These are larger, multi-part patterns used directly in product screens.
+      </p>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div style="margin-bottom:64px">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;text-transform:uppercase;color:var(--text)">Pricing Cards</h3>
+      </div>
+      <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:28px;line-height:22px">
+        Three variants driven by component-level tokens from <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">colors-component-tokens/Mode 1</code>. Each card maps a distinct set of semantic tokens for header, body, price, and action button.
+      </p>
+
+      <div class="pricing-grid">
+
+        <!-- STANDARD -->
+        <div class="pricing-card">
+          <div class="pricing-card-header" style="background:#002952">
+            <div class="pricing-card-title" style="color:#EDFCFF">Standard</div>
+            <div class="pricing-card-subtitle" style="color:rgba(237,252,255,0.6)">Full access plan</div>
+          </div>
+          <div class="pricing-card-body" style="background:#EDFCFF">
+            <div class="pricing-price" style="color:#F05C5C">€9.99</div>
+            <div class="pricing-period" style="color:#666">per month</div>
+            <ul class="pricing-features" style="color:#000000">
+              <li>All live sports</li>
+              <li>HD streaming</li>
+              <li>Cancel anytime</li>
+            </ul>
+            <button class="pricing-btn" style="background:#002952">SUBSCRIBE NOW</button>
+          </div>
+          <div class="pricing-token-note">title-bg: #002952 &middot; title-text: #EDFCFF &middot; price: #F05C5C &middot; bg: #EDFCFF &middot; btn: #002952</div>
+        </div>
+
+        <!-- DEAL -->
+        <div class="pricing-card">
+          <div class="pricing-card-header" style="background:#F05C5C">
+            <div class="pricing-card-title" style="color:#FFFFFF">Best Deal</div>
+            <div class="pricing-card-subtitle" style="color:rgba(255,255,255,0.7)">Annual subscription</div>
+          </div>
+          <div class="pricing-card-body" style="background:#FFFFFF">
+            <div class="pricing-price" style="color:#F05C5C">€6.99</div>
+            <div class="pricing-period" style="color:#666">per month, billed annually</div>
+            <ul class="pricing-features" style="color:#000000">
+              <li>All live sports</li>
+              <li>4K streaming</li>
+              <li>Exclusive content</li>
+            </ul>
+            <button class="pricing-btn" style="background:#F05C5C">GET THIS DEAL</button>
+          </div>
+          <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #F05C5C &middot; title-text: #FFFFFF &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #F05C5C</div>
+        </div>
+
+        <!-- VOUCHER -->
+        <div class="pricing-card">
+          <div class="pricing-card-header" style="background:#62FF98">
+            <div class="pricing-card-title" style="color:#002952">Voucher</div>
+            <div class="pricing-card-subtitle" style="color:rgba(0,41,82,0.6)">Redeem your code</div>
+          </div>
+          <div class="pricing-card-body" style="background:#FFFFFF">
+            <div class="pricing-price" style="color:#F05C5C">FREE</div>
+            <div class="pricing-period" style="color:#666">with valid voucher code</div>
+            <ul class="pricing-features" style="color:#000000">
+              <li>30-day trial</li>
+              <li>All live sports</li>
+              <li>No credit card needed</li>
+            </ul>
+            <button class="pricing-btn" style="background:#62FF98;color:#002952">REDEEM VOUCHER</button>
+          </div>
+          <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #62FF98 &middot; title-text: #002952 &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #62FF98</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Planned composite components -->
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--text-subtle);margin-bottom:20px;text-transform:uppercase">Coming Next</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Form</div>
+        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Navigation Header</div>
+        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Stepper</div>
+        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Match Card</div>
+        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Live Score Widget</div>
+        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Subscription Flow</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script>
+// ===== TAB SWITCHING =====
+(function() {
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var tabPanels = document.querySelectorAll('.tab-panel');
+  var sidebar = document.getElementById('sidebar');
+  var mainEl = document.querySelector('.main');
+
+  function activateTab(target) {
+    // Update button states
+    tabBtns.forEach(function(b) {
+      var isActive = b.getAttribute('data-tab') === target;
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    // Show/hide tab panels
+    tabPanels.forEach(function(panel) {
+      panel.style.display = panel.getAttribute('data-panel') === target ? 'block' : 'none';
+    });
+
+    // Show sidebar + main only for tabs that use them (not Latest Updates)
+    var usesSidebar = (target !== 'updates');
+    sidebar.style.display = usesSidebar ? '' : 'none';
+    mainEl.style.display  = usesSidebar ? '' : 'block';
+  }
+
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      activateTab(btn.getAttribute('data-tab'));
+    });
+  });
+
+  // Set initial state — Latest Updates is active by default
+  activateTab('updates');
+})();
+
 // ===== THEME TOGGLE =====
 function toggleTheme() {
   const body = document.body;
   const isLight = body.classList.toggle('light-mode');
   // Dark mode → show ☀ (click to go light)
   // Light mode → show ☾ (click to go dark)
-  document.getElementById('themeIcon').textContent = isLight ? '☾' : '☀';
-  document.getElementById('themeLabel').textContent = isLight ? 'Dark Mode' : 'Light Mode';
+  document.getElementById('headerThemeIcon').textContent = isLight ? '☾' : '☀';
+  document.getElementById('headerThemeLabel').textContent = isLight ? 'Dark Mode' : 'Light Mode';
 }
 
 // ===== ACTIVE NAV =====
