@@ -1,4 +1,4 @@
-# DYN Sports — Design System
+# DYN Media — Design System
 
 A scaleable, white-label design system built initially for DYN Sports, with architecture to support multiple brands.
 
