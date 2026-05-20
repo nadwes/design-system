@@ -22,6 +22,8 @@
   --sidebar-bg: #00141E;
   --sidebar-accent: #22D2E6;
   --nav-width: 260px;
+  --spacing-32: 32px;
+  --spacing-page-header-top: var(--spacing-32);
   --mono: 'Courier New', 'Courier', monospace;
 }
 body.light-mode {
@@ -43,7 +45,6 @@ body {
   font-family: 'Titillium Web', sans-serif;
   background: var(--bg);
   color: var(--text);
-  display: flex;
   min-height: 100vh;
   transition: background 0.3s, color 0.3s;
 }
@@ -81,6 +82,9 @@ body {
   text-transform: uppercase;
   color: rgba(237,252,255,0.4);
 }
+.app-header-theme-dropdown {
+  position: relative;
+}
 .app-header-theme-toggle {
   display: flex;
   align-items: center;
@@ -88,7 +92,7 @@ body {
   background: rgba(34,210,230,0.1);
   border: 1px solid rgba(34,210,230,0.3);
   color: #EDFCFF;
-  padding: 8px 18px;
+  padding: 8px 14px 8px 18px;
   border-radius: 24px;
   font-family: 'Bebas Neue', sans-serif;
   font-size: 14px;
@@ -96,10 +100,68 @@ body {
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 .app-header-theme-toggle:hover {
   background: rgba(34,210,230,0.2);
   border-color: rgba(34,210,230,0.6);
+}
+.app-header-theme-toggle.open {
+  background: rgba(34,210,230,0.2);
+  border-color: rgba(34,210,230,0.6);
+  border-radius: 12px 12px 0 0;
+  border-bottom-color: transparent;
+}
+.app-header-theme-chevron {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.2s;
+  opacity: 0.7;
+}
+.app-header-theme-toggle.open .app-header-theme-chevron {
+  transform: rotate(180deg);
+}
+.app-header-theme-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 100%;
+  background: #002952;
+  border: 1px solid rgba(34,210,230,0.6);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+  z-index: 400;
+}
+.app-header-theme-menu.open {
+  display: block;
+}
+.app-header-theme-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 18px;
+  background: none;
+  border: none;
+  color: rgba(237,252,255,0.7);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  text-align: left;
+}
+.app-header-theme-menu button:hover {
+  background: rgba(34,210,230,0.12);
+  color: #EDFCFF;
+}
+.app-header-theme-menu button.active {
+  color: #22D2E6;
+  background: rgba(34,210,230,0.08);
 }
 
 /* ===== TAB BAR ===== */
@@ -141,7 +203,10 @@ body {
 }
 
 /* ===== TAB PANELS ===== */
-.tab-panel { display: none; }
+/* Hidden by default — see layout rules below */
+
+/* ===== PER-TAB LAYOUT SHELL ===== */
+/* Each panel that needs a sidebar uses this flex wrapper — see layout rules below */
 
 /* ===== SIDEBAR ===== */
 .sidebar {
@@ -191,13 +256,13 @@ body {
 .sidebar nav a.active { color: var(--sidebar-accent); border-left-color: var(--sidebar-accent); background: rgba(34,210,230,0.08); }
 .nav-num { font-size: 10px; opacity: 0.4; min-width: 18px; font-family: var(--mono); }
 
-/* ===== MAIN ===== */
-.main { margin-left: var(--nav-width); flex: 1; min-width: 0; padding-top: 104px; }
+/* ===== MAIN (legacy — kept for reference) ===== */
+/* .main { margin-left: var(--nav-width); flex: 1; min-width: 0; padding-top: 104px; } */
 
 /* ===== HERO ===== */
 .hero {
   background: linear-gradient(135deg, #00141E 0%, #002952 50%, #002F60 80%, #00141E 100%);
-  padding: 72px 56px 64px;
+  padding: var(--spacing-page-header-top) 48px 56px;
   position: relative;
   overflow: hidden;
 }
@@ -254,8 +319,12 @@ body {
 .theme-toggle:hover { background: rgba(34,210,230,0.2); border-color: rgba(34,210,230,0.6); }
 
 /* ===== CONTENT ===== */
-.content { padding: 0 56px 100px; }
-.section { padding-top: 72px; }
+.content { 
+  padding: 0 48px 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.section { padding-top: 64px; }
 .section-header {
   display: flex; align-items: baseline; gap: 14px;
   margin-bottom: 36px; padding-bottom: 16px;
@@ -697,7 +766,55 @@ body {
 .sidebar::-webkit-scrollbar-track { background: transparent; }
 .sidebar::-webkit-scrollbar-thumb { background: rgba(34,210,230,0.2); border-radius: 2px; }
 
-/* ===== RESPONSIVE — documented breakpoints ===== */
+/* ===== FOUNDATIONS SUB-NAV ===== */
+/* Top-level nav group label */
+.nav-group-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--sidebar-bg);
+  padding: 10px 20px 8px;
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: rgba(237,252,255,1);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  border-bottom: 1px solid rgba(34,210,230,0.25);
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.nav-group-label:hover { color: #EDFCFF; background: rgba(34,210,230,0.07); }
+.nav-group-label.active { color: var(--sidebar-accent); border-left-color: var(--sidebar-accent); background: rgba(34,210,230,0.08); }
+
+/* Sub-nav items */
+.nav-sub-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 20px 6px 36px;
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 11px;
+  color: rgba(237,252,255,0.42);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-sub-item:hover { color: rgba(237,252,255,0.8); background: rgba(34,210,230,0.05); }
+.nav-sub-item.active { color: var(--sidebar-accent); border-left-color: var(--sidebar-accent); background: rgba(34,210,230,0.06); }
+
+/* Nav group separator */
+.nav-group-sep {
+  height: 1px;
+  background: rgba(34,210,230,0.08);
+  margin: 6px 20px;
+}
+
+/* ===== LAYOUT — documented breakpoints ===== */
 /*
   Mobile  (default) : 0px+   · 4 cols  · 16px gutter · 16px padding-x
   Tablet  (768px)   : md:    · 8 cols  · 16px gutter · 24px padding-x
@@ -705,47 +822,100 @@ body {
   Wide    (1536px)  : 2xl:   · 12 cols · 24px gutter · 48px (frozen)
 */
 
-/* ── Content wrapper: caps readable content at 1536px ── */
-.content-wrapper {
-  width: 100%;
-  max-width: 1536px;
-  margin-left: auto;
-  margin-right: auto;
+/* ── Tab panels: hidden by default ── */
+.tab-panel { display: none; }
+
+/* ── Panel shell: sidebar + content side by side ── */
+.panel-shell {
+  display: flex;
+  min-height: calc(100vh - 104px);
 }
 
-/* ── Mobile default: 16px horizontal padding ── */
-.hero        { padding: 40px 16px 36px; }
-.content     { padding: 0 16px 80px; }
-.tab-panel   { padding: 40px 16px 80px; }
+/* ── Panel main content area ──
+   Offset by sidebar width, push below fixed header+tabbar (104px).
+   No horizontal padding here — inner containers handle their own padding.
+── */
+.panel-main {
+  margin-left: var(--nav-width);
+  flex: 1;
+  min-width: 0;
+  padding-top: 104px;
+  padding-bottom: 80px;
+}
 
-/* ── Tablet 768px: 24px horizontal padding, show sidebar ── */
+/* ── Shared content wrapper: used by all tabs to constrain and center main content ── */
+.panel-content {
+  padding-top: var(--spacing-page-header-top);
+  padding-left: 48px;
+  padding-right: 48px;
+  max-width: calc(1200px + 96px); /* 1200px content + 2×48px padding */
+  margin-inline: auto;
+}
+
+/* ── Latest Updates: sidebar is present, same offset ── */
+#latestUpdatesPanel .panel-main {
+  margin-left: var(--nav-width);
+}
+
+/* ── Foundations hero: full-bleed, no horizontal padding ── */
+.panel-main .hero {
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+/* ── Content wrapper inside panel-main ── */
+.panel-main .content {
+  padding-left: 48px;
+  padding-right: 48px;
+  max-width: calc(1200px + 96px); /* matches .panel-content */
+  margin-inline: auto;
+}
+
+/* ── Responsive: tablet 768px ── */
 @media (min-width: 768px) {
-  .hero    { padding: 56px 24px 48px; }
-  .content { padding: 0 24px 80px; }
-  .tab-panel { padding: 48px 24px 80px; }
+  .panel-main .hero,
+  .panel-main .content,
+  .panel-content {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
 }
 
-/* ── Desktop 1280px: 48px horizontal padding ── */
+/* ── Responsive: desktop 1280px ── */
 @media (min-width: 1280px) {
-  .hero    { padding: 72px 48px 64px; }
-  .content { padding: 0 48px 100px; }
-  .tab-panel { padding: 48px 48px 100px; }
+  .panel-main .hero,
+  .panel-main .content,
+  .panel-content {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
   .type-row { grid-template-columns: 180px 220px 1fr; }
   .stroke-section { grid-template-columns: 1fr 1fr; }
 }
 
-/* ── Wide 1536px: padding frozen, content capped ── */
-@media (min-width: 1536px) {
-  .hero    { padding: 72px 56px 64px; }
-  .content { padding: 0 56px 100px; }
-  .tab-panel { padding: 48px 56px 100px; }
+/* ===== DEVICE LANDSCAPE GRID ===== */
+.device-landscape-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 1100px) {
+  .device-landscape-grid { grid-template-columns: 1fr; }
 }
 
-/* ── Sidebar: hide below 768px ── */
+/* ── Responsive: mobile — hide sidebar, remove offset ── */
 @media (max-width: 767px) {
   :root { --nav-width: 0px; }
-  .sidebar { display: none; }
-  .main { margin-left: 0; }
+  .sidebar { display: none !important; }
+  .panel-main {
+    margin-left: 0;
+  }
+  .panel-main .hero,
+  .panel-main .content,
+  .panel-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
   .hero h1 { font-size: 56px; line-height: 56px; }
   .type-row { grid-template-columns: 1fr; gap: 8px; }
   .stroke-section { grid-template-columns: 1fr; }
@@ -760,10 +930,21 @@ body {
 <header class="app-header">
   <span class="app-header-title">DYN MEDIA | DESIGN SYSTEM</span>
   <div class="app-header-theme">
-    <button class="app-header-theme-toggle" id="headerThemeToggle" onclick="toggleTheme()">
-      <span id="headerThemeIcon">☀</span>
-      <span id="headerThemeLabel">Light Mode</span>
-    </button>
+    <div class="app-header-theme-dropdown" id="themeDropdownWrapper">
+      <button class="app-header-theme-toggle" id="headerThemeToggle" onclick="toggleThemeDropdown()" aria-haspopup="listbox" aria-expanded="false">
+        <span id="headerThemeIcon">☾</span>
+        <span id="headerThemeLabel">DYN Dark</span>
+        <span class="app-header-theme-chevron" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </button>
+      <div class="app-header-theme-menu" id="themeDropdownMenu" role="listbox">
+        <button onclick="setTheme('dark')" id="themeOptDark" class="active" role="option" aria-selected="true">☾ DYN Dark</button>
+        <button onclick="setTheme('light')" id="themeOptLight" role="option" aria-selected="false">☀ DYN Light</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -775,59 +956,373 @@ body {
   <button class="tab-btn"        role="tab" aria-selected="false" data-tab="composite">Composite Components</button>
 </nav>
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-  <nav id="sideNav">
-    <a href="#hero" class="active"><span class="nav-num">00</span> Hero</a>
-    <a href="#s01"><span class="nav-num">01</span> Color Primitives</a>
-    <a href="#s02"><span class="nav-num">02</span> Global Color Roles</a>
-    <a href="#s03"><span class="nav-num">03</span> Sport Colors</a>
-    <a href="#s04"><span class="nav-num">04</span> Typography Scale</a>
-    <a href="#s05"><span class="nav-num">05</span> Spacing Scale</a>
-    <a href="#s06"><span class="nav-num">06</span> Component Spacings</a>
-    <a href="#s07"><span class="nav-num">07</span> Stroke &amp; Radius</a>
-    <a href="#s08"><span class="nav-num">08</span> Effects &amp; Overlays</a>
-    <a href="#s09"><span class="nav-num">09</span> Accessibility</a>
-    <a href="#s10"><span class="nav-num">10</span> Token Hierarchy</a>
-    <a href="#s11"><span class="nav-num">11</span> Pricing Cards</a>
-    <a href="#s12"><span class="nav-num">12</span> Grid System</a>
-  </nav>
-</aside>
+<!-- ═══════════════════════════════════════════════════════════════════
+     TAB PANEL: LATEST UPDATES
+════════════════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="latestUpdatesPanel" data-panel="updates">
+  <div class="panel-shell">
+    <!-- Latest Updates sidebar: week periods only -->
+    <aside class="sidebar" id="sidebarUpdates">
+      <nav>
+        <a href="#week19" class="active"><span class="nav-num">→</span> Week 19 | 2026</a>
+        <a href="#week18"><span class="nav-num">→</span> Week 18 | 2026</a>
+        <a href="#week17"><span class="nav-num">→</span> Week 17 | 2026</a>
+      </nav>
+    </aside>
+    <!-- Latest Updates main content -->
+    <div class="panel-main">
+      <div class="panel-content">
+        <h2 class="section-title" id="latest-updates">Latest Updates</h2>
+        <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:40px;line-height:22px">
+          Human-readable feed of all design system changes, grouped by week and category.
+        </p>
 
-<!-- MAIN -->
-<main class="main">
+        <!-- Week 19 -->
+        <div id="week19" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#EDFCFF;margin:40px 0 20px;padding-bottom:10px;border-bottom:2px solid rgba(34,210,230,0.3)">
+          Week 19 &nbsp;|&nbsp; Thursday &nbsp;|&nbsp; May 7, 2026
+        </div>
 
-<!-- 00 HERO -->
+        <!-- DS ENTRY: 09:00 — Typography documentation completed -->
+        <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(98,255,152,0.45);color:#62FF98">Foundations / Typography</span>
+            <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.3);margin-left:auto">May 7, 2026 — 09:00</span>
+          </div>
+          <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+            <strong style="color:#EDFCFF">Typography documentation completed.</strong> Filled all previously empty sections: Font Families (Bebas Neue, Oswald, Titillium Web — with fallback stacks, intended use, and samples), Line Heights (all 11 tokens documented with ratios and usage context), Font Weights (all 4 weights with per-family availability matrix), and Usage Guidelines (headings, body text, labels, buttons, captions, accessibility rules, Do/Don't). Converted all remaining pixel letter-spacing values in the type scale (h3–h7) to em-based values: 3px → 0.09em (32px), 3px → 0.125em (24px), 2px → 0.1em (20px). Impact: Design / Dev / Content.
+          </p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#typography-families" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Font Families</a>
+            <a href="#typography-line-heights" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Line Heights</a>
+            <a href="#typography-weights" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Font Weights</a>
+            <a href="#typography-usage" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Usage Guidelines</a>
+            <a href="#typography-type-scale" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Type Scale</a>
+          </div>
+        </div>
+
+        <!-- DS ENTRY: 19:00 — Typography Foundation extended -->
+        <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(98,255,152,0.45);color:#62FF98">Foundations / Typography</span>
+            <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.3);margin-left:auto">May 6, 2026 — 19:00</span>
+          </div>
+          <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+            <strong style="color:#EDFCFF">Typography Foundation extended and corrected.</strong> Added 5 new body text styles (body-xl: 40px, body-l: 32px, body-m-plus: 28px, body-m: 24px, body-s-plus: 22px) with defined line-height ranges (120–150%) to bridge the gap between headings and standard body text. Corrected letter-spacing across the system from pixel values (e.g., 3px) to relative units (0.03em) for proportional scaling. Updated <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">interaction</code> style letter-spacing from 5px to 0.03em. Added <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">text-link</code> color token (brand/secondary-colors/strong) for inline links. Introduced Responsive Typography section with controlled fluid sizing using <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">clamp()</code> for headings and body text ≥22px; body-base (16px), body-s (14px), and body-xs (12px) remain fixed for accessibility. Impact: Design / Dev / Content.
+          </p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#typography-type-scale" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Type Scale</a>
+            <a href="#typography-responsive" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Responsive Typography</a>
+            <a href="#typography-text-colors" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Text Colors</a>
+          </div>
+        </div>
+
+        <!-- DS ENTRY: 18:00 — Sticky group headings -->
+        <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Navigation / Interaction</span>
+            <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.3);margin-left:auto">May 6, 2026 — 18:00</span>
+          </div>
+          <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+            <strong style="color:#EDFCFF">Sticky group headings in contextual sidebars.</strong> Group labels (Color, Typography, Spacing, Layout) now pin to the top of the Foundations sidebar scroll container while scrolling, providing a persistent orientation anchor on long pages. Impact: Design / Dev.
+          </p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#sidebarFoundations" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Foundations Sidebar</a>
+          </div>
+        </div>
+
+        <!-- DS ENTRY: 17:00 — Foundations navigation IA refactor -->
+        <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Navigation</span>
+            <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.3);margin-left:auto">May 6, 2026 — 17:00</span>
+          </div>
+          <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+            <strong style="color:#EDFCFF">Foundations navigation IA refactor applied.</strong> Sidebar replaced with two-level grouped structure: four top-level groups (Color, Typography, Spacing, Layout) each with visible sub-navigation. All sections re-anchored to kebab-case IDs. Typography Scale → Typography, Spacing Scale → Spacing. Layout group consolidates grid, breakpoints, columns &amp; gutters, media aspect ratios, containers, and responsive behavior as single source of truth. Section headers for sub-sections normalised to consistent sub-heading style.
+          </p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#color-overview" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Color</a>
+            <a href="#typography-overview" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Typography</a>
+            <a href="#spacing-overview" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Spacing</a>
+            <a href="#layout-overview" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Layout</a>
+          </div>
+        </div>
+
+        <!-- DS ENTRY: 16:00 — Media aspect ratio tokens -->
+        <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Layout</span>
+            <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.3);margin-left:auto">May 6, 2026 — 16:00</span>
+          </div>
+          <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+            <strong style="color:#EDFCFF">Media aspect ratio tokens added.</strong> Seven ratio tokens defined: 16:9 (hero, player, thumbnail), 21:9 (cinematic hero), 3:2 (editorial), 1:1 (square avatar, split-screen). Minimum source resolutions documented for each.
+          </p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#layout-media-aspect-ratios" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Media Aspect Ratios</a>
+          </div>
+        </div>
+
+        <!-- DS ENTRY: 15:00 — Grid system & layout section added -->
+        <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Layout</span>
+            <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.3);margin-left:auto">May 6, 2026 — 15:00</span>
+          </div>
+          <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+            <strong style="color:#EDFCFF">Grid system &amp; layout section added.</strong> Breakpoints documented: Mobile (0px), Tablet (768px / <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">md:</code>), Desktop (1280px / <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">xl:</code>), Wide (1536px / <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">2xl:</code>). Content wrapper uses <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">max-w-screen-2xl</code>.
+          </p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#layout-grid" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Grid System</a>
+            <a href="#layout-breakpoints" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Breakpoints</a>
+          </div>
+        </div>
+
+        <!-- DS ENTRY: 14:00 — Navigation structure redesigned -->
+        <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Theme</span>
+            <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.3);margin-left:auto">May 6, 2026 — 14:00</span>
+          </div>
+          <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+            <strong style="color:#EDFCFF">Navigation structure redesigned.</strong> Added top header with "DYN MEDIA | DESIGN SYSTEM" title and Active Theme toggle. Added horizontal tab navigation for Latest Updates, Foundations, Core Components, and Composite Components.
+          </p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#hero" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Header &amp; Theme</a>
+          </div>
+        </div>
+
+        <!-- DS ENTRY: 10:00 — Initial design system release -->
+        <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Theme</span>
+            <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.3);margin-left:auto">May 6, 2026 — 10:00</span>
+          </div>
+          <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
+            <strong style="color:#EDFCFF">Initial design system release for DYN Sports (Dark Mode).</strong> Figma token files exported and committed: primitives, colors-global, colors-component-tokens, effects-global, spacings-global, stroke-global, typos-global. HTML preview launched with all foundation tokens, WCAG checks, token hierarchy, and pricing card component tokens.
+          </p>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#color-overview" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Color</a>
+            <a href="#typography-overview" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Typography</a>
+            <a href="#spacing-overview" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Spacing</a>
+            <a href="#s-token-intro" style="font-family:monospace;font-size:11px;color:#22D2E6;text-decoration:none;background:rgba(34,210,230,0.08);border:1px solid rgba(34,210,230,0.2);padding:2px 8px;border-radius:4px">Token Hierarchy</a>
+          </div>
+        </div>
+
+        <!-- FILE-LEVEL CHANGES: collapsed per display rules -->
+        <details style="margin-top:24px;border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden">
+          <summary style="cursor:pointer;padding:12px 20px;background:rgba(0,20,30,0.5);font-family:'Titillium Web',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.5px;color:rgba(237,252,255,0.4);list-style:none;display:flex;align-items:center;gap:8px">
+            <span style="font-family:monospace;font-size:11px;background:rgba(255,255,255,0.06);padding:2px 7px;border-radius:3px;color:rgba(237,252,255,0.3)">2</span>
+            design-system-preview.html — file-level changes
+          </summary>
+          <div style="padding:16px 20px;background:rgba(0,20,30,0.3)">
+
+            <div style="border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:14px 18px;margin-bottom:10px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+                <span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.3);color:#8AD8EB">Documentation / Layout</span>
+                <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.25);margin-left:auto">May 6, 2026</span>
+              </div>
+              <p style="font-size:12px;color:rgba(193,209,225,0.7);line-height:1.6;margin:0">
+                <strong style="color:rgba(237,252,255,0.7)">Consistent content wrapper applied across all tabs.</strong> All main content areas now share a single <code style="font-family:monospace;font-size:11px;color:#22D2E6">.panel-content</code> wrapper with <code style="font-family:monospace;font-size:11px;color:#22D2E6">max-width: calc(1200px + 96px)</code> and <code style="font-family:monospace;font-size:11px;color:#22D2E6">margin-inline: auto</code>. Content is centered within the available main area. Vertical spacing, section rhythm, and responsive behavior are preserved.
+              </p>
+            </div>
+
+            <div style="border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:14px 18px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+                <span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.3);color:#8AD8EB">Documentation / HTML Page</span>
+                <span style="font-family:monospace;font-size:10px;color:rgba(237,252,255,0.25);margin-left:auto">May 6, 2026</span>
+              </div>
+              <p style="font-size:12px;color:rgba(193,209,225,0.7);line-height:1.6;margin:0">
+                <strong style="color:rgba(237,252,255,0.7)">Tab architecture refactored.</strong> Separated global layout from per-tab content and contextual side navigation. Each tab now has its own independent panel and sidebar. Pricing Cards moved to Composite Components.
+              </p>
+            </div>
+
+          </div>
+        </details>
+
+        <!-- Week 18 placeholder -->
+        <div id="week18" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#EDFCFF;margin:40px 0 20px;padding-bottom:10px;border-bottom:2px solid rgba(34,210,230,0.3)">
+          Week 18 &nbsp;|&nbsp; 2026
+        </div>
+        <div style="background:rgba(0,41,82,0.2);border:1px dashed rgba(255,255,255,0.06);border-radius:8px;padding:16px 20px;margin-bottom:12px;font-family:'Titillium Web',sans-serif;font-size:13px;color:rgba(237,252,255,0.3)">
+          No updates logged for this week.
+        </div>
+
+        <!-- Week 17 placeholder -->
+        <div id="week17" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#EDFCFF;margin:40px 0 20px;padding-bottom:10px;border-bottom:2px solid rgba(34,210,230,0.3)">
+          Week 17 &nbsp;|&nbsp; 2026
+        </div>
+        <div style="background:rgba(0,41,82,0.2);border:1px dashed rgba(255,255,255,0.06);border-radius:8px;padding:16px 20px;margin-bottom:12px;font-family:'Titillium Web',sans-serif;font-size:13px;color:rgba(237,252,255,0.3)">
+          No updates logged for this week.
+        </div>
+
+      </div>
+    </div><!-- /panel-main -->
+  </div><!-- /panel-shell -->
+</div><!-- /#latestUpdatesPanel -->
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TAB PANEL: FOUNDATIONS
+════════════════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="foundationsPanel" data-panel="foundations">
+  <div class="panel-shell">
+    <!-- Foundations sidebar -->
+    <aside class="sidebar" id="sidebarFoundations">
+      <nav id="sideNavFoundations">
+
+        <!-- COLOR -->
+        <a href="#color-overview" class="nav-group-label active">Color</a>
+        <a href="#color-overview" class="nav-sub-item">Overview</a>
+        <a href="#color-brand" class="nav-sub-item">Brand colors</a>
+        <a href="#color-neutral" class="nav-sub-item">Neutral palette</a>
+        <a href="#color-semantic" class="nav-sub-item">Semantic colors</a>
+        <a href="#color-accessibility" class="nav-sub-item">Accessibility</a>
+        <a href="#color-usage" class="nav-sub-item">Usage guidelines</a>
+
+        <div class="nav-group-sep"></div>
+
+        <!-- TYPOGRAPHY -->
+        <a href="#typography-overview" class="nav-group-label">Typography</a>
+        <a href="#typography-overview" class="nav-sub-item">Overview</a>
+        <a href="#typography-families" class="nav-sub-item">Font families</a>
+        <a href="#typography-type-scale" class="nav-sub-item">Type scale</a>
+        <a href="#typography-line-heights" class="nav-sub-item">Line heights</a>
+        <a href="#typography-weights" class="nav-sub-item">Font weights</a>
+        <a href="#typography-text-colors" class="nav-sub-item">Text colors</a>
+        <a href="#typography-responsive" class="nav-sub-item">Responsive typography</a>
+        <a href="#typography-usage" class="nav-sub-item">Usage guidelines</a>
+
+        <div class="nav-group-sep"></div>
+
+        <!-- SPACING -->
+        <a href="#spacing-overview" class="nav-group-label">Spacing</a>
+        <a href="#spacing-overview" class="nav-sub-item">Overview</a>
+        <a href="#spacing-scale" class="nav-sub-item">Spacing scale</a>
+        <a href="#spacing-layout" class="nav-sub-item">Layout spacing</a>
+        <a href="#spacing-component" class="nav-sub-item">Component spacing</a>
+        <a href="#spacing-usage" class="nav-sub-item">Usage guidelines</a>
+
+        <div class="nav-group-sep"></div>
+
+        <!-- LAYOUT -->
+        <a href="#layout-overview" class="nav-group-label">Layout</a>
+        <a href="#layout-overview" class="nav-sub-item">Overview</a>
+        <a href="#layout-grid" class="nav-sub-item">Grid system</a>
+        <a href="#layout-breakpoints" class="nav-sub-item">Breakpoints</a>
+        <a href="#layout-device-landscape" class="nav-sub-item">Device Landscape</a>
+        <a href="#layout-columns-gutters" class="nav-sub-item">Columns &amp; gutters</a>
+        <a href="#layout-media-aspect-ratios" class="nav-sub-item">Media aspect ratios</a>
+        <a href="#layout-containers" class="nav-sub-item">Containers</a>
+        <a href="#layout-responsive" class="nav-sub-item">Responsive behavior</a>
+
+      </nav>
+    </aside>
+    <!-- Foundations main content -->
+    <div class="panel-main">
+
+<!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-eyebrow">Token Reference</div>
-      <h1>DYN <span>Sports</span></h1>
-      <div class="hero-subtitle">Dark Mode Design System &nbsp;&middot;&nbsp; Figma Token Data</div>
+      <div class="hero-eyebrow">Foundations</div>
+      <h1>DYN <span>Design</span></h1>
+      <div class="hero-subtitle">Color &nbsp;&middot;&nbsp; Typography &nbsp;&middot;&nbsp; Spacing &nbsp;&middot;&nbsp; Layout</div>
     </div>
   </div>
 </section>
 
 <div class="content">
 
-<!-- SECTION 01: COLOR PRIMITIVES -->
-<section class="section" id="s01">
+<!-- TOKEN HIERARCHY REFERENCE (kept for reference, not in main nav) -->
+<section class="section" id="s-token-intro">
   <div class="section-header">
-    <span class="section-num">01</span>
-    <h2 class="section-title">Color Primitives</h2>
+    <span class="section-num">00</span>
+    <h2 class="section-title">Token Hierarchy</h2>
   </div>
 
-  <div class="palette-group">
-    <div class="palette-group-label">Cool Neutrals</div>
-    <div class="swatch-grid">
-      <div class="swatch"><div class="swatch-color" style="background:#EDFCFF;border-bottom:1px solid #C1D1E1"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-0</div><div class="swatch-hex">#EDFCFF</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#DFFAFF;border-bottom:1px solid #C1D1E1"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-100</div><div class="swatch-hex">#DFFAFF</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#C1D1E1"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-300</div><div class="swatch-hex">#C1D1E1</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#99AABB"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-500</div><div class="swatch-hex">#99AABB</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#032846"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-700</div><div class="swatch-hex">#032846</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#011326"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-900</div><div class="swatch-hex">#011326</div></div></div>
+  <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:32px;line-height:22px;max-width:720px">
+    Every token in Foundations follows a strict three-level model. This is the backbone of the entire token system.
+  </p>
+
+  <div class="hierarchy-flow">
+    <div class="hier-level">
+      <div class="hier-box primitive">Primitive</div>
+      <div class="hier-label">Raw values</div>
+    </div>
+    <div class="hier-arrow">&rarr;</div>
+    <div class="hier-level">
+      <div class="hier-box global">Global</div>
+      <div class="hier-label">Semantic roles</div>
+    </div>
+    <div class="hier-arrow">&rarr;</div>
+    <div class="hier-level">
+      <div class="hier-box component">Component</div>
+      <div class="hier-label">Usage context</div>
     </div>
   </div>
+
+  <div class="hier-example">
+    <div class="hier-ex-step">
+      <div class="hier-ex-label">Primitive</div>
+      <div class="hier-ex-value">
+        <div class="hier-ex-dot" style="background:#006299"></div>
+        blue500 &mdash; #006299
+      </div>
+    </div>
+    <div class="hier-ex-arrow">&rarr;</div>
+    <div class="hier-ex-step">
+      <div class="hier-ex-label">Global (Dark Mode)</div>
+      <div class="hier-ex-value">
+        <div class="hier-ex-dot" style="background:#006299"></div>
+        brand/primary-colors/regular
+      </div>
+    </div>
+    <div class="hier-ex-arrow">&rarr;</div>
+    <div class="hier-ex-step">
+      <div class="hier-ex-label">Component</div>
+      <div class="hier-ex-value">
+        <div class="hier-ex-dot" style="background:#006299"></div>
+        card/pricing/standard/action-button
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:20px 24px;background:rgba(34,210,230,0.06);border-left:3px solid #22D2E6;border-radius:6px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#22D2E6;margin-bottom:8px">Key Principles</div>
+    <ul style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:22px;list-style:none;padding:0">
+      <li style="padding:4px 0"><strong style="color:#22D2E6">Primitive:</strong> Raw values with no semantic meaning. Never used directly in components.</li>
+      <li style="padding:4px 0"><strong style="color:#22D2E6">Global (Semantic):</strong> Named roles that reference primitives. Express intent, not appearance.</li>
+      <li style="padding:4px 0"><strong style="color:#22D2E6">Component:</strong> Scoped overrides that reference semantic roles. Defined per component.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     COLOR
+════════════════════════════════════════════════════════════════════ -->
+
+<!-- COLOR: OVERVIEW -->
+<section class="section" id="color-overview">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Color</h2>
+  </div>
+
+  <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:32px;line-height:22px;max-width:720px">
+    Color is structured in two levels following the token hierarchy. <strong style="color:var(--text)">Primitives</strong> are raw palette values with no semantic meaning. <strong style="color:var(--text)">Global Roles</strong> are semantic aliases that reference primitives and express intent.
+  </p>
+
+  <div style="margin-bottom:32px;padding:20px 24px;background:rgba(34,210,230,0.06);border-left:3px solid #22D2E6;border-radius:6px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#22D2E6;margin-bottom:8px">Token Hierarchy</div>
+    <ul style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:22px;list-style:none;padding:0">
+      <li style="padding:4px 0"><strong style="color:#22D2E6">Primitive:</strong> Raw values with no semantic meaning. Never used directly in components.</li>
+      <li style="padding:4px 0"><strong style="color:#22D2E6">Global (Semantic):</strong> Named roles that reference primitives. Express intent, not appearance.</li>
+      <li style="padding:4px 0"><strong style="color:#22D2E6">Component:</strong> Scoped overrides that reference semantic roles. Defined per component.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- COLOR: BRAND COLORS -->
+<section class="section" id="color-brand" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Brand Colors</div>
 
   <div class="palette-group">
     <div class="palette-group-label">Blue Shades</div>
@@ -843,18 +1338,6 @@ body {
       <div class="swatch"><div class="swatch-color" style="background:#002F60"></div><div class="swatch-info"><div class="swatch-token">blue700</div><div class="swatch-hex">#002F60</div></div></div>
       <div class="swatch"><div class="swatch-color" style="background:#002952"></div><div class="swatch-info"><div class="swatch-token">blue800</div><div class="swatch-hex">#002952</div></div></div>
       <div class="swatch"><div class="swatch-color" style="background:#00141E"></div><div class="swatch-info"><div class="swatch-token">blue900</div><div class="swatch-hex">#00141E</div></div></div>
-    </div>
-  </div>
-
-  <div class="palette-group">
-    <div class="palette-group-label">Classic Neutrals</div>
-    <div class="swatch-grid">
-      <div class="swatch"><div class="swatch-color" style="background:#FFFFFF;border-bottom:1px solid #E6E6E6"></div><div class="swatch-info"><div class="swatch-token">neutral0</div><div class="swatch-hex">#FFFFFF</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#E6E6E6"></div><div class="swatch-info"><div class="swatch-token">neutral100</div><div class="swatch-hex">#E6E6E6</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#CCCCCC"></div><div class="swatch-info"><div class="swatch-token">neutral200</div><div class="swatch-hex">#CCCCCC</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#999999"></div><div class="swatch-info"><div class="swatch-token">neutral300</div><div class="swatch-hex">#999999</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#666666"></div><div class="swatch-info"><div class="swatch-token">neutral400</div><div class="swatch-hex">#666666</div></div></div>
-      <div class="swatch"><div class="swatch-color" style="background:#000000"></div><div class="swatch-info"><div class="swatch-token">neutral500</div><div class="swatch-hex">#000000</div></div></div>
     </div>
   </div>
 
@@ -894,12 +1377,38 @@ body {
   </div>
 </section>
 
-<!-- SECTION 02: GLOBAL COLOR ROLES -->
-<section class="section" id="s02">
-  <div class="section-header">
-    <span class="section-num">02</span>
-    <h2 class="section-title">Global Color Roles — Dark Mode</h2>
+<!-- COLOR: NEUTRAL PALETTE -->
+<section class="section" id="color-neutral" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Neutral Palette</div>
+
+  <div class="palette-group">
+    <div class="palette-group-label">Cool Neutrals</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#EDFCFF;border-bottom:1px solid #C1D1E1"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-0</div><div class="swatch-hex">#EDFCFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#DFFAFF;border-bottom:1px solid #C1D1E1"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-100</div><div class="swatch-hex">#DFFAFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#C1D1E1"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-300</div><div class="swatch-hex">#C1D1E1</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#99AABB"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-500</div><div class="swatch-hex">#99AABB</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#032846"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-700</div><div class="swatch-hex">#032846</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#011326"></div><div class="swatch-info"><div class="swatch-token">neutral-cool-900</div><div class="swatch-hex">#011326</div></div></div>
+    </div>
   </div>
+
+  <div class="palette-group">
+    <div class="palette-group-label">Classic Neutrals</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#FFFFFF;border-bottom:1px solid #E6E6E6"></div><div class="swatch-info"><div class="swatch-token">neutral0</div><div class="swatch-hex">#FFFFFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E6E6E6"></div><div class="swatch-info"><div class="swatch-token">neutral100</div><div class="swatch-hex">#E6E6E6</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#CCCCCC"></div><div class="swatch-info"><div class="swatch-token">neutral200</div><div class="swatch-hex">#CCCCCC</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#999999"></div><div class="swatch-info"><div class="swatch-token">neutral300</div><div class="swatch-hex">#999999</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#666666"></div><div class="swatch-info"><div class="swatch-token">neutral400</div><div class="swatch-hex">#666666</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#000000"></div><div class="swatch-info"><div class="swatch-token">neutral500</div><div class="swatch-hex">#000000</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOR: SEMANTIC COLORS -->
+<section class="section" id="color-semantic" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Semantic Colors — Global Roles (Dark Mode)</div>
 
   <div class="semantic-group">
     <div class="semantic-group-title">Brand</div>
@@ -944,99 +1453,153 @@ body {
     <div class="semantic-row"><div class="color-dot" style="background:#C1D1E1"></div><span class="semantic-token-name">divider/subtle</span><span class="semantic-hex">#C1D1E1 &rarr; neutral-cool-300</span></div>
     <div class="semantic-row"><div class="color-dot" style="background:#CCCCCC"></div><span class="semantic-token-name">divider/regular</span><span class="semantic-hex">#CCCCCC &rarr; neutral200</span></div>
   </div>
+
+  <!-- Sport Colors (contextual overrides, not primitives) -->
+  <div style="margin-top:48px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:16px">Sport-Specific Colors</div>
+    <p style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text-subtle);margin-bottom:20px;line-height:20px;max-width:680px">
+      These are contextual overrides applied when a specific sport is active. They are not primitives — they override semantic color roles per sport context.
+    </p>
+    <div class="sport-grid">
+      <div class="sport-card">
+        <div class="sport-card-header" style="background:#006299">Handball</div>
+        <div class="sport-swatches" style="background:#002952">
+          <div class="sport-swatch">
+            <div class="sport-swatch-label">Default</div>
+            <div class="sport-swatch-color" style="background:#006299"></div>
+            <div class="sport-swatch-hex">#006299</div>
+          </div>
+          <div class="sport-swatch">
+            <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+            <div class="sport-swatch-color" style="background:#1BE0C3"></div>
+            <div class="sport-swatch-hex">#1BE0C3</div>
+          </div>
+        </div>
+      </div>
+      <div class="sport-card">
+        <div class="sport-card-header" style="background:#00487C">Basketball</div>
+        <div class="sport-swatches" style="background:#002952">
+          <div class="sport-swatch">
+            <div class="sport-swatch-label">Default</div>
+            <div class="sport-swatch-color" style="background:#00487C"></div>
+            <div class="sport-swatch-hex">#00487C</div>
+          </div>
+          <div class="sport-swatch">
+            <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+            <div class="sport-swatch-color" style="background:#F15A35"></div>
+            <div class="sport-swatch-hex">#F15A35</div>
+          </div>
+        </div>
+      </div>
+      <div class="sport-card">
+        <div class="sport-card-header" style="background:#0B89B5">Volleyball</div>
+        <div class="sport-swatches" style="background:#002952">
+          <div class="sport-swatch">
+            <div class="sport-swatch-label">Default</div>
+            <div class="sport-swatch-color" style="background:#0B89B5"></div>
+            <div class="sport-swatch-hex">#0B89B5</div>
+          </div>
+          <div class="sport-swatch">
+            <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+            <div class="sport-swatch-color" style="background:#FFCC66"></div>
+            <div class="sport-swatch-hex">#FFCC66</div>
+          </div>
+        </div>
+      </div>
+      <div class="sport-card">
+        <div class="sport-card-header" style="background:#15B0D0">Table Tennis</div>
+        <div class="sport-swatches" style="background:#002952">
+          <div class="sport-swatch">
+            <div class="sport-swatch-label">Default</div>
+            <div class="sport-swatch-color" style="background:#15B0D0"></div>
+            <div class="sport-swatch-hex">#15B0D0</div>
+          </div>
+          <div class="sport-swatch">
+            <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+            <div class="sport-swatch-color" style="background:#DF0038"></div>
+            <div class="sport-swatch-hex">#DF0038</div>
+          </div>
+        </div>
+      </div>
+      <div class="sport-card">
+        <div class="sport-card-header" style="background:#002952;color:#8AD8EB">Hockey</div>
+        <div class="sport-swatches" style="background:#002952">
+          <div class="sport-swatch">
+            <div class="sport-swatch-label">Default</div>
+            <div class="sport-swatch-color" style="background:#8AD8EB"></div>
+            <div class="sport-swatch-hex">#8AD8EB</div>
+          </div>
+          <div class="sport-swatch">
+            <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
+            <div class="sport-swatch-color" style="background:#38A159"></div>
+            <div class="sport-swatch-hex">#38A159</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- SECTION 03: SPORT COLORS -->
-<section class="section" id="s03">
-  <div class="section-header">
-    <span class="section-num">03</span>
-    <h2 class="section-title">Sport-Specific Colors</h2>
+<!-- COLOR: ACCESSIBILITY -->
+<section class="section" id="color-accessibility" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Accessibility — WCAG Contrast Check</div>
+
+  <table class="a11y-table" id="a11yTable">
+    <thead>
+      <tr>
+        <th>Foreground</th>
+        <th>Background</th>
+        <th>Preview</th>
+        <th>Ratio</th>
+        <th>Required</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody id="a11yBody">
+    </tbody>
+  </table>
+</section>
+
+<!-- COLOR: USAGE GUIDELINES -->
+<section class="section" id="color-usage" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Usage Guidelines</div>
+
+  <div style="background:rgba(34,210,230,0.06);border-left:3px solid #22D2E6;border-radius:6px;padding:20px 24px;margin-bottom:16px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#22D2E6;margin-bottom:8px">Do</div>
+    <ul style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:22px;padding-left:20px">
+      <li>Use semantic tokens (e.g., <code style="font-family:var(--mono);color:var(--accent)">brand/primary-colors/regular</code>) in components</li>
+      <li>Test all color combinations for WCAG AA compliance (4.5:1 for text, 3:1 for UI elements)</li>
+      <li>Use sport-specific colors only when a sport context is active</li>
+      <li>Reference primitives only from semantic tokens, never directly in components</li>
+    </ul>
   </div>
-  <div class="sport-grid">
-    <div class="sport-card">
-      <div class="sport-card-header" style="background:#006299">Handball</div>
-      <div class="sport-swatches" style="background:#002952">
-        <div class="sport-swatch">
-          <div class="sport-swatch-label">Default</div>
-          <div class="sport-swatch-color" style="background:#006299"></div>
-          <div class="sport-swatch-hex">#006299</div>
-        </div>
-        <div class="sport-swatch">
-          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
-          <div class="sport-swatch-color" style="background:#1BE0C3"></div>
-          <div class="sport-swatch-hex">#1BE0C3</div>
-        </div>
-      </div>
-    </div>
-    <div class="sport-card">
-      <div class="sport-card-header" style="background:#00487C">Basketball</div>
-      <div class="sport-swatches" style="background:#002952">
-        <div class="sport-swatch">
-          <div class="sport-swatch-label">Default</div>
-          <div class="sport-swatch-color" style="background:#00487C"></div>
-          <div class="sport-swatch-hex">#00487C</div>
-        </div>
-        <div class="sport-swatch">
-          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
-          <div class="sport-swatch-color" style="background:#F15A35"></div>
-          <div class="sport-swatch-hex">#F15A35</div>
-        </div>
-      </div>
-    </div>
-    <div class="sport-card">
-      <div class="sport-card-header" style="background:#0B89B5">Volleyball</div>
-      <div class="sport-swatches" style="background:#002952">
-        <div class="sport-swatch">
-          <div class="sport-swatch-label">Default</div>
-          <div class="sport-swatch-color" style="background:#0B89B5"></div>
-          <div class="sport-swatch-hex">#0B89B5</div>
-        </div>
-        <div class="sport-swatch">
-          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
-          <div class="sport-swatch-color" style="background:#FFCC66"></div>
-          <div class="sport-swatch-hex">#FFCC66</div>
-        </div>
-      </div>
-    </div>
-    <div class="sport-card">
-      <div class="sport-card-header" style="background:#15B0D0">Table Tennis</div>
-      <div class="sport-swatches" style="background:#002952">
-        <div class="sport-swatch">
-          <div class="sport-swatch-label">Default</div>
-          <div class="sport-swatch-color" style="background:#15B0D0"></div>
-          <div class="sport-swatch-hex">#15B0D0</div>
-        </div>
-        <div class="sport-swatch">
-          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
-          <div class="sport-swatch-color" style="background:#DF0038"></div>
-          <div class="sport-swatch-hex">#DF0038</div>
-        </div>
-      </div>
-    </div>
-    <div class="sport-card">
-      <div class="sport-card-header" style="background:#002952;color:#8AD8EB">Hockey</div>
-      <div class="sport-swatches" style="background:#002952">
-        <div class="sport-swatch">
-          <div class="sport-swatch-label">Default</div>
-          <div class="sport-swatch-color" style="background:#8AD8EB"></div>
-          <div class="sport-swatch-hex">#8AD8EB</div>
-        </div>
-        <div class="sport-swatch">
-          <div class="sport-swatch-label"><span class="on-air-dot"></span>On Air</div>
-          <div class="sport-swatch-color" style="background:#38A159"></div>
-          <div class="sport-swatch-hex">#38A159</div>
-        </div>
-      </div>
-    </div>
+
+  <div style="background:rgba(240,92,92,0.06);border-left:3px solid #F05C5C;border-radius:6px;padding:20px 24px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#F05C5C;margin-bottom:8px">Don't</div>
+    <ul style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:22px;padding-left:20px">
+      <li>Don't use primitive tokens (e.g., <code style="font-family:var(--mono);color:var(--text-subtle)">blue500</code>) directly in components</li>
+      <li>Don't create new color values outside the token system</li>
+      <li>Don't use sport colors as general-purpose brand colors</li>
+      <li>Don't assume color alone conveys meaning — always pair with text or icons for accessibility</li>
+    </ul>
   </div>
 </section>
 
 <!-- SECTION 04: TYPOGRAPHY -->
-<section class="section" id="s04">
+
+<!-- TYPOGRAPHY: OVERVIEW -->
+<section class="section" id="typography-overview">
   <div class="section-header">
-    <span class="section-num">04</span>
-    <h2 class="section-title">Typography Scale</h2>
+    <span class="section-num">02</span>
+    <h2 class="section-title">Typography</h2>
   </div>
+  <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:32px;line-height:22px;max-width:720px">
+    Typography tokens define the type system for DYN Sports. Three font families are used: Bebas Neue for display and headings, Oswald for secondary headings, and Titillium Web for body copy and UI text.
+  </p>
+</section>
+
+<section class="section" id="typography-type-scale" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Type Scale</div>
 
   <div class="type-row">
     <div><div class="type-token">heading-h1</div><div class="type-spec">Bebas Neue / 80px / 700<br>lh: 74px / ls: 0 / uppercase</div></div>
@@ -1049,58 +1612,604 @@ body {
     <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:60px;font-weight:700;line-height:60px;letter-spacing:0;text-transform:uppercase">LIVE SCORES</div>
   </div>
   <div class="type-row">
-    <div><div class="type-token">heading-h3</div><div class="type-spec">Bebas Neue / 32px / 700<br>lh: 32px / ls: 3px / uppercase</div></div>
+    <div><div class="type-token">heading-h3</div><div class="type-spec">Bebas Neue / 32px / 700<br>lh: 32px / ls: 0.09em / uppercase</div></div>
     <div></div>
-    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:32px;font-weight:700;line-height:32px;letter-spacing:3px;text-transform:uppercase">MATCH RESULTS</div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:32px;font-weight:700;line-height:32px;letter-spacing:0.09em;text-transform:uppercase">MATCH RESULTS</div>
   </div>
   <div class="type-row">
-    <div><div class="type-token">heading-h4</div><div class="type-spec">Oswald / 32px / 400<br>lh: 40px / ls: 3px / none</div></div>
+    <div><div class="type-token">heading-h4</div><div class="type-spec">Oswald / 32px / 400<br>lh: 40px / ls: 0.09em / none</div></div>
     <div></div>
-    <div class="type-sample" style="font-family:'Oswald',sans-serif;font-size:32px;font-weight:400;line-height:40px;letter-spacing:3px;text-transform:none">Season Highlights</div>
+    <div class="type-sample" style="font-family:'Oswald',sans-serif;font-size:32px;font-weight:400;line-height:40px;letter-spacing:0.09em;text-transform:none">Season Highlights</div>
   </div>
   <div class="type-row">
-    <div><div class="type-token">heading-h5</div><div class="type-spec">Bebas Neue / 24px / 400<br>lh: 25px / ls: 3px / uppercase</div></div>
+    <div><div class="type-token">heading-h5</div><div class="type-spec">Bebas Neue / 24px / 400<br>lh: 25px / ls: 0.125em / uppercase</div></div>
     <div></div>
-    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:24px;font-weight:400;line-height:25px;letter-spacing:3px;text-transform:uppercase">HANDBALL LEAGUE</div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:24px;font-weight:400;line-height:25px;letter-spacing:0.125em;text-transform:uppercase">HANDBALL LEAGUE</div>
   </div>
   <div class="type-row">
-    <div><div class="type-token">heading-h6</div><div class="type-spec">Oswald / 24px / 400<br>lh: 28px / ls: 3px / none</div></div>
+    <div><div class="type-token">heading-h6</div><div class="type-spec">Oswald / 24px / 400<br>lh: 28px / ls: 0.125em / none</div></div>
     <div></div>
-    <div class="type-sample" style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:400;line-height:28px;letter-spacing:3px;text-transform:none">Player Stats</div>
+    <div class="type-sample" style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:400;line-height:28px;letter-spacing:0.125em;text-transform:none">Player Stats</div>
   </div>
   <div class="type-row">
-    <div><div class="type-token">heading-h7</div><div class="type-spec">Bebas Neue / 20px / 700<br>lh: 24px / ls: 2px / uppercase</div></div>
+    <div><div class="type-token">heading-h7</div><div class="type-spec">Bebas Neue / 20px / 700<br>lh: 24px / ls: 0.1em / uppercase</div></div>
     <div></div>
-    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:20px;font-weight:700;line-height:24px;letter-spacing:2px;text-transform:uppercase">LIVE NOW</div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:20px;font-weight:700;line-height:24px;letter-spacing:0.1em;text-transform:uppercase">LIVE NOW</div>
   </div>
+  <!-- ── Body Large Scale (NEW) ── -->
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(98,255,152,0.7);margin:24px 0 8px;padding-top:16px;border-top:1px dashed rgba(98,255,152,0.2)">Body Large Scale — New Addition</div>
+  <div class="type-row" style="background:rgba(98,255,152,0.03);border-radius:6px;padding-left:8px;padding-right:8px">
+    <div><div class="type-token" style="color:#62FF98">body-xl</div><div class="type-spec">Titillium Web / 40px / 400<br>lh: 48–52px (120–130%) / ls: 0 / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:40px;font-weight:400;line-height:1.25;letter-spacing:0;text-transform:none">Live sports, every day.</div>
+  </div>
+  <div class="type-row" style="background:rgba(98,255,152,0.03);border-radius:6px;padding-left:8px;padding-right:8px">
+    <div><div class="type-token" style="color:#62FF98">body-l</div><div class="type-spec">Titillium Web / 32px / 400<br>lh: 40–43px (125–135%) / ls: 0 / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:32px;font-weight:400;line-height:1.3;letter-spacing:0;text-transform:none">Watch handball, basketball and more.</div>
+  </div>
+  <div class="type-row" style="background:rgba(98,255,152,0.03);border-radius:6px;padding-left:8px;padding-right:8px">
+    <div><div class="type-token" style="color:#62FF98">body-m-plus</div><div class="type-spec">Titillium Web / 28px / 400<br>lh: 36–39px (130–140%) / ls: 0 / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:28px;font-weight:400;line-height:1.35;letter-spacing:0;text-transform:none">Stream every match live and on demand.</div>
+  </div>
+  <div class="type-row" style="background:rgba(98,255,152,0.03);border-radius:6px;padding-left:8px;padding-right:8px">
+    <div><div class="type-token" style="color:#62FF98">body-m</div><div class="type-spec">Titillium Web / 24px / 400<br>lh: 32–35px (135–145%) / ls: 0 / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:24px;font-weight:400;line-height:1.4;letter-spacing:0;text-transform:none">Subscribe to get access to all live games and exclusive content.</div>
+  </div>
+  <div class="type-row" style="background:rgba(98,255,152,0.03);border-radius:6px;padding-left:8px;padding-right:8px">
+    <div><div class="type-token" style="color:#62FF98">body-s-plus</div><div class="type-spec">Titillium Web / 22px / 400<br>lh: 31–33px (140–150%) / ls: 0 / none</div></div>
+    <div></div>
+    <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:22px;font-weight:400;line-height:1.45;letter-spacing:0;text-transform:none">Your season pass includes all sports and devices.</div>
+  </div>
+  <!-- ── Existing body styles (unchanged) ── -->
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(237,252,255,0.3);margin:24px 0 8px;padding-top:16px;border-top:1px dashed rgba(255,255,255,0.08)">Body Base Scale — Unchanged</div>
   <div class="type-row">
-    <div><div class="type-token">copy-p1</div><div class="type-spec">Titillium Web / 16px / 400<br>lh: 22px / ls: 0 / none</div></div>
+    <div><div class="type-token">body-base</div><div class="type-spec">Titillium Web / 16px / 400<br>lh: 22px / ls: 0 / none</div></div>
     <div></div>
     <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:16px;font-weight:400;line-height:22px;letter-spacing:0;text-transform:none">Watch live handball, basketball, volleyball and more on DYN Sports.</div>
   </div>
   <div class="type-row">
-    <div><div class="type-token">copy-p2</div><div class="type-spec">Titillium Web / 14px / 400<br>lh: 20px / ls: 0 / none</div></div>
+    <div><div class="type-token">body-s</div><div class="type-spec">Titillium Web / 14px / 400<br>lh: 20px / ls: 0 / none</div></div>
     <div></div>
     <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0;text-transform:none">Subscribe to get access to all live games and exclusive content.</div>
   </div>
   <div class="type-row">
-    <div><div class="type-token">copy-p3</div><div class="type-spec">Titillium Web / 12px / 400<br>lh: 14px / ls: 0 / none</div></div>
+    <div><div class="type-token">body-xs</div><div class="type-spec">Titillium Web / 12px / 400<br>lh: 14px / ls: 0 / none</div></div>
     <div></div>
     <div class="type-sample" style="font-family:'Titillium Web',sans-serif;font-size:12px;font-weight:400;line-height:14px;letter-spacing:0;text-transform:none">Terms and conditions apply. Subscription renews automatically.</div>
   </div>
-  <div class="type-row">
-    <div><div class="type-token">interaction</div><div class="type-spec">Bebas Neue / 16px / 700<br>lh: 20px / ls: 5px / uppercase</div></div>
+  <!-- ── Interaction (letter-spacing corrected to 0.03em) ── -->
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(34,210,230,0.5);margin:24px 0 8px;padding-top:16px;border-top:1px dashed rgba(34,210,230,0.15)">Interaction — Updated</div>
+  <div class="type-row" style="background:rgba(34,210,230,0.03);border-radius:6px;padding-left:8px;padding-right:8px">
+    <div><div class="type-token">interaction</div><div class="type-spec">Bebas Neue / 16px / 700<br>lh: 20px / ls: 0.03em / uppercase<br><span style="color:rgba(34,210,230,0.6)">ls corrected: 5px → 0.03em</span></div></div>
     <div></div>
-    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:16px;font-weight:700;line-height:20px;letter-spacing:5px;text-transform:uppercase;color:#22D2E6">SUBSCRIBE NOW</div>
+    <div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:16px;font-weight:700;line-height:20px;letter-spacing:0.03em;text-transform:uppercase;color:#22D2E6">SUBSCRIBE NOW</div>
   </div>
 </section>
 
-<!-- SECTION 05: SPACING SCALE -->
-<section class="section" id="s05">
-  <div class="section-header">
-    <span class="section-num">05</span>
-    <h2 class="section-title">Spacing Scale</h2>
+<!-- TYPOGRAPHY: FONT FAMILIES -->
+<section class="section" id="typography-families" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Font Families</div>
+
+  <!-- Bebas Neue -->
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px">
+    <div style="padding:16px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--text)">Bebas Neue</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--accent);background:rgba(34,210,230,0.1);border:1px solid rgba(34,210,230,0.25);padding:2px 8px;border-radius:3px">font-families/heading</span>
+    </div>
+    <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:8px">Fallback Stack</div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--text);line-height:1.7">'Bebas Neue', Impact, 'Arial Narrow', sans-serif</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:8px">Intended Use</div>
+        <div style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:1.6">Primary display and heading font. Used for H1–H3, H5, H7, hero text, section titles, navigation labels, and all-caps UI elements. Condensed, high-impact letterforms suited to sports branding.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:10px">Sample</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:0.05em;color:var(--text);line-height:1">DYN SPORTS</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:0.1em;color:var(--accent);margin-top:4px">LIVE NOW</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:0.25em;color:var(--text-subtle);margin-top:4px;text-transform:uppercase">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</div>
+      </div>
+    </div>
   </div>
+
+  <!-- Oswald -->
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px">
+    <div style="padding:16px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+      <span style="font-family:'Oswald',sans-serif;font-size:28px;font-weight:400;letter-spacing:0.05em;color:var(--text)">Oswald</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--accent);background:rgba(34,210,230,0.1);border:1px solid rgba(34,210,230,0.25);padding:2px 8px;border-radius:3px">font-families/display</span>
+    </div>
+    <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:8px">Fallback Stack</div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--text);line-height:1.7">'Oswald', 'Arial Narrow', Helvetica, sans-serif</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:8px">Intended Use</div>
+        <div style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:1.6">Secondary heading font. Used for H4 and H6 — mixed-case headings where Bebas Neue's all-caps style is too heavy. Provides a condensed but more readable alternative for editorial and data-heavy contexts.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:10px">Sample</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:40px;font-weight:400;letter-spacing:0.09em;color:var(--text);line-height:1">Season Highlights</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:300;letter-spacing:0.05em;color:var(--text-subtle);margin-top:4px">Player Statistics</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:13px;font-weight:400;letter-spacing:0.1em;color:var(--text-subtle);margin-top:6px;text-transform:uppercase">Weights: 300 · 400 · 500 · 700</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Titillium Web -->
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+    <div style="padding:16px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+      <span style="font-family:'Titillium Web',sans-serif;font-size:24px;font-weight:400;color:var(--text)">Titillium Web</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--accent);background:rgba(34,210,230,0.1);border:1px solid rgba(34,210,230,0.25);padding:2px 8px;border-radius:3px">font-families/body</span>
+    </div>
+    <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:8px">Fallback Stack</div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--text);line-height:1.7">'Titillium Web', 'Helvetica Neue', Arial, sans-serif</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:8px">Intended Use</div>
+        <div style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:1.6">Body copy, UI labels, captions, metadata, and all running text. The default font for the entire interface. Optimised for readability at small sizes and long-form reading. Never use for display headings.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:10px">Sample</div>
+        <div style="font-family:'Titillium Web',sans-serif;font-size:16px;font-weight:400;color:var(--text);line-height:1.6">Watch live handball, basketball, volleyball and more on DYN Sports. Subscribe to get access to all live games and exclusive content.</div>
+        <div style="font-family:'Titillium Web',sans-serif;font-size:13px;font-weight:400;letter-spacing:0.05em;color:var(--text-subtle);margin-top:8px;text-transform:uppercase">Weights: 300 · 400 · 500 · 700</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY: LINE HEIGHTS -->
+<section class="section" id="typography-line-heights" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Line Heights</div>
+
+  <p style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text-subtle);margin-bottom:24px;line-height:1.7;max-width:680px">
+    Line-height tokens are defined as absolute pixel values in the token system and map to specific type styles. For body text, line heights are expressed as ratios (1.375–1.5×) to ensure readability at any size. Heading line heights are tight by design to preserve visual density.
+  </p>
+
+  <!-- Token table -->
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:32px">
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.15)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">Token</div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">Value</div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">Ratio</div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">Used by</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-74</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">74px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">0.93×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">heading-h1 (80px) — tight, display only</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-60</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">60px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.0×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">heading-h2 (60px) — display, single line</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-40</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">40px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.25×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">heading-h4 (32px) — mixed-case, allows 2 lines</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-32</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">32px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.0×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">heading-h3 (32px) — tight uppercase heading</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-28</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">28px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.17×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">heading-h6 (24px) — mixed-case secondary heading</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-25</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">25px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.04×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">heading-h5 (24px) — tight uppercase heading</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-24</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">24px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.2×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">heading-h7 (20px) — small uppercase heading</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-22</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">22px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.375×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">body-base (16px) — standard body text</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-20</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">20px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.43×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">body-s (14px), interaction (16px)</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-14</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">14px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.17×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">body-xs (12px) — captions, legal text</div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 80px 80px 1fr;gap:0;padding:12px 16px;align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--accent)">line-height-12</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700">12px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">1.0×</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">Reserved — tight labels, badges only</div>
+    </div>
+  </div>
+
+  <!-- Usage guidance -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="padding:16px 20px;background:rgba(34,210,230,0.06);border-left:3px solid #22D2E6;border-radius:6px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#22D2E6;margin-bottom:8px">Headings</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text);line-height:1.6">Use tight line heights (0.93–1.25×) for display headings. Bebas Neue and Oswald are condensed typefaces — generous line heights create awkward gaps. Single-line headings can use 1.0× or below.</div>
+    </div>
+    <div style="padding:16px 20px;background:rgba(34,210,230,0.06);border-left:3px solid #22D2E6;border-radius:6px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#22D2E6;margin-bottom:8px">Body Text</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text);line-height:1.6">Use 1.375–1.5× for body copy. WCAG 1.4.8 recommends at least 1.5× for long-form text. The body-base token (16px / 22px) meets this at 1.375× — acceptable for short UI text. For articles or long descriptions, prefer 1.5× or higher.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY: FONT WEIGHTS -->
+<section class="section" id="typography-weights" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Font Weights</div>
+
+  <p style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text-subtle);margin-bottom:24px;line-height:1.7;max-width:680px">
+    Four weights are defined in the token system. Not all weights are available for every font family — check availability before applying. Bebas Neue is a single-weight display font; weight tokens applied to it have no visual effect.
+  </p>
+
+  <!-- Weight rows -->
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px">
+
+    <!-- 300 Light -->
+    <div style="display:grid;grid-template-columns:200px 80px 1fr 1fr;gap:24px;padding:20px 24px;border-bottom:1px solid var(--border);align-items:center">
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">font-weight-300</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:3px">Light</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)">300</div>
+      <div>
+        <div style="font-family:'Oswald',sans-serif;font-size:22px;font-weight:300;color:var(--text);letter-spacing:0.05em">Season Preview</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:4px">Oswald 300</div>
+      </div>
+      <div>
+        <div style="font-family:'Titillium Web',sans-serif;font-size:16px;font-weight:300;color:var(--text)">Watch live sports on DYN.</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:4px">Titillium Web 300</div>
+      </div>
+    </div>
+
+    <!-- 400 Regular -->
+    <div style="display:grid;grid-template-columns:200px 80px 1fr 1fr;gap:24px;padding:20px 24px;border-bottom:1px solid var(--border);align-items:center">
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">font-weight-400</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:3px">Regular — default body</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)">400</div>
+      <div>
+        <div style="font-family:'Oswald',sans-serif;font-size:22px;font-weight:400;color:var(--text);letter-spacing:0.05em">Season Preview</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:4px">Oswald 400 · H4, H5, H6</div>
+      </div>
+      <div>
+        <div style="font-family:'Titillium Web',sans-serif;font-size:16px;font-weight:400;color:var(--text)">Watch live sports on DYN.</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:4px">Titillium Web 400 · body-base, body-s, body-xs</div>
+      </div>
+    </div>
+
+    <!-- 500 Medium -->
+    <div style="display:grid;grid-template-columns:200px 80px 1fr 1fr;gap:24px;padding:20px 24px;border-bottom:1px solid var(--border);align-items:center">
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">font-weight-500</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:3px">Medium — emphasis</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)">500</div>
+      <div>
+        <div style="font-family:'Oswald',sans-serif;font-size:22px;font-weight:500;color:var(--text);letter-spacing:0.05em">Season Preview</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:4px">Oswald 500</div>
+      </div>
+      <div>
+        <div style="font-family:'Titillium Web',sans-serif;font-size:16px;font-weight:500;color:var(--text)">Watch live sports on DYN.</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:4px">Titillium Web 500 · nav labels, UI emphasis</div>
+      </div>
+    </div>
+
+    <!-- 700 Bold -->
+    <div style="display:grid;grid-template-columns:200px 80px 1fr 1fr;gap:24px;padding:20px 24px;align-items:center">
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">font-weight-700</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:3px">Bold — headings &amp; CTAs</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)">700</div>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;font-weight:700;color:var(--text);letter-spacing:0.09em">MATCH RESULTS</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:4px">Bebas Neue 700 · H1, H2, H3, H7, interaction</div>
+      </div>
+      <div>
+        <div style="font-family:'Titillium Web',sans-serif;font-size:16px;font-weight:700;color:var(--text)">Watch live sports on DYN.</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-subtle);margin-top:4px">Titillium Web 700 · strong emphasis, table headers</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Availability matrix -->
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+    <div style="padding:12px 20px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.15)">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--text-subtle)">Weight Availability by Family</div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px">
+      <thead>
+        <tr>
+          <th style="text-align:left;padding:10px 16px;color:var(--text-subtle);font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)">Family</th>
+          <th style="text-align:center;padding:10px 16px;color:var(--text-subtle);font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)">300</th>
+          <th style="text-align:center;padding:10px 16px;color:var(--text-subtle);font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)">400</th>
+          <th style="text-align:center;padding:10px 16px;color:var(--text-subtle);font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)">500</th>
+          <th style="text-align:center;padding:10px 16px;color:var(--text-subtle);font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)">700</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text)">Bebas Neue</td>
+          <td style="text-align:center;padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text-subtle)">—</td>
+          <td style="text-align:center;padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text-subtle)">—</td>
+          <td style="text-align:center;padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text-subtle)">—</td>
+          <td style="text-align:center;padding:10px 16px;border-bottom:1px solid var(--border);color:#62FF98">✓</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text)">Oswald</td>
+          <td style="text-align:center;padding:10px 16px;border-bottom:1px solid var(--border);color:#62FF98">✓</td>
+          <td style="text-align:center;padding:10px 16px;border-bottom:1px solid var(--border);color:#62FF98">✓</td>
+          <td style="text-align:center;padding:10px 16px;border-bottom:1px solid var(--border);color:#62FF98">✓</td>
+          <td style="text-align:center;padding:10px 16px;border-bottom:1px solid var(--border);color:#62FF98">✓</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 16px;color:var(--text)">Titillium Web</td>
+          <td style="text-align:center;padding:10px 16px;color:#62FF98">✓</td>
+          <td style="text-align:center;padding:10px 16px;color:#62FF98">✓</td>
+          <td style="text-align:center;padding:10px 16px;color:#62FF98">✓</td>
+          <td style="text-align:center;padding:10px 16px;color:#62FF98">✓</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY: USAGE GUIDELINES -->
+<section class="section" id="typography-usage" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Usage Guidelines</div>
+
+  <!-- Rules grid -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px">
+
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px">Headings</div>
+      <ul style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:1.7;list-style:none;padding:0;margin:0">
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">Use <strong>H1–H3</strong> (Bebas Neue) for hero titles, page headers, and section names. Always uppercase.</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">Use <strong>H4, H6</strong> (Oswald) for editorial subheadings and mixed-case titles where all-caps would be too heavy.</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">Use <strong>H5, H7</strong> (Bebas Neue) for card titles, widget headers, and compact section labels.</li>
+        <li style="padding:4px 0">Never use heading tokens for body copy or labels — they are not designed for reading at length.</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px">Body Text</div>
+      <ul style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:1.7;list-style:none;padding:0;margin:0">
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)"><strong>body-base (16px)</strong> is the default for all UI text, descriptions, and form fields.</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)"><strong>body-s (14px)</strong> for secondary information, metadata, timestamps, and helper text.</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)"><strong>body-xs (12px)</strong> for captions, legal disclaimers, and badge labels only. Do not use for running text.</li>
+        <li style="padding:4px 0">Minimum body size for readable content is 14px. Never go below 12px for any visible text.</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px">Labels &amp; Buttons</div>
+      <ul style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:1.7;list-style:none;padding:0;margin:0">
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">Use the <strong>interaction</strong> token (Bebas Neue / 16px / 700 / uppercase / ls: 0.03em) for all CTA buttons and primary actions.</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">Navigation labels use Titillium Web 500 or 600 at 12–13px with letter-spacing 0.5–1px.</li>
+        <li style="padding:4px 0">Form labels use body-s (14px / 400). Input text uses body-base (16px / 400).</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px">Captions &amp; Metadata</div>
+      <ul style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:1.7;list-style:none;padding:0;margin:0">
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">Use body-xs (12px) for image captions, timestamps, and supplementary metadata.</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">Pair with <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">--text-subtle</code> color for visual hierarchy — never use full <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">--text</code> at 12px.</li>
+        <li style="padding:4px 0">Monospace font (<code style="font-family:var(--mono);font-size:11px;color:var(--accent)">--mono</code>) is reserved for token names, code snippets, and technical values in documentation only.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Accessibility rules -->
+  <div style="padding:20px 24px;background:rgba(34,210,230,0.06);border-left:3px solid #22D2E6;border-radius:6px;margin-bottom:16px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#22D2E6;margin-bottom:10px">Accessibility</div>
+    <ul style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text);line-height:1.7;list-style:none;padding:0;margin:0">
+      <li style="padding:3px 0">Minimum font size for body text: <strong>14px</strong>. Minimum for any visible text: <strong>12px</strong>.</li>
+      <li style="padding:3px 0">Body text line height must be at least <strong>1.375×</strong> the font size (WCAG 1.4.8 recommends 1.5× for long-form).</li>
+      <li style="padding:3px 0">Letter spacing on body text must remain at <strong>0</strong> — do not add tracking to running text as it reduces readability.</li>
+      <li style="padding:3px 0">All-caps text (Bebas Neue headings) must not be used for body copy — it significantly reduces reading speed.</li>
+      <li style="padding:3px 0">Text contrast must meet WCAG AA: <strong>4.5:1</strong> for body text, <strong>3:1</strong> for large text (18px+ or 14px+ bold). See Color → Accessibility for full contrast table.</li>
+    </ul>
+  </div>
+
+  <!-- Do / Don't -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="background:rgba(98,255,152,0.05);border:1px solid rgba(98,255,152,0.2);border-radius:8px;padding:16px 20px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#62FF98;margin-bottom:10px">✓ Do</div>
+      <ul style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text);line-height:1.7;list-style:none;padding:0;margin:0">
+        <li style="padding:3px 0">Use Bebas Neue for all-caps display headings and CTAs</li>
+        <li style="padding:3px 0">Use Titillium Web for all body copy and UI text</li>
+        <li style="padding:3px 0">Use em-based letter-spacing for scalable tracking</li>
+        <li style="padding:3px 0">Pair heading tokens with matching line-height tokens</li>
+        <li style="padding:3px 0">Use <code style="font-family:var(--mono);font-size:11px;color:#62FF98">--text-subtle</code> for secondary and metadata text</li>
+      </ul>
+    </div>
+    <div style="background:rgba(240,92,92,0.05);border:1px solid rgba(240,92,92,0.2);border-radius:8px;padding:16px 20px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#F05C5C;margin-bottom:10px">✗ Don't</div>
+      <ul style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text);line-height:1.7;list-style:none;padding:0;margin:0">
+        <li style="padding:3px 0">Don't use Bebas Neue for body copy or long-form text</li>
+        <li style="padding:3px 0">Don't mix heading families within the same heading level</li>
+        <li style="padding:3px 0">Don't use pixel letter-spacing — always use em values</li>
+        <li style="padding:3px 0">Don't go below 12px for any visible text element</li>
+        <li style="padding:3px 0">Don't add letter-spacing to body text (body-base, body-s, body-xs)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</section>
+
+<!-- TYPOGRAPHY: TEXT COLORS (NEW) -->
+<section class="section" id="typography-text-colors" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+    Text Colors
+    <span style="font-size:10px;font-weight:400;font-family:'Titillium Web',sans-serif;letter-spacing:1px;color:rgba(98,255,152,0.7);margin-left:12px;vertical-align:middle">NEW ADDITION</span>
+  </div>
+  <p style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text-subtle);margin-bottom:24px;line-height:20px;max-width:680px">
+    Text color tokens define the semantic color roles for all typographic elements. These tokens are the single source of truth for text color across the system.
+  </p>
+
+  <!-- Token table -->
+  <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px">
+    <div style="display:grid;grid-template-columns:200px 260px 1fr;gap:0;background:var(--bg-surface);padding:10px 16px;border-bottom:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">Token</div>
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">References</div>
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">Usage</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 260px 1fr;gap:0;padding:14px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text)">text-default</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">#EDFCFF</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">Primary body text, headings</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 260px 1fr;gap:0;padding:14px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text)">text-subtle</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">#99AABB</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">Secondary text, captions, metadata</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 260px 1fr;gap:0;padding:14px 16px;align-items:center;background:rgba(98,255,152,0.03)">
+      <div style="font-family:var(--mono);font-size:12px;color:#62FF98">text-link <span style="font-size:9px;color:rgba(98,255,152,0.6)">NEW</span></div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-subtle)">brand/secondary-colors/strong</div>
+      <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle)">Inline links within body text</div>
+    </div>
+  </div>
+
+  <!-- text-link preview -->
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;padding:20px 24px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:12px">text-link preview</div>
+    <p style="font-family:'Titillium Web',sans-serif;font-size:16px;color:var(--text);line-height:24px">
+      Watch live handball, basketball and more on DYN Sports.
+      <a href="#" style="color:#22D2E6;text-decoration:underline;text-underline-offset:3px">Subscribe now</a> to get access to all live games and exclusive content.
+      <a href="#" style="color:#22D2E6;text-decoration:underline;text-underline-offset:3px">Terms and conditions</a> apply.
+    </p>
+    <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--text-subtle)">Token: <span style="color:#62FF98">text-link</span> → brand/secondary-colors/strong → #22D2E6</div>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY: RESPONSIVE TYPOGRAPHY (NEW) -->
+<section class="section" id="typography-responsive" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+    Responsive Typography
+    <span style="font-size:10px;font-weight:400;font-family:'Titillium Web',sans-serif;letter-spacing:1px;color:rgba(98,255,152,0.7);margin-left:12px;vertical-align:middle">NEW ADDITION</span>
+  </div>
+  <p style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text-subtle);margin-bottom:24px;line-height:20px;max-width:680px">
+    A controlled fluid typography approach using <code style="font-family:var(--mono);font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">clamp()</code>. Scaling is viewport-based and constrained between defined minimum and maximum values. Typographic hierarchy must remain intact across all breakpoints.
+  </p>
+
+  <!-- Scope rules -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px">
+    <div style="background:rgba(34,210,230,0.06);border-left:3px solid #22D2E6;border-radius:6px;padding:16px 20px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#22D2E6;margin-bottom:10px">Apply responsive scaling to</div>
+      <ul style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text);line-height:22px;padding-left:16px">
+        <li>All heading styles (heading-h1 through heading-h7)</li>
+        <li>body-xl (40px)</li>
+        <li>body-l (32px)</li>
+        <li>body-m-plus (28px)</li>
+        <li>body-m (24px)</li>
+        <li>body-s-plus (22px)</li>
+      </ul>
+    </div>
+    <div style="background:rgba(240,92,92,0.06);border-left:3px solid #F05C5C;border-radius:6px;padding:16px 20px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#F05C5C;margin-bottom:10px">Do NOT scale — fixed sizes</div>
+      <ul style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text);line-height:22px;padding-left:16px">
+        <li>body-base (16px) — accessibility baseline</li>
+        <li>body-s (14px) — UI text, labels</li>
+        <li>body-xs (12px) — captions, legal text</li>
+      </ul>
+      <div style="margin-top:10px;font-family:'Titillium Web',sans-serif;font-size:11px;color:rgba(240,92,92,0.7);line-height:16px">Fixed sizes ensure readability and accessibility compliance at all viewport widths.</div>
+    </div>
+  </div>
+
+  <!-- clamp() reference table -->
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:12px">Fluid Scaling Reference</div>
+  <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px">
+    <div style="display:grid;grid-template-columns:140px 100px 100px 1fr;gap:0;background:var(--bg-surface);padding:10px 16px;border-bottom:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">Token</div>
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">Min</div>
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">Max</div>
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle)">CSS clamp()</div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 100px 100px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:#62FF98">body-xl</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text-subtle)">28px</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text-subtle)">40px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">clamp(28px, 4vw + 12px, 40px)</div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 100px 100px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:#62FF98">body-l</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text-subtle)">24px</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text-subtle)">32px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">clamp(24px, 3vw + 10px, 32px)</div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 100px 100px 1fr;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:#62FF98">body-m-plus</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text-subtle)">22px</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text-subtle)">28px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">clamp(22px, 2.5vw + 8px, 28px)</div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 100px 100px 1fr;gap:0;padding:12px 16px;align-items:center">
+      <div style="font-family:var(--mono);font-size:12px;color:#62FF98">body-m</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text-subtle)">20px</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text-subtle)">24px</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">clamp(20px, 2vw + 8px, 24px)</div>
+    </div>
+  </div>
+
+  <!-- CSS implementation note -->
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;padding:20px 24px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:12px">CSS Implementation</div>
+    <pre style="font-family:var(--mono);font-size:12px;color:var(--text);line-height:1.7;overflow-x:auto;white-space:pre-wrap">/* Body Large Scale — fluid sizing */
+.body-xl   { font-size: clamp(28px, 4vw + 12px, 40px); }
+.body-l    { font-size: clamp(24px, 3vw + 10px, 32px); }
+.body-m-plus { font-size: clamp(22px, 2.5vw + 8px, 28px); }
+.body-m    { font-size: clamp(20px, 2vw + 8px, 24px); }
+
+/* Body Base Scale — fixed, do not scale */
+.body-base { font-size: 16px; } /* fixed */
+.body-s    { font-size: 14px; } /* fixed */
+.body-xs   { font-size: 12px; } /* fixed */</pre>
+    <div style="margin-top:12px;font-family:'Titillium Web',sans-serif;font-size:11px;color:var(--text-subtle);line-height:18px">
+      Scaling is viewport-based and constrained. Hierarchy is preserved: body-xl is always larger than body-l, which is always larger than body-m-plus, etc., at every viewport width.
+    </div>
+  </div>
+</section>
+
+<!-- SPACING: OVERVIEW -->
+<section class="section" id="spacing-overview">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Spacing</h2>
+  </div>
+  <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:32px;line-height:22px;max-width:720px">
+    Spacing tokens define the consistent rhythm of the design system. All spacing values are multiples of 4px and are referenced by name throughout components and layouts.
+  </p>
+</section>
+
+<!-- SPACING SCALE -->
+<section class="section" id="spacing-scale" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Spacing Scale</div>
   <div class="spacing-list">
     <div class="spacing-row"><div class="spacing-label">spacing-0 &nbsp;&mdash; 0px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:2px"></div><span class="spacing-px">0px</span></div></div>
     <div class="spacing-row"><div class="spacing-label">spacing-2 &nbsp;&mdash; 2px</div><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:2px"></div><span class="spacing-px">2px</span></div></div>
@@ -1116,12 +2225,15 @@ body {
   </div>
 </section>
 
-<!-- SECTION 06: COMPONENT SPACINGS -->
-<section class="section" id="s06">
-  <div class="section-header">
-    <span class="section-num">06</span>
-    <h2 class="section-title">Component Spacings</h2>
-  </div>
+<!-- SPACING: LAYOUT SPACING -->
+<section class="section" id="spacing-layout" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Layout Spacing</div>
+  <div style="background:rgba(0,41,82,0.2);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:24px;font-family:'Titillium Web',sans-serif;font-size:13px;color:rgba(237,252,255,0.3)">TODO: content to be added</div>
+</section>
+
+<!-- COMPONENT SPACING -->
+<section class="section" id="spacing-component" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Component Spacing</div>
 
   <div class="comp-diagram">
     <div class="comp-diagram-title">Header Component</div>
@@ -1162,8 +2274,14 @@ body {
   </div>
 </section>
 
+<!-- SPACING: USAGE GUIDELINES -->
+<section class="section" id="spacing-usage" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Usage Guidelines</div>
+  <div style="background:rgba(0,41,82,0.2);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:24px;font-family:'Titillium Web',sans-serif;font-size:13px;color:rgba(237,252,255,0.3)">TODO: content to be added</div>
+</section>
+
 <!-- SECTION 07: STROKE & BORDER RADIUS -->
-<section class="section" id="s07">
+<section class="section" id="stroke-border-radius">
   <div class="section-header">
     <span class="section-num">07</span>
     <h2 class="section-title">Stroke &amp; Border Radius</h2>
@@ -1214,7 +2332,7 @@ body {
 </section>
 
 <!-- SECTION 08: EFFECTS & OVERLAYS -->
-<section class="section" id="s08">
+<section class="section" id="effects-overlays">
   <div class="section-header">
     <span class="section-num">08</span>
     <h2 class="section-title">Effects &amp; Overlays</h2>
@@ -1273,153 +2391,20 @@ body {
   </div>
 </section>
 
-<!-- SECTION 09: ACCESSIBILITY -->
-<section class="section" id="s09">
+<!-- LAYOUT: OVERVIEW -->
+<section class="section" id="layout-overview">
   <div class="section-header">
-    <span class="section-num">09</span>
-    <h2 class="section-title">Accessibility Check Panel</h2>
+    <span class="section-num">04</span>
+    <h2 class="section-title">Layout</h2>
   </div>
-  <table class="a11y-table" id="a11yTable">
-    <thead>
-      <tr>
-        <th>Foreground</th>
-        <th>Background</th>
-        <th>Preview</th>
-        <th>Ratio</th>
-        <th>Required</th>
-        <th>Result</th>
-      </tr>
-    </thead>
-    <tbody id="a11yBody">
-    </tbody>
-  </table>
+  <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:32px;line-height:22px;max-width:720px">
+    Layout primitives define the structural rules of the design system — how content is arranged, constrained, and adapted across breakpoints. These are the single source of truth for grid, breakpoints, aspect ratios, and responsive behavior.
+  </p>
 </section>
 
-<!-- SECTION 10: TOKEN HIERARCHY -->
-<section class="section" id="s10">
-  <div class="section-header">
-    <span class="section-num">10</span>
-    <h2 class="section-title">Token Hierarchy</h2>
-  </div>
-
-  <div class="hierarchy-flow">
-    <div class="hier-level">
-      <div class="hier-box primitive">Primitive</div>
-      <div class="hier-label">Raw values</div>
-    </div>
-    <div class="hier-arrow">&rarr;</div>
-    <div class="hier-level">
-      <div class="hier-box global">Global</div>
-      <div class="hier-label">Semantic roles</div>
-    </div>
-    <div class="hier-arrow">&rarr;</div>
-    <div class="hier-level">
-      <div class="hier-box component">Component</div>
-      <div class="hier-label">Usage context</div>
-    </div>
-  </div>
-
-  <div class="hier-example">
-    <div class="hier-ex-step">
-      <div class="hier-ex-label">Primitive</div>
-      <div class="hier-ex-value">
-        <div class="hier-ex-dot" style="background:#006299"></div>
-        blue500 &mdash; #006299
-      </div>
-    </div>
-    <div class="hier-ex-arrow">&rarr;</div>
-    <div class="hier-ex-step">
-      <div class="hier-ex-label">Global (Dark Mode)</div>
-      <div class="hier-ex-value">
-        <div class="hier-ex-dot" style="background:#006299"></div>
-        brand/primary-colors/regular
-      </div>
-    </div>
-    <div class="hier-ex-arrow">&rarr;</div>
-    <div class="hier-ex-step">
-      <div class="hier-ex-label">Component</div>
-      <div class="hier-ex-value">
-        <div class="hier-ex-dot" style="background:#006299"></div>
-        card/pricing/standard/action-button
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 11: PRICING CARDS -->
-<section class="section" id="s11">
-  <div class="section-header">
-    <span class="section-num">11</span>
-    <h2 class="section-title">Component Token Preview: Pricing Cards</h2>
-  </div>
-  <div class="pricing-grid">
-
-    <!-- STANDARD -->
-    <div class="pricing-card">
-      <div class="pricing-card-header" style="background:#002952">
-        <div class="pricing-card-title" style="color:#EDFCFF">Standard</div>
-        <div class="pricing-card-subtitle" style="color:rgba(237,252,255,0.6)">Full access plan</div>
-      </div>
-      <div class="pricing-card-body" style="background:#EDFCFF">
-        <div class="pricing-price" style="color:#F05C5C">€9.99</div>
-        <div class="pricing-period" style="color:#666">per month</div>
-        <ul class="pricing-features" style="color:#000000">
-          <li>All live sports</li>
-          <li>HD streaming</li>
-          <li>Cancel anytime</li>
-        </ul>
-        <button class="pricing-btn" style="background:#002952">SUBSCRIBE NOW</button>
-      </div>
-      <div class="pricing-token-note">title-bg: #002952 &middot; title-text: #EDFCFF &middot; price: #F05C5C &middot; bg: #EDFCFF &middot; btn: #002952</div>
-    </div>
-
-    <!-- DEAL -->
-    <div class="pricing-card">
-      <div class="pricing-card-header" style="background:#F05C5C">
-        <div class="pricing-card-title" style="color:#FFFFFF">Best Deal</div>
-        <div class="pricing-card-subtitle" style="color:rgba(255,255,255,0.7)">Annual subscription</div>
-      </div>
-      <div class="pricing-card-body" style="background:#FFFFFF">
-        <div class="pricing-price" style="color:#F05C5C">€6.99</div>
-        <div class="pricing-period" style="color:#666">per month, billed annually</div>
-        <ul class="pricing-features" style="color:#000000">
-          <li>All live sports</li>
-          <li>4K streaming</li>
-          <li>Exclusive content</li>
-        </ul>
-        <button class="pricing-btn" style="background:#F05C5C">GET THIS DEAL</button>
-      </div>
-      <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #F05C5C &middot; title-text: #FFFFFF &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #F05C5C</div>
-    </div>
-
-    <!-- VOUCHER -->
-    <div class="pricing-card">
-      <div class="pricing-card-header" style="background:#62FF98">
-        <div class="pricing-card-title" style="color:#002952">Voucher</div>
-        <div class="pricing-card-subtitle" style="color:rgba(0,41,82,0.6)">Redeem your code</div>
-      </div>
-      <div class="pricing-card-body" style="background:#FFFFFF">
-        <div class="pricing-price" style="color:#F05C5C">FREE</div>
-        <div class="pricing-period" style="color:#666">with valid voucher code</div>
-        <ul class="pricing-features" style="color:#000000">
-          <li>30-day trial</li>
-          <li>All live sports</li>
-          <li>No credit card needed</li>
-        </ul>
-        <button class="pricing-btn" style="background:#62FF98;color:#002952">REDEEM VOUCHER</button>
-      </div>
-      <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #62FF98 &middot; title-text: #002952 &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #62FF98</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- SECTION 12: GRID SYSTEM & LAYOUT -->
-<section class="section" id="s12">
-  <div class="section-header">
-    <span class="section-num">12</span>
-    <h2 class="section-title">Grid System &amp; Layout</h2>
-  </div>
+<!-- LAYOUT: GRID SYSTEM -->
+<section class="section" id="layout-grid" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Grid System</div>
 
   <!-- MAX WIDTH WRAPPER DEMO -->
   <div style="margin-bottom:48px">
@@ -1445,6 +2430,11 @@ body {
       </div>
     </div>
   </div>
+</section>
+
+<!-- LAYOUT: BREAKPOINTS -->
+<section class="section" id="layout-breakpoints" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Breakpoints</div>
 
   <!-- BREAKPOINTS TABLE -->
   <div style="margin-bottom:48px">
@@ -1501,43 +2491,140 @@ body {
       </tbody>
     </table>
   </div>
+</section>
 
-  <!-- FULL-BLEED VS CONTAINED -->
-  <div style="margin-bottom:48px">
-    <div class="palette-group-label" style="margin-bottom:16px">Full-Bleed vs Contained</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<!-- LAYOUT: DEVICE LANDSCAPE -->
+<section class="section" id="layout-device-landscape" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid var(--border)">Device Landscape</div>
 
-      <!-- Full bleed example -->
-      <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-        <div style="background:linear-gradient(135deg,#006299,#00141E);padding:0;position:relative;height:120px;display:flex;align-items:center;justify-content:center">
-          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 32px)"></div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:rgba(237,252,255,0.5);text-transform:uppercase;position:relative">← Full-bleed background →</span>
-        </div>
-        <div style="background:var(--bg-surface);padding:16px">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Full-Bleed</div>
-          <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle);line-height:18px">Hero backgrounds, section backgrounds, full-width videos. Use <code style="font-family:var(--mono);color:var(--accent)">w-full</code> with no max-width.</div>
-        </div>
+  <p style="font-family:'Titillium Web',sans-serif;font-size:13px;color:var(--text-subtle);margin-bottom:24px;line-height:20px;max-width:720px">
+    Priority resolutions and device targets per category. Data last evaluated 2026-05-01 · Next review 2026-08-01 · Source: 2026-05-06.
+  </p>
+
+  <!-- Responsive grid: 3 columns on large screens, wraps on smaller -->
+  <div class="device-landscape-grid">
+
+    <!-- ── MOBILE ── -->
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:0">
+      <div style="padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;text-transform:uppercase;color:var(--text)">Mobile</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--accent);background:rgba(34,210,230,0.1);border:1px solid rgba(34,210,230,0.25);padding:2px 7px;border-radius:3px">0px+</span>
       </div>
-
-      <!-- Contained example -->
-      <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-        <div style="background:linear-gradient(135deg,#006299,#00141E);padding:0;position:relative;height:120px;display:flex;align-items:center;justify-content:center">
-          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 32px)"></div>
-          <div style="position:relative;background:rgba(34,210,230,0.15);border:2px dashed rgba(34,210,230,0.5);border-radius:6px;padding:12px 32px">
-            <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:#22D2E6;text-transform:uppercase">Content wrapper</span>
-          </div>
-        </div>
-        <div style="background:var(--bg-surface);padding:16px">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Contained</div>
-          <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle);line-height:18px">Text, cards, navigation content. Always inside <code style="font-family:var(--mono);color:var(--accent)">max-w-content mx-auto px-4 md:px-6 xl:px-12</code>.</div>
-        </div>
+      <div style="padding:14px 18px">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:10px">Priority Resolutions</div>
+        <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:5px 8px 5px 0;color:var(--text-subtle);font-size:10px;letter-spacing:0.5px;border-bottom:1px solid var(--border);font-weight:600">#</th>
+              <th style="text-align:left;padding:5px 8px;color:var(--text-subtle);font-size:10px;letter-spacing:0.5px;border-bottom:1px solid var(--border);font-weight:600">Resolution</th>
+              <th style="text-align:left;padding:5px 0 5px 8px;color:var(--text-subtle);font-size:10px;letter-spacing:0.5px;border-bottom:1px solid var(--border);font-weight:600">Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:7px 8px 7px 0;border-bottom:1px solid var(--border);color:var(--accent);font-weight:700">1</td>
+              <td style="padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text);font-weight:700">390×844</td>
+              <td style="padding:7px 0 7px 8px;border-bottom:1px solid var(--border);color:var(--text-subtle);font-size:10px;line-height:1.4">iPhone 14/15 baseline</td>
+            </tr>
+            <tr>
+              <td style="padding:7px 8px 7px 0;border-bottom:1px solid var(--border);color:var(--accent);font-weight:700">2</td>
+              <td style="padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text);font-weight:700">393×852</td>
+              <td style="padding:7px 0 7px 8px;border-bottom:1px solid var(--border);color:var(--text-subtle);font-size:10px;line-height:1.4">iPhone 16 / newer models</td>
+            </tr>
+            <tr>
+              <td style="padding:7px 8px 7px 0;color:var(--accent);font-weight:700">3</td>
+              <td style="padding:7px 8px;color:var(--text);font-weight:700">360×800</td>
+              <td style="padding:7px 0 7px 8px;color:var(--text-subtle);font-size:10px;line-height:1.4">Android mid-range (Samsung Galaxy A-series)</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-  </div>
+
+    <!-- ── TABLET ── -->
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:0">
+      <div style="padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;text-transform:uppercase;color:var(--text)">Tablet</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--accent);background:rgba(34,210,230,0.1);border:1px solid rgba(34,210,230,0.25);padding:2px 7px;border-radius:3px">768px+</span>
+      </div>
+      <div style="padding:14px 18px">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:10px">Priority Resolutions</div>
+        <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:5px 8px 5px 0;color:var(--text-subtle);font-size:10px;letter-spacing:0.5px;border-bottom:1px solid var(--border);font-weight:600">#</th>
+              <th style="text-align:left;padding:5px 8px;color:var(--text-subtle);font-size:10px;letter-spacing:0.5px;border-bottom:1px solid var(--border);font-weight:600">Resolution</th>
+              <th style="text-align:left;padding:5px 0 5px 8px;color:var(--text-subtle);font-size:10px;letter-spacing:0.5px;border-bottom:1px solid var(--border);font-weight:600">Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:7px 8px 7px 0;border-bottom:1px solid var(--border);color:var(--accent);font-weight:700">1</td>
+              <td style="padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text);font-weight:700">820×1180</td>
+              <td style="padding:7px 0 7px 8px;border-bottom:1px solid var(--border);color:var(--text-subtle);font-size:10px;line-height:1.4">iPad Air / iPad 10th gen</td>
+            </tr>
+            <tr>
+              <td style="padding:7px 8px 7px 0;color:var(--accent);font-weight:700">2</td>
+              <td style="padding:7px 8px;color:var(--text);font-weight:700">800×1280</td>
+              <td style="padding:7px 0 7px 8px;color:var(--text-subtle);font-size:10px;line-height:1.4">Samsung Tab A8/A9, Amazon Fire</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── DESKTOP ── -->
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:0">
+      <div style="padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;text-transform:uppercase;color:var(--text)">Desktop</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--accent);background:rgba(34,210,230,0.1);border:1px solid rgba(34,210,230,0.25);padding:2px 7px;border-radius:3px">1280px+</span>
+      </div>
+      <div style="padding:14px 18px">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-subtle);margin-bottom:10px">Priority Resolutions</div>
+        <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:5px 8px 5px 0;color:var(--text-subtle);font-size:10px;letter-spacing:0.5px;border-bottom:1px solid var(--border);font-weight:600">#</th>
+              <th style="text-align:left;padding:5px 8px;color:var(--text-subtle);font-size:10px;letter-spacing:0.5px;border-bottom:1px solid var(--border);font-weight:600">Resolution</th>
+              <th style="text-align:left;padding:5px 0 5px 8px;color:var(--text-subtle);font-size:10px;letter-spacing:0.5px;border-bottom:1px solid var(--border);font-weight:600">Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:7px 8px 7px 0;border-bottom:1px solid var(--border);color:var(--accent);font-weight:700">1</td>
+              <td style="padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text);font-weight:700">1920×1080</td>
+              <td style="padding:7px 0 7px 8px;border-bottom:1px solid var(--border);color:var(--text-subtle);font-size:10px;line-height:1.4">Windows majority — FHD</td>
+            </tr>
+            <tr>
+              <td style="padding:7px 8px 7px 0;border-bottom:1px solid var(--border);color:var(--accent);font-weight:700">2</td>
+              <td style="padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text);font-weight:700">1440×900</td>
+              <td style="padding:7px 0 7px 8px;border-bottom:1px solid var(--border);color:var(--text-subtle);font-size:10px;line-height:1.4">MacBook Air / MacBook Pro pre-2021</td>
+            </tr>
+            <tr>
+              <td style="padding:7px 8px 7px 0;color:var(--accent);font-weight:700">3</td>
+              <td style="padding:7px 8px;color:var(--text);font-weight:700">2560×1600</td>
+              <td style="padding:7px 0 7px 8px;color:var(--text-subtle);font-size:10px;line-height:1.4">MacBook Pro M-series, Retina</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /device grid -->
+</section>
+
+<!-- LAYOUT: COLUMNS & GUTTERS -->
+<section class="section" id="layout-columns-gutters" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Columns &amp; Gutters</div>
+  <div style="background:rgba(0,41,82,0.2);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:24px;font-family:'Titillium Web',sans-serif;font-size:13px;color:rgba(237,252,255,0.3)">TODO: content to be added</div>
+</section>
+
+<!-- LAYOUT: MEDIA ASPECT RATIOS -->
+<section class="section" id="layout-media-aspect-ratios" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Media Aspect Ratios</div>
 
   <!-- ASPECT RATIOS -->
   <div>
-    <div class="palette-group-label" style="margin-bottom:16px">Media Aspect Ratios</div>
     <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:24px;line-height:22px;max-width:680px">
       All video and image containers must declare an aspect ratio token. This prevents layout shift and ensures the correct source resolution is requested from the CDN.
     </p>
@@ -1664,227 +2751,258 @@ body {
       </tbody>
     </table>
   </div>
-
 </section>
 
+<!-- LAYOUT: CONTAINERS -->
+<section class="section" id="layout-containers" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Containers</div>
+  <div style="background:rgba(0,41,82,0.2);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:24px;font-family:'Titillium Web',sans-serif;font-size:13px;color:rgba(237,252,255,0.3)">TODO: content to be added</div>
+</section>
+
+<!-- LAYOUT: RESPONSIVE BEHAVIOR -->
+<section class="section" id="layout-responsive" style="padding-top:40px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">Responsive Behavior</div>
+
+  <!-- FULL-BLEED VS CONTAINED -->
+  <div style="margin-bottom:48px">
+    <div class="palette-group-label" style="margin-bottom:16px">Full-Bleed vs Contained</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+      <!-- Full bleed example -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+        <div style="background:linear-gradient(135deg,#006299,#00141E);padding:0;position:relative;height:120px;display:flex;align-items:center;justify-content:center">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 32px)"></div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:rgba(237,252,255,0.5);text-transform:uppercase;position:relative">← Full-bleed background →</span>
+        </div>
+        <div style="background:var(--bg-surface);padding:16px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Full-Bleed</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle);line-height:18px">Hero backgrounds, section backgrounds, full-width videos. Use <code style="font-family:var(--mono);color:var(--accent)">w-full</code> with no max-width.</div>
+        </div>
+      </div>
+
+      <!-- Contained example -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+        <div style="background:linear-gradient(135deg,#006299,#00141E);padding:0;position:relative;height:120px;display:flex;align-items:center;justify-content:center">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 32px)"></div>
+          <div style="position:relative;background:rgba(34,210,230,0.15);border:2px dashed rgba(34,210,230,0.5);border-radius:6px;padding:12px 32px">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:#22D2E6;text-transform:uppercase">Content wrapper</span>
+          </div>
+        </div>
+        <div style="background:var(--bg-surface);padding:16px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Contained</div>
+          <div style="font-family:'Titillium Web',sans-serif;font-size:12px;color:var(--text-subtle);line-height:18px">Text, cards, navigation content. Always inside <code style="font-family:var(--mono);color:var(--accent)">max-w-content mx-auto px-4 md:px-6 xl:px-12</code>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 </div><!-- /content -->
-</main>
+    </div><!-- /panel-main (foundations) -->
+  </div><!-- /panel-shell (foundations) -->
+</div><!-- /#foundationsPanel -->
 
 <!-- ═══════════════════════════════════════════════════════════════════
-     TAB PANELS
+     TAB PANEL: CORE COMPONENTS
 ════════════════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="coreComponentsPanel" data-panel="core">
+  <div class="panel-shell">
+    <!-- Core Components sidebar -->
+    <aside class="sidebar" id="sidebarCore">
+      <nav>
+        <a href="#core-buttons" class="active"><span class="nav-num">01</span> Buttons</a>
+        <a href="#core-inputs"><span class="nav-num">02</span> Inputs</a>
+        <a href="#core-checkboxes"><span class="nav-num">03</span> Checkboxes</a>
+        <a href="#core-radios"><span class="nav-num">04</span> Radios</a>
+        <a href="#core-toggles"><span class="nav-num">05</span> Toggles</a>
+        <a href="#core-badges"><span class="nav-num">06</span> Badges</a>
+      </nav>
+    </aside>
+    <!-- Core Components main content -->
+    <div class="panel-main">
+      <div class="panel-content">
 
-<!-- TAB PANEL: LATEST UPDATES -->
-<div class="tab-panel" data-panel="updates" style="display:block">
-  <div style="max-width:900px">
-    <h2 class="section-title">Latest Updates</h2>
-    <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:40px;line-height:22px">
-      Human-readable feed of all design system changes, grouped by week and category.
-    </p>
-
-    <!-- Week 19 -->
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#EDFCFF;margin:40px 0 20px;padding-bottom:10px;border-bottom:2px solid rgba(34,210,230,0.3)">
-      Week 19 &nbsp;|&nbsp; Wednesday &nbsp;|&nbsp; May 6, 2026
-    </div>
-
-    <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-        <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Theme</span>
-      </div>
-      <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
-        <strong style="color:#EDFCFF">Navigation structure redesigned.</strong> Added top header with "OYN MEDIA | DESIGN SYSTEM" title and Active Theme dropdown. Added horizontal tab navigation for Latest Updates, Foundations, Core Components, and Composite Components. This improves discoverability and scales better as the system grows.
-      </p>
-    </div>
-
-    <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-        <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Layout</span>
-      </div>
-      <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
-        <strong style="color:#EDFCFF">Grid system & layout section added.</strong> Breakpoints documented: Mobile (0px), Tablet (768px / <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">md:</code>), Desktop (1280px / <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">xl:</code>), Wide (1536px / <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">2xl:</code>). Content wrapper uses <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">max-w-screen-2xl</code> — Tailwind default, no custom config needed.
-      </p>
-    </div>
-
-    <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-        <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Layout</span>
-      </div>
-      <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
-        <strong style="color:#EDFCFF">Media aspect ratio tokens added.</strong> Seven ratio tokens defined: 16:9 (hero, player, thumbnail), 21:9 (cinematic hero), 3:2 (editorial), 1:1 (square avatar, split-screen). Minimum source resolutions documented for each. These prevent layout shift (CLS) and ensure correct image resolution requests.
-      </p>
-    </div>
-
-    <div style="background:rgba(0,41,82,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px 20px;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-        <span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.8px;text-transform:uppercase;background:rgba(0,98,153,0.45);color:#8AD8EB">Foundations / Theme</span>
-      </div>
-      <p style="font-size:13px;color:#C1D1E1;line-height:1.7">
-        <strong style="color:#EDFCFF">Initial design system release for DYN Sports (Dark Mode).</strong> Figma token files exported and committed: primitives, colors-global, colors-component-tokens, effects-global, spacings-global, stroke-global, typos-global. HTML preview launched with all foundation tokens, WCAG checks, token hierarchy, and pricing card component tokens.
-      </p>
-    </div>
-
-  </div>
-</div>
-
-<!-- TAB PANEL: CORE COMPONENTS -->
-<div class="tab-panel" data-panel="core" style="display:none">
-  <div style="max-width:900px">
-
-    <div style="margin-bottom:40px">
-      <h2 class="section-title">Core Components</h2>
-      <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);line-height:22px;max-width:640px">
-        Atomic UI elements — the smallest building blocks of the design system. Each component is self-contained, token-driven, and has no dependencies on other components.
-      </p>
-    </div>
-
-    <!-- Planned components grid -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
-
-      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Button</div>
-        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Primary, secondary, ghost, destructive. All sizes and states.</div>
-        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
-      </div>
-
-      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Input</div>
-        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Text, number, search. Default, focus, error, disabled states.</div>
-        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
-      </div>
-
-      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Checkbox</div>
-        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Unchecked, checked, indeterminate, disabled.</div>
-        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
-      </div>
-
-      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Radio</div>
-        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Single selection within a group. All states.</div>
-        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
-      </div>
-
-      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Toggle</div>
-        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">On/off switch. With and without label.</div>
-        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
-      </div>
-
-      <div style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Badge</div>
-        <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Status, label, count. All semantic color variants.</div>
-        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- TAB PANEL: COMPOSITE COMPONENTS -->
-<div class="tab-panel" data-panel="composite" style="display:none">
-  <div style="max-width:1100px">
-
-    <div style="margin-bottom:48px">
-      <h2 class="section-title">Composite Components</h2>
-      <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);line-height:22px;max-width:640px">
-        Assembled UI blocks built from Core Components and Foundations tokens. These are larger, multi-part patterns used directly in product screens.
-      </p>
-    </div>
-
-    <!-- Pricing Cards -->
-    <div style="margin-bottom:64px">
-      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)">
-        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;text-transform:uppercase;color:var(--text)">Pricing Cards</h3>
-      </div>
-      <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:28px;line-height:22px">
-        Three variants driven by component-level tokens from <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">colors-component-tokens/Mode 1</code>. Each card maps a distinct set of semantic tokens for header, body, price, and action button.
-      </p>
-
-      <div class="pricing-grid">
-
-        <!-- STANDARD -->
-        <div class="pricing-card">
-          <div class="pricing-card-header" style="background:#002952">
-            <div class="pricing-card-title" style="color:#EDFCFF">Standard</div>
-            <div class="pricing-card-subtitle" style="color:rgba(237,252,255,0.6)">Full access plan</div>
-          </div>
-          <div class="pricing-card-body" style="background:#EDFCFF">
-            <div class="pricing-price" style="color:#F05C5C">€9.99</div>
-            <div class="pricing-period" style="color:#666">per month</div>
-            <ul class="pricing-features" style="color:#000000">
-              <li>All live sports</li>
-              <li>HD streaming</li>
-              <li>Cancel anytime</li>
-            </ul>
-            <button class="pricing-btn" style="background:#002952">SUBSCRIBE NOW</button>
-          </div>
-          <div class="pricing-token-note">title-bg: #002952 &middot; title-text: #EDFCFF &middot; price: #F05C5C &middot; bg: #EDFCFF &middot; btn: #002952</div>
+        <div style="margin-bottom:40px">
+          <h2 class="section-title" id="core-components">Core Components</h2>
+          <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);line-height:22px;max-width:640px">
+            Atomic UI elements — the smallest building blocks of the design system. Each component is self-contained, token-driven, and has no dependencies on other components.
+          </p>
         </div>
 
-        <!-- DEAL -->
-        <div class="pricing-card">
-          <div class="pricing-card-header" style="background:#F05C5C">
-            <div class="pricing-card-title" style="color:#FFFFFF">Best Deal</div>
-            <div class="pricing-card-subtitle" style="color:rgba(255,255,255,0.7)">Annual subscription</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
+
+          <div id="core-buttons" style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Button</div>
+            <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Primary, secondary, ghost, destructive. All sizes and states.</div>
+            <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
           </div>
-          <div class="pricing-card-body" style="background:#FFFFFF">
-            <div class="pricing-price" style="color:#F05C5C">€6.99</div>
-            <div class="pricing-period" style="color:#666">per month, billed annually</div>
-            <ul class="pricing-features" style="color:#000000">
-              <li>All live sports</li>
-              <li>4K streaming</li>
-              <li>Exclusive content</li>
-            </ul>
-            <button class="pricing-btn" style="background:#F05C5C">GET THIS DEAL</button>
+
+          <div id="core-inputs" style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Input</div>
+            <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Text, number, search. Default, focus, error, disabled states.</div>
+            <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
           </div>
-          <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #F05C5C &middot; title-text: #FFFFFF &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #F05C5C</div>
+
+          <div id="core-checkboxes" style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Checkbox</div>
+            <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Unchecked, checked, indeterminate, disabled.</div>
+            <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+          </div>
+
+          <div id="core-radios" style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Radio</div>
+            <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Single selection within a group. All states.</div>
+            <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+          </div>
+
+          <div id="core-toggles" style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Toggle</div>
+            <div style="font-size:12px;color:var(--text-subtle);line-height:18px">On/off switch. With and without label.</div>
+            <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+          </div>
+
+          <div id="core-badges" style="background:rgba(0,41,82,0.35);border:1px dashed rgba(34,210,230,0.2);border-radius:10px;padding:24px 20px">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#22D2E6;margin-bottom:6px">Badge</div>
+            <div style="font-size:12px;color:var(--text-subtle);line-height:18px">Status, label, count. All semantic color variants.</div>
+            <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(34,210,230,0.4)">Coming soon</div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /panel-main (core) -->
+  </div><!-- /panel-shell (core) -->
+</div><!-- /#coreComponentsPanel -->
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TAB PANEL: COMPOSITE COMPONENTS
+════════════════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="compositeComponentsPanel" data-panel="composite">
+  <div class="panel-shell">
+    <!-- Composite Components sidebar -->
+    <aside class="sidebar" id="sidebarComposite">
+      <nav>
+        <a href="#comp-pricing" class="active"><span class="nav-num">01</span> Pricing Cards</a>
+        <a href="#comp-forms"><span class="nav-num">02</span> Forms</a>
+        <a href="#comp-headers"><span class="nav-num">03</span> Headers</a>
+        <a href="#comp-steppers"><span class="nav-num">04</span> Steppers</a>
+        <a href="#comp-cards"><span class="nav-num">05</span> Cards</a>
+        <a href="#comp-nav"><span class="nav-num">06</span> Navigation Patterns</a>
+      </nav>
+    </aside>
+    <!-- Composite Components main content -->
+    <div class="panel-main">
+      <div class="panel-content">
+
+        <div style="margin-bottom:48px">
+          <h2 class="section-title" id="composite-components">Composite Components</h2>
+          <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);line-height:22px;max-width:640px">
+            Assembled UI blocks built from Core Components and Foundations tokens. These are larger, multi-part patterns used directly in product screens.
+          </p>
         </div>
 
-        <!-- VOUCHER -->
-        <div class="pricing-card">
-          <div class="pricing-card-header" style="background:#62FF98">
-            <div class="pricing-card-title" style="color:#002952">Voucher</div>
-            <div class="pricing-card-subtitle" style="color:rgba(0,41,82,0.6)">Redeem your code</div>
+        <!-- Pricing Cards -->
+        <div id="comp-pricing" style="margin-bottom:64px">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+            <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;text-transform:uppercase;color:var(--text)">Pricing Cards</h3>
           </div>
-          <div class="pricing-card-body" style="background:#FFFFFF">
-            <div class="pricing-price" style="color:#F05C5C">FREE</div>
-            <div class="pricing-period" style="color:#666">with valid voucher code</div>
-            <ul class="pricing-features" style="color:#000000">
-              <li>30-day trial</li>
-              <li>All live sports</li>
-              <li>No credit card needed</li>
-            </ul>
-            <button class="pricing-btn" style="background:#62FF98;color:#002952">REDEEM VOUCHER</button>
+          <p style="font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--text-subtle);margin-bottom:28px;line-height:22px">
+            Three variants driven by component-level tokens from <code style="font-family:monospace;font-size:12px;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;color:#22D2E6">colors-component-tokens/Mode 1</code>. Each card maps a distinct set of semantic tokens for header, body, price, and action button.
+          </p>
+
+          <div class="pricing-grid">
+
+            <!-- STANDARD -->
+            <div class="pricing-card">
+              <div class="pricing-card-header" style="background:#002952">
+                <div class="pricing-card-title" style="color:#EDFCFF">Standard</div>
+                <div class="pricing-card-subtitle" style="color:rgba(237,252,255,0.6)">Full access plan</div>
+              </div>
+              <div class="pricing-card-body" style="background:#EDFCFF">
+                <div class="pricing-price" style="color:#F05C5C">€9.99</div>
+                <div class="pricing-period" style="color:#666">per month</div>
+                <ul class="pricing-features" style="color:#000000">
+                  <li>All live sports</li>
+                  <li>HD streaming</li>
+                  <li>Cancel anytime</li>
+                </ul>
+                <button class="pricing-btn" style="background:#002952">SUBSCRIBE NOW</button>
+              </div>
+              <div class="pricing-token-note">title-bg: #002952 &middot; title-text: #EDFCFF &middot; price: #F05C5C &middot; bg: #EDFCFF &middot; btn: #002952</div>
+            </div>
+
+            <!-- DEAL -->
+            <div class="pricing-card">
+              <div class="pricing-card-header" style="background:#F05C5C">
+                <div class="pricing-card-title" style="color:#FFFFFF">Best Deal</div>
+                <div class="pricing-card-subtitle" style="color:rgba(255,255,255,0.7)">Annual subscription</div>
+              </div>
+              <div class="pricing-card-body" style="background:#FFFFFF">
+                <div class="pricing-price" style="color:#F05C5C">€6.99</div>
+                <div class="pricing-period" style="color:#666">per month, billed annually</div>
+                <ul class="pricing-features" style="color:#000000">
+                  <li>All live sports</li>
+                  <li>4K streaming</li>
+                  <li>Exclusive content</li>
+                </ul>
+                <button class="pricing-btn" style="background:#F05C5C">GET THIS DEAL</button>
+              </div>
+              <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #F05C5C &middot; title-text: #FFFFFF &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #F05C5C</div>
+            </div>
+
+            <!-- VOUCHER -->
+            <div class="pricing-card">
+              <div class="pricing-card-header" style="background:#62FF98">
+                <div class="pricing-card-title" style="color:#002952">Voucher</div>
+                <div class="pricing-card-subtitle" style="color:rgba(0,41,82,0.6)">Redeem your code</div>
+              </div>
+              <div class="pricing-card-body" style="background:#FFFFFF">
+                <div class="pricing-price" style="color:#F05C5C">FREE</div>
+                <div class="pricing-period" style="color:#666">with valid voucher code</div>
+                <ul class="pricing-features" style="color:#000000">
+                  <li>30-day trial</li>
+                  <li>All live sports</li>
+                  <li>No credit card needed</li>
+                </ul>
+                <button class="pricing-btn" style="background:#62FF98;color:#002952">REDEEM VOUCHER</button>
+              </div>
+              <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #62FF98 &middot; title-text: #002952 &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #62FF98</div>
+            </div>
+
           </div>
-          <div class="pricing-token-note" style="background:#FFFFFF">title-bg: #62FF98 &middot; title-text: #002952 &middot; price: #F05C5C &middot; bg: #FFFFFF &middot; btn: #62FF98</div>
+        </div>
+
+        <!-- Coming Next -->
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--text-subtle);margin-bottom:20px;text-transform:uppercase">Coming Next</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+            <div id="comp-forms" style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Form</div>
+            <div id="comp-headers" style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Navigation Header</div>
+            <div id="comp-steppers" style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Stepper</div>
+            <div id="comp-cards" style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Match Card</div>
+            <div id="comp-nav" style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Navigation Patterns</div>
+          </div>
         </div>
 
       </div>
-    </div>
-
-    <!-- Planned composite components -->
-    <div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--text-subtle);margin-bottom:20px;text-transform:uppercase">Coming Next</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
-        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Form</div>
-        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Navigation Header</div>
-        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Stepper</div>
-        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Match Card</div>
-        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Live Score Widget</div>
-        <div style="background:rgba(0,41,82,0.25);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:16px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(237,252,255,0.35);text-transform:uppercase">Subscription Flow</div>
-      </div>
-    </div>
-
-  </div>
-</div>
+    </div><!-- /panel-main (composite) -->
+  </div><!-- /panel-shell (composite) -->
+</div><!-- /#compositeComponentsPanel -->
 
 <script>
 // ===== TAB SWITCHING =====
 (function() {
   var tabBtns = document.querySelectorAll('.tab-btn');
   var tabPanels = document.querySelectorAll('.tab-panel');
-  var sidebar = document.getElementById('sidebar');
-  var mainEl = document.querySelector('.main');
+
+  // Map each tab to its sidebar ID
+  var sidebarMap = {
+    'updates':    'sidebarUpdates',
+    'foundations':'sidebarFoundations',
+    'core':       'sidebarCore',
+    'composite':  'sidebarComposite'
+  };
 
   function activateTab(target) {
     // Update button states
@@ -1894,15 +3012,18 @@ body {
       b.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 
-    // Show/hide tab panels
+    // Show/hide tab panels — only one visible at a time
     tabPanels.forEach(function(panel) {
       panel.style.display = panel.getAttribute('data-panel') === target ? 'block' : 'none';
     });
 
-    // Show sidebar + main only for tabs that use them (not Latest Updates)
-    var usesSidebar = (target !== 'updates');
-    sidebar.style.display = usesSidebar ? '' : 'none';
-    mainEl.style.display  = usesSidebar ? '' : 'block';
+    // Hide all sidebars, then show only the active tab's sidebar
+    Object.values(sidebarMap).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    var activeSidebar = document.getElementById(sidebarMap[target]);
+    if (activeSidebar) activeSidebar.style.display = '';
   }
 
   tabBtns.forEach(function(btn) {
@@ -1915,19 +3036,77 @@ body {
   activateTab('updates');
 })();
 
-// ===== THEME TOGGLE =====
-function toggleTheme() {
-  const body = document.body;
-  const isLight = body.classList.toggle('light-mode');
-  // Dark mode → show ☀ (click to go light)
-  // Light mode → show ☾ (click to go dark)
-  document.getElementById('headerThemeIcon').textContent = isLight ? '☾' : '☀';
-  document.getElementById('headerThemeLabel').textContent = isLight ? 'Dark Mode' : 'Light Mode';
-}
+// ===== THEME DROPDOWN =====
+(function() {
+  function applyTheme(theme) {
+    const body = document.body;
+    const icon = document.getElementById('headerThemeIcon');
+    const label = document.getElementById('headerThemeLabel');
+    const opts = {
+      dark:  document.getElementById('themeOptDark'),
+      light: document.getElementById('themeOptLight')
+    };
 
-// ===== ACTIVE NAV =====
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.sidebar nav a');
+    // Reset active states
+    Object.values(opts).forEach(el => { if (el) { el.classList.remove('active'); el.setAttribute('aria-selected', 'false'); } });
+
+    if (theme === 'light') {
+      body.classList.add('light-mode');
+      if (icon) icon.textContent = '☀';
+      if (label) label.textContent = 'DYN Light';
+      if (opts.light) { opts.light.classList.add('active'); opts.light.setAttribute('aria-selected', 'true'); }
+    } else {
+      // dark (default)
+      body.classList.remove('light-mode');
+      if (icon) icon.textContent = '☾';
+      if (label) label.textContent = 'DYN Dark';
+      if (opts.dark) { opts.dark.classList.add('active'); opts.dark.setAttribute('aria-selected', 'true'); }
+    }
+  }
+
+  window.setTheme = function(theme) {
+    applyTheme(theme);
+    closeThemeDropdown();
+  };
+
+  window.toggleThemeDropdown = function() {
+    const btn = document.getElementById('headerThemeToggle');
+    const menu = document.getElementById('themeDropdownMenu');
+    const isOpen = menu.classList.contains('open');
+    if (isOpen) {
+      closeThemeDropdown();
+    } else {
+      btn.classList.add('open');
+      menu.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  window.closeThemeDropdown = function() {
+    const btn = document.getElementById('headerThemeToggle');
+    const menu = document.getElementById('themeDropdownMenu');
+    btn.classList.remove('open');
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  };
+
+  // Close on outside click
+  document.addEventListener('click', function(e) {
+    const wrapper = document.getElementById('themeDropdownWrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+      closeThemeDropdown();
+    }
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeThemeDropdown();
+  });
+})();
+
+// ===== ACTIVE NAV (Foundations sidebar only) =====
+const sections = document.querySelectorAll('#foundationsPanel section[id]');
+const navLinks = document.querySelectorAll('#sideNavFoundations a');
 function updateNav() {
   let current = '';
   sections.forEach(s => {
@@ -1987,6 +3166,7 @@ pairs.forEach(p => {
   `;
   tbody.appendChild(tr);
 });
+// ===== END =====
 </script>
 </body>
 </html>
