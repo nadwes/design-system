@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DYN Design System — Actors Flow: Current vs. Target</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f1117;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 32px 24px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 32px;
+        }
+        /* Layout */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        @media (max-width: 1100px) {
+            .comparison { grid-template-columns: 1fr; }
+        }
+        .panel {
+            background: #1a1d2e;
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid #2d3348;
+            position: relative;
+        }
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .panel-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .panel-badge {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .badge-current {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+        .badge-target {
+            background: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+        /* Flow diagram inside panels */
+        .flow-diagram {
+            position: relative;
+            min-height: 620px;
+        }
+        .flow-diagram svg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        /* Actor nodes */
+        .actor {
+            position: absolute;
+            border-radius: 12px;
+            padding: 14px 16px;
+            text-align: center;
+            z-index: 2;
+            width: 160px;
+            cursor: default;
+            transition: transform 0.2s;
+        }
+        .actor:hover { transform: scale(1.04); }
+        .actor .a-icon { font-size: 22px; margin-bottom: 4px; }
+        .actor .a-name { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+        .actor .a-role { font-size: 10px; opacity: 0.8; line-height: 1.3; }
+        .actor .a-status {
+            font-size: 9px;
+            margin-top: 6px;
+            padding: 2px 7px;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: 500;
+        }
+        /* Node styles */
+        .n-figma { background: linear-gradient(135deg, #7c3aed, #a855f7); border: 2px solid #a855f7; }
+        .n-docs { background: linear-gradient(135deg, #0369a1, #0ea5e9); border: 2px solid #0ea5e9; }
+        .n-storybook { background: linear-gradient(135deg, #b45309, #f59e0b); border: 2px solid #f59e0b; }
+        .n-ddc { background: linear-gradient(135deg, #047857, #10b981); border: 2px solid #10b981; }
+        .n-whitelabel { background: linear-gradient(135deg, #374151, #6b7280); border: 2px dashed #9ca3af; }
+        .n-external { background: linear-gradient(135deg, #7f1d1d, #dc2626); border: 2px solid #dc2626; }
+        .n-users { background: linear-gradient(135deg, #1e3a5f, #3b82f6); border: 2px solid #3b82f6; opacity: 0.8; }
+        .n-tokens { background: linear-gradient(135deg, #4c1d95, #8b5cf6); border: 2px solid #8b5cf6; }
+        .n-notify { background: linear-gradient(135deg, #713f12, #d97706); border: 2px solid #d97706; }
+
+        /* Status colors */
+        .s-active { background: rgba(16, 185, 129, 0.3); color: #6ee7b7; }
+        .s-progress { background: rgba(245, 158, 11, 0.3); color: #fcd34d; }
+        .s-planned { background: rgba(107, 114, 128, 0.3); color: #d1d5db; }
+        .s-manual { background: rgba(220, 38, 38, 0.3); color: #fca5a5; }
+        .s-new { background: rgba(139, 92, 246, 0.3); color: #c4b5fd; }
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #94a3b8;
+        }
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .legend-line {
+            width: 24px;
+            height: 2px;
+        }
+        /* Improvement callouts */
+        .improvements {
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+        }
+        .improvements h3 {
+            font-size: 12px;
+            color: #6ee7b7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .improvements ul {
+            list-style: none;
+            padding: 0;
+        }
+        .improvements li {
+            font-size: 12px;
+            color: #cbd5e1;
+            padding: 3px 0;
+            padding-left: 18px;
+            position: relative;
+        }
+        .improvements li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #6ee7b7;
+        }
+        /* Pain points */
+        .pain-points {
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(220, 38, 38, 0.05);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            border-radius: 10px;
+        }
+        .pain-points h3 {
+            font-size: 12px;
+            color: #fca5a5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .pain-points ul {
+            list-style: none;
+            padding: 0;
+        }
+        .pain-points li {
+            font-size: 12px;
+            color: #cbd5e1;
+            padding: 3px 0;
+            padding-left: 18px;
+            position: relative;
+        }
+        .pain-points li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #fca5a5;
+        }
+    </style>
+</head>
+<body>
+    <h1>DYN Design System — Actors Flow</h1>
+    <p class="subtitle">Current State vs. Target State · Side-by-side comparison</p>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div>Source of Truth</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#0ea5e9"></div>Documentation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Development</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>Production</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#6b7280"></div>Planned</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>Manual / Fragile</div>
+        <div class="legend-item"><div class="legend-line" style="background:#a855f7"></div>Automated</div>
+        <div class="legend-item"><div class="legend-line" style="background:#dc2626; border-top:2px dashed #dc2626; height:0"></div>Manual</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>New in Target</div>
+    </div>
+
+    <div class="comparison">
+        <!-- CURRENT STATE -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Current State</h2>
+                <span class="panel-badge badge-current">Today</span>
+            </div>
+            <div class="flow-diagram" id="current-diagram">
+                <svg id="svg-current"></svg>
+
+                <!-- Figma -->
+                <div class="actor n-figma" style="top:0; left:50%; margin-left:-80px;">
+                    <div class="a-icon">🎨</div>
+                    <div class="a-name">Figma</div>
+                    <div class="a-role">Source of Truth</div>
+                    <div class="a-status s-active">● Active</div>
+                </div>
+
+                <!-- Design System Page -->
+                <div class="actor n-docs" style="top:160px; left:0;">
+                    <div class="a-icon">📖</div>
+                    <div class="a-name">DS Page</div>
+                    <div class="a-role">Docs & Changelog</div>
+                    <div class="a-status s-progress">● In Progress</div>
+                </div>
+
+                <!-- Storybook -->
+                <div class="actor n-storybook" style="top:160px; left:50%; margin-left:-80px;">
+                    <div class="a-icon">📚</div>
+                    <div class="a-name">Storybook</div>
+                    <div class="a-role">Component Dev</div>
+                    <div class="a-status s-progress">● In Progress</div>
+                </div>
+
+                <!-- DDC Frontend -->
+                <div class="actor n-ddc" style="top:160px; right:0;">
+                    <div class="a-icon">🖥️</div>
+                    <div class="a-name">DDC Frontend</div>
+                    <div class="a-role">User Canvas</div>
+                    <div class="a-status s-progress">● In Progress</div>
+                </div>
+
+                <!-- White Label -->
+                <div class="actor n-whitelabel" style="top:340px; right:0;">
+                    <div class="a-icon">🏷️</div>
+                    <div class="a-name">White Label</div>
+                    <div class="a-role">Customer Themes</div>
+                    <div class="a-status s-planned">○ Not Started</div>
+                </div>
+
+                <!-- External Tools -->
+                <div class="actor n-external" style="top:340px; left:0;">
+                    <div class="a-icon">🌐</div>
+                    <div class="a-name">External Tools</div>
+                    <div class="a-role">WP · Instapages</div>
+                    <div class="a-status s-manual">⚠ Manual</div>
+                </div>
+
+                <!-- Users -->
+                <div class="actor n-users" style="top:500px; left:50%; margin-left:-80px;">
+                    <div class="a-icon">👥</div>
+                    <div class="a-name">End Users</div>
+                    <div class="a-role">DYN Platform</div>
+                    <div class="a-status s-active">● Live</div>
+                </div>
+            </div>
+
+            <div class="pain-points">
+                <h3>Pain Points</h3>
+                <ul>
+                    <li>Manual handoff from Figma to Dev (no token pipeline)</li>
+                    <li>External tools updated manually — high effort, inconsistency risk</li>
+                    <li>No automated notification when designs change</li>
+                    <li>White Label has no architecture yet</li>
+                    <li>Storybook ↔ Figma sync is manual</li>
+                    <li>No single token distribution format</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TARGET STATE -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Target State</h2>
+                <span class="panel-badge badge-target">Goal</span>
+            </div>
+            <div class="flow-diagram" id="target-diagram">
+                <svg id="svg-target"></svg>
+
+                <!-- Figma -->
+                <div class="actor n-figma" style="top:0; left:50%; margin-left:-80px;">
+                    <div class="a-icon">🎨</div>
+                    <div class="a-name">Figma</div>
+                    <div class="a-role">Source of Truth</div>
+                    <div class="a-status s-active">● Active</div>
+                </div>
+
+                <!-- Token Pipeline (NEW) -->
+                <div class="actor n-tokens" style="top:110px; left:50%; margin-left:-80px;">
+                    <div class="a-icon">⚙️</div>
+                    <div class="a-name">Token Pipeline</div>
+                    <div class="a-role">Automated Distribution</div>
+                    <div class="a-status s-new">★ New</div>
+                </div>
+
+                <!-- Design System Page -->
+                <div class="actor n-docs" style="top:240px; left:0;">
+                    <div class="a-icon">📖</div>
+                    <div class="a-name">DS Page</div>
+                    <div class="a-role">Docs & Changelog</div>
+                    <div class="a-status s-active">● Active</div>
+                </div>
+
+                <!-- Storybook -->
+                <div class="actor n-storybook" style="top:240px; left:50%; margin-left:-80px;">
+                    <div class="a-icon">📚</div>
+                    <div class="a-name">Storybook</div>
+                    <div class="a-role">Component Dev</div>
+                    <div class="a-status s-active">● Active</div>
+                </div>
+
+                <!-- DDC Frontend -->
+                <div class="actor n-ddc" style="top:240px; right:0;">
+                    <div class="a-icon">🖥️</div>
+                    <div class="a-name">DDC Frontend</div>
+                    <div class="a-role">User Canvas</div>
+                    <div class="a-status s-active">● Active</div>
+                </div>
+
+                <!-- White Label -->
+                <div class="actor n-ddc" style="top:390px; right:0;">
+                    <div class="a-icon">🏷️</div>
+                    <div class="a-name">White Label</div>
+                    <div class="a-role">Customer Themes</div>
+                    <div class="a-status s-active">● Integrated</div>
+                </div>
+
+                <!-- Notification System (NEW) -->
+                <div class="actor n-notify" style="top:390px; left:0; width:160px;">
+                    <div class="a-icon">🔔</div>
+                    <div class="a-name">Change Notify</div>
+                    <div class="a-role">Auto-alerts to teams</div>
+                    <div class="a-status s-new">★ New</div>
+                </div>
+
+                <!-- External Tools -->
+                <div class="actor n-storybook" style="top:390px; left:50%; margin-left:-80px;">
+                    <div class="a-icon">🌐</div>
+                    <div class="a-name">External Tools</div>
+                    <div class="a-role">WP · Instapages</div>
+                    <div class="a-status s-progress">● Semi-Auto</div>
+                </div>
+
+                <!-- Users -->
+                <div class="actor n-users" style="top:530px; left:50%; margin-left:-80px;">
+                    <div class="a-icon">👥</div>
+                    <div class="a-name">End Users</div>
+                    <div class="a-role">Consistent Experience</div>
+                    <div class="a-status s-active">● Live</div>
+                </div>
+            </div>
+
+            <div class="improvements">
+                <h3>Key Improvements</h3>
+                <ul>
+                    <li>Automated Token Pipeline: Figma → JSON/CSS → all consumers</li>
+                    <li>Change Notification System alerts teams on updates</li>
+                    <li>External tools receive tokens via shared CDN/CSS export</li>
+                    <li>White Label fully integrated with theme layering</li>
+                    <li>All connections automated — no manual handoff</li>
+                    <li>Single source format distributes to all actors</li>
+                    <li>Consistent user experience across all touchpoints</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getCenter(el) {
+            const r = el.getBoundingClientRect();
+            const p = el.parentElement.getBoundingClientRect();
+            return {
+                x: r.left - p.left + r.width / 2,
+                y: r.top - p.top + r.height / 2
+            };
+        }
+
+        function getBottom(el) {
+            const r = el.getBoundingClientRect();
+            const p = el.parentElement.getBoundingClientRect();
+            return { x: r.left - p.left + r.width / 2, y: r.top - p.top + r.height };
+        }
+
+        function getTop(el) {
+            const r = el.getBoundingClientRect();
+            const p = el.parentElement.getBoundingClientRect();
+            return { x: r.left - p.left + r.width / 2, y: r.top - p.top };
+        }
+
+        function drawConnection(svg, from, to, color, dashed) {
+            const midY = (from.y + to.y) / 2;
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const d = `M ${from.x} ${from.y} C ${from.x} ${midY}, ${to.x} ${midY}, ${to.x} ${to.y}`;
+            path.setAttribute('d', d);
+            path.setAttribute('stroke', color);
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('fill', 'none');
+            path.setAttribute('opacity', '0.6');
+            if (dashed) path.setAttribute('stroke-dasharray', '5 4');
+            svg.appendChild(path);
+
+            // Arrow
+            const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            const s = 5;
+            arrow.setAttribute('points', `${to.x},${to.y} ${to.x-s},${to.y-s*1.5} ${to.x+s},${to.y-s*1.5}`);
+            arrow.setAttribute('fill', color);
+            arrow.setAttribute('opacity', '0.8');
+            svg.appendChild(arrow);
+        }
+
+        function drawCurrentState() {
+            const container = document.getElementById('current-diagram');
+            const svg = document.getElementById('svg-current');
+            svg.innerHTML = '';
+            const nodes = container.querySelectorAll('.actor');
+            const [figma, docs, storybook, ddc, whitelabel, external, users] = nodes;
+
+            // Figma → Docs (manual)
+            drawConnection(svg, getBottom(figma), getTop(docs), '#a855f7', true);
+            // Figma → Storybook (manual)
+            drawConnection(svg, getBottom(figma), getTop(storybook), '#a855f7', true);
+            // Figma → DDC (manual)
+            drawConnection(svg, getBottom(figma), getTop(ddc), '#a855f7', true);
+            // Storybook → DDC
+            drawConnection(svg, getBottom(storybook), getTop(ddc), '#f59e0b', false);
+            // DDC → Users
+            drawConnection(svg, getBottom(ddc), getTop(users), '#10b981', false);
+            // Docs → External (manual)
+            drawConnection(svg, getBottom(docs), getTop(external), '#dc2626', true);
+            // External → Users (manual)
+            drawConnection(svg, getBottom(external), getTop(users), '#dc2626', true);
+            // DDC → White Label (not connected)
+            drawConnection(svg, getBottom(ddc), getTop(whitelabel), '#6b7280', true);
+        }
+
+        function drawTargetState() {
+            const container = document.getElementById('target-diagram');
+            const svg = document.getElementById('svg-target');
+            svg.innerHTML = '';
+            const nodes = container.querySelectorAll('.actor');
+            const [figma, tokens, docs, storybook, ddc, whitelabel, notify, external, users] = nodes;
+
+            // Figma → Token Pipeline (automated)
+            drawConnection(svg, getBottom(figma), getTop(tokens), '#a855f7', false);
+            // Token Pipeline → Docs
+            drawConnection(svg, getBottom(tokens), getTop(docs), '#8b5cf6', false);
+            // Token Pipeline → Storybook
+            drawConnection(svg, getBottom(tokens), getTop(storybook), '#8b5cf6', false);
+            // Token Pipeline → DDC
+            drawConnection(svg, getBottom(tokens), getTop(ddc), '#8b5cf6', false);
+            // Storybook → DDC
+            drawConnection(svg, getBottom(storybook), getTop(ddc), '#f59e0b', false);
+            // DDC → White Label (integrated)
+            drawConnection(svg, getBottom(ddc), getTop(whitelabel), '#10b981', false);
+            // DDC → Users
+            drawConnection(svg, getBottom(ddc), getTop(users), '#10b981', false);
+            // Notify → External (semi-auto)
+            drawConnection(svg, getBottom(notify), getTop(external), '#d97706', false);
+            // Token Pipeline → External (via CDN)
+            drawConnection(svg, getBottom(tokens), getTop(external), '#8b5cf6', false);
+            // External → Users
+            drawConnection(svg, getBottom(external), getTop(users), '#10b981', false);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                drawCurrentState();
+                drawTargetState();
+            }, 150);
+        });
+        window.addEventListener('resize', () => {
+            drawCurrentState();
+            drawTargetState();
+        });
+    </script>
+</body>
+</html>
