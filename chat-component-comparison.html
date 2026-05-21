@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Dyn Design System — Component Comparison</title>
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --surface3: #2e2e2e;
+    --border: #333;
+    --text: #f0f0f0;
+    --text-muted: #888;
+    --text-dim: #555;
+    --accent: #e6ff00;
+    --pass: #4caf50;
+    --warn: #ff9800;
+    --fail: #f44336;
+    --na: #555;
+    --seo: #4a9eff;
+    --platform: #a78bfa;
+    --registration: #34d399;
+    --campaign: #fb923c;
+    --radius: 8px;
+    --radius-sm: 4px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  .page-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .page-header h1 { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; }
+  .page-header p { font-size: 12px; color: var(--text-muted); }
+  .surface-legend { display: flex; gap: 12px; margin-left: auto; flex-wrap: wrap; }
+  .surface-pill {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .pill-seo { background: rgba(74,158,255,0.15); color: var(--seo); border: 1px solid rgba(74,158,255,0.3); }
+  .pill-platform { background: rgba(167,139,250,0.15); color: var(--platform); border: 1px solid rgba(167,139,250,0.3); }
+  .pill-registration { background: rgba(52,211,153,0.15); color: var(--registration); border: 1px solid rgba(52,211,153,0.3); }
+  .pill-campaign { background: rgba(251,146,60,0.15); color: var(--campaign); border: 1px solid rgba(251,146,60,0.3); }
+
+  /* LAYOUT */
+  .layout { display: flex; min-height: calc(100vh - 65px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 16px 0;
+    position: sticky;
+    top: 65px;
+    height: calc(100vh - 65px);
+    overflow-y: auto;
+  }
+  .sidebar-section { padding: 8px 16px 4px; font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 12px;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .sidebar-item:hover { background: var(--surface2); color: var(--text); border-left-color: var(--border); }
+  .sidebar-item.active { background: var(--surface2); color: var(--accent); border-left-color: var(--accent); }
+  .sidebar-badge {
+    margin-left: auto;
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+  .badge-pass { background: rgba(76,175,80,0.2); color: var(--pass); }
+  .badge-warn { background: rgba(255,152,0,0.2); color: var(--warn); }
+  .badge-fail { background: rgba(244,67,54,0.2); color: var(--fail); }
+
+  /* MAIN */
+  .main { flex: 1; padding: 32px; overflow-y: auto; }
+
+  /* COMPONENT SECTION */
+  .component-section {
+    margin-bottom: 48px;
+    scroll-margin-top: 80px;
+  }
+  .component-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .component-name { font-size: 18px; font-weight: 700; color: var(--text); }
+  .component-type {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .type-core { background: rgba(230,255,0,0.1); color: var(--accent); border: 1px solid rgba(230,255,0,0.2); }
+  .type-composite { background: rgba(167,139,250,0.1); color: var(--platform); border: 1px solid rgba(167,139,250,0.2); }
+  .component-desc { font-size: 12px; color: var(--text-muted); margin-left: auto; max-width: 400px; text-align: right; }
+
+  /* STATUS BADGE */
+  .ds-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .status-ready { background: rgba(76,175,80,0.15); color: var(--pass); border: 1px solid rgba(76,175,80,0.3); }
+  .status-needs { background: rgba(255,152,0,0.15); color: var(--warn); border: 1px solid rgba(255,152,0,0.3); }
+  .status-redesign { background: rgba(244,67,54,0.15); color: var(--fail); border: 1px solid rgba(244,67,54,0.3); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 2px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .tab {
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* COMPARISON GRID */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 140px repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .grid-cell {
+    background: var(--surface2);
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .grid-header {
+    background: var(--surface3);
+    padding: 8px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .grid-row-label {
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+  }
+  .col-seo { border-top: 2px solid var(--seo); }
+  .col-platform { border-top: 2px solid var(--platform); }
+  .col-registration { border-top: 2px solid var(--registration); }
+  .col-campaign { border-top: 2px solid var(--campaign); }
+  .col-seo .grid-header { color: var(--seo); }
+  .col-platform .grid-header { color: var(--platform); }
+  .col-registration .grid-header { color: var(--registration); }
+  .col-campaign .grid-header { color: var(--campaign); }
+
+  /* STATUS ICONS */
+  .s-pass { color: var(--pass); font-weight: 700; }
+  .s-warn { color: var(--warn); font-weight: 700; }
+  .s-fail { color: var(--fail); font-weight: 700; }
+  .s-na { color: var(--na); }
+
+  /* STATES GRID */
+  .states-grid {
+    display: grid;
+    grid-template-columns: 100px repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .state-label {
+    background: var(--surface);
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+  }
+  .state-cell {
+    background: var(--surface2);
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  /* PROPS TABLE */
+  .props-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .props-table th {
+    background: var(--surface3);
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .props-table td {
+    background: var(--surface2);
+    padding: 8px 12px;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .props-table tr:last-child td { border-bottom: none; }
+  .prop-name { font-family: 'SF Mono', 'Fira Code', monospace; color: var(--accent); font-size: 11px; }
+  .prop-values { font-family: 'SF Mono', 'Fira Code', monospace; color: var(--text-muted); font-size: 11px; }
+  .prop-note { color: var(--text-dim); font-size: 11px; }
+
+  /* A11Y MATRIX */
+  .a11y-matrix {
+    display: grid;
+    grid-template-columns: 160px repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .a11y-cell {
+    background: var(--surface2);
+    padding: 8px 12px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .a11y-issue { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  .a11y-fix { font-size: 10px; color: var(--text-dim); font-style: italic; }
+  .severity-high { color: var(--fail); font-size: 9px; font-weight: 700; text-transform: uppercase; }
+  .severity-med { color: var(--warn); font-size: 9px; font-weight: 700; text-transform: uppercase; }
+  .severity-low { color: var(--pass); font-size: 9px; font-weight: 700; text-transform: uppercase; }
+
+  /* RISK SUMMARY */
+  .risk-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .risk-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--border);
+    font-size: 12px;
+  }
+  .risk-high { border-left-color: var(--fail); }
+  .risk-med { border-left-color: var(--warn); }
+  .risk-low { border-left-color: var(--pass); }
+  .risk-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; min-width: 36px; margin-top: 2px; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    margin-top: 20px;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  /* OVERVIEW TABLE */
+  .overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .overview-table th {
+    background: var(--surface3);
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .overview-table td {
+    background: var(--surface2);
+    padding: 8px 12px;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .overview-table tr:last-child td { border-bottom: none; }
+  .overview-table tr:hover td { background: var(--surface3); }
+  .comp-link { color: var(--text); text-decoration: none; cursor: pointer; }
+  .comp-link:hover { color: var(--accent); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div>
+    <h1>DYN DESIGN SYSTEM — COMPONENT COMPARISON</h1>
+    <p>Cross-platform audit · SEO · Platform · Registration · Campaign · 2026-05-07</p>
+  </div>
+  <div class="surface-legend">
+    <span class="surface-pill pill-seo">SEO</span>
+    <span class="surface-pill pill-platform">Platform</span>
+    <span class="surface-pill pill-registration">Registration</span>
+    <span class="surface-pill pill-campaign">Campaign</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">Overview</div>
+    <a class="sidebar-item active" href="#overview">All Components</a>
+
+    <div class="sidebar-section">Core</div>
+    <a class="sidebar-item" href="#button-primary">Button.Primary <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#button-secondary">Button.Secondary <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#button-ghost">Button.Ghost <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#link-text">Link.Text <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#logo">Logo.BrandMark <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#icon">Icon <span class="sidebar-badge badge-fail">✕</span></a>
+    <a class="sidebar-item" href="#image">Image.MediaAsset <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#typo-display">Typography.Display <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#typo-heading">Typography.Heading <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#typo-eyebrow">Typography.Eyebrow <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#typo-body">Typography.Body <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#typo-legal">Typography.LegalText <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#typo-price">Typography.PriceDisplay <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#typo-strike">Typography.Strikethrough <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#badge-status">Badge.Status <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#badge-counter">Badge.Counter <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#input-text">Input.Text <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#checkbox">Checkbox <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#radio">RadioButton <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#list-bullet">List.Bullet <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#divider">Divider <span class="sidebar-badge badge-pass">✓</span></a>
+    <a class="sidebar-item" href="#sport-icon">SportIcon.Label <span class="sidebar-badge badge-warn">⚠</span></a>
+
+    <div class="sidebar-section">Composite</div>
+    <a class="sidebar-item" href="#hero">Hero.Section <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#nav-sport">Nav.SportCategoryBar <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#nav-header">Nav.Header <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#nav-auth">Nav.AuthBar <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#card-article">Card.Article <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#card-event">Card.Event <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#card-format">Card.Format <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#card-person">Card.Person <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#card-pricing">Card.PricingPlan <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#section-promo">Section.PromoBanner <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#section-usp">Section.USPList <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#section-mys">Section.MoveYourSport <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#section-onair">Section.OnAirTeam <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#section-coverage">Section.SportsCoverage <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#section-help">Section.HelpSupport <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#section-pricing">Section.PricingSelector <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#block-partner">Block.PartnerLogoGrid <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#block-payment">Block.PaymentLogos <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#block-voucher">Block.VoucherInput <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#block-sports">Block.IncludedSports <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#flow-checkout">Flow.CheckoutSteps <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#footer-full">Footer.Full <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#footer-minimal">Footer.Minimal <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#modal-cookie">Modal.CookieConsent <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#trigger-loadmore">Trigger.LoadMore <span class="sidebar-badge badge-warn">⚠</span></a>
+    <a class="sidebar-item" href="#message-welcome">Message.WelcomeBack <span class="sidebar-badge badge-warn">⚠</span></a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <section class="component-section" id="overview">
+      <div class="component-header">
+        <span class="component-name">All Components</span>
+        <span class="component-desc">50 components identified across 4 surfaces</span>
+      </div>
+
+      <table class="overview-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>System Name</th>
+            <th>Type</th>
+            <th style="color:var(--seo)">SEO</th>
+            <th style="color:var(--platform)">Platform</th>
+            <th style="color:var(--registration)">Registration</th>
+            <th style="color:var(--campaign)">Campaign</th>
+            <th>DS Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- CORE -->
+          <tr><td>1</td><td><a class="comp-link" href="#button-primary">Button.Primary</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>2</td><td><a class="comp-link" href="#button-secondary">Button.Secondary</a></td><td><span class="component-type type-core">Core</span></td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>3</td><td><a class="comp-link" href="#button-ghost">Button.Ghost</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>4</td><td><a class="comp-link" href="#link-text">Link.Text</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>5</td><td><a class="comp-link" href="#logo">Logo.BrandMark</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>6</td><td><a class="comp-link" href="#icon">Icon</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-warn">⚠</td><td class="s-pass">✅</td><td><span class="ds-status status-redesign">❌ Redesign</span></td></tr>
+          <tr><td>7</td><td><a class="comp-link" href="#image">Image.MediaAsset</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>8</td><td><a class="comp-link" href="#typo-display">Typography.Display</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>9</td><td><a class="comp-link" href="#typo-heading">Typography.Heading</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>10</td><td><a class="comp-link" href="#typo-eyebrow">Typography.Eyebrow</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>11</td><td><a class="comp-link" href="#typo-body">Typography.Body</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>12</td><td><a class="comp-link" href="#typo-legal">Typography.LegalText</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>13</td><td><a class="comp-link" href="#typo-price">Typography.PriceDisplay</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>14</td><td><a class="comp-link" href="#typo-strike">Typography.Strikethrough</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>15</td><td><a class="comp-link" href="#badge-status">Badge.Status</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>16</td><td><a class="comp-link" href="#badge-counter">Badge.Counter</a></td><td><span class="component-type type-core">Core</span></td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>17</td><td><a class="comp-link" href="#input-text">Input.Text</a></td><td><span class="component-type type-core">Core</span></td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>18</td><td><a class="comp-link" href="#checkbox">Checkbox</a></td><td><span class="component-type type-core">Core</span></td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>19</td><td><a class="comp-link" href="#radio">RadioButton</a></td><td><span class="component-type type-core">Core</span></td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>20</td><td><a class="comp-link" href="#list-bullet">List.Bullet</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>21</td><td><a class="comp-link" href="#divider">Divider</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-ready">✓ Ready</span></td></tr>
+          <tr><td>22</td><td><a class="comp-link" href="#sport-icon">SportIcon.Label</a></td><td><span class="component-type type-core">Core</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <!-- COMPOSITE -->
+          <tr><td>23</td><td><a class="comp-link" href="#hero">Hero.Section</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>24</td><td><a class="comp-link" href="#nav-sport">Nav.SportCategoryBar</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>25</td><td><a class="comp-link" href="#nav-header">Nav.Header</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>26</td><td><a class="comp-link" href="#nav-auth">Nav.AuthBar</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>27</td><td><a class="comp-link" href="#card-article">Card.Article</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>28</td><td><a class="comp-link" href="#card-event">Card.Event</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>29</td><td><a class="comp-link" href="#card-format">Card.Format</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>30</td><td><a class="comp-link" href="#card-person">Card.Person</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>31</td><td><a class="comp-link" href="#card-pricing">Card.PricingPlan</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>32</td><td><a class="comp-link" href="#section-promo">Section.PromoBanner</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>33</td><td><a class="comp-link" href="#section-usp">Section.USPList</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>34</td><td><a class="comp-link" href="#section-mys">Section.MoveYourSport</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>35</td><td><a class="comp-link" href="#section-onair">Section.OnAirTeam</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>36</td><td><a class="comp-link" href="#section-coverage">Section.SportsCoverage</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>37</td><td><a class="comp-link" href="#section-help">Section.HelpSupport</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>38</td><td><a class="comp-link" href="#section-pricing">Section.PricingSelector</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>39</td><td><a class="comp-link" href="#block-partner">Block.PartnerLogoGrid</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>40</td><td><a class="comp-link" href="#block-payment">Block.PaymentLogos</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>41</td><td><a class="comp-link" href="#block-voucher">Block.VoucherInput</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>42</td><td><a class="comp-link" href="#block-sports">Block.IncludedSports</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>43</td><td><a class="comp-link" href="#flow-checkout">Flow.CheckoutSteps</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>44</td><td><a class="comp-link" href="#footer-full">Footer.Full</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>45</td><td><a class="comp-link" href="#footer-minimal">Footer.Minimal</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-na">➖</td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>46</td><td><a class="comp-link" href="#modal-cookie">Modal.CookieConsent</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-pass">✅</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>47</td><td><a class="comp-link" href="#trigger-loadmore">Trigger.LoadMore</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-pass">✅</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+          <tr><td>48</td><td><a class="comp-link" href="#message-welcome">Message.WelcomeBack</a></td><td><span class="component-type type-composite">Composite</span></td><td class="s-na">➖</td><td class="s-pass">✅</td><td class="s-na">➖</td><td class="s-na">➖</td><td><span class="ds-status status-needs">⚠ Normalize</span></td></tr>
+        </tbody>
+      </table>
+    </section>
